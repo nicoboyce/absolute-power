@@ -51,80 +51,104 @@ def load_products():
     return products
 
 def get_latest_prices():
-    """Get latest prices for all products from database or generate mock data"""
-    if not HAS_MARIADB:
-        # Return mock price data for testing
+    """Get latest prices from JSON files"""
+    prices_dir = Path(__file__).parent / "data" / "prices"
+    
+    # If no prices directory, return empty
+    if not prices_dir.exists():
+        logging.warning("No prices directory found")
+        return {}
+    
+    # Find the most recent prices file
+    price_files = sorted(prices_dir.glob("prices_*.json"), reverse=True)
+    
+    if not price_files:
+        logging.warning("No price files found")
+        # Return some mock data for testing
         return {
             'ecoflow-delta-2': [
                 {
                     'retailer': 'ecoflow_uk',
                     'price': 899.00,
                     'in_stock': True,
-                    'scraped_at': datetime.now(),
+                    'scraped_at': datetime.now().isoformat(),
                     'url': 'https://uk.ecoflow.com/products/delta-2-portable-power-station'
-                },
-                {
-                    'retailer': 'currys',
-                    'price': 949.00,
-                    'in_stock': True,
-                    'scraped_at': datetime.now(),
-                    'url': 'https://www.currys.co.uk/products/ecoflow-delta-2'
-                }
-            ],
-            'anker-solix-c1000': [
-                {
-                    'retailer': 'anker_uk',
-                    'price': 649.99,
-                    'in_stock': True,
-                    'scraped_at': datetime.now(),
-                    'url': 'https://www.anker.com/uk/products/a1761-solix-c1000-portable-power-station'
-                }
-            ],
-            'jackery-explorer-1000-v2': [
-                {
-                    'retailer': 'jackery_uk',
-                    'price': 799.00,
-                    'in_stock': False,
-                    'scraped_at': datetime.now(),
-                    'url': 'https://uk.jackery.com/products/explorer-1000-v2'
                 }
             ]
         }
     
-    conn = get_db_connection()
-    if not conn:
-        return {}
+    # Load the most recent prices file
+    latest_file = price_files[0]
+    logging.info(f"Loading prices from {latest_file.name}")
     
     try:
-        cursor = conn.cursor()
-        cursor.execute("""
-            SELECT product_id, retailer, price, in_stock, scraped_at, url
-            FROM latest_prices
-            ORDER BY product_id, price ASC
-        """)
+        with open(latest_file, 'r') as f:
+            data = json.load(f)
         
+        # Format the data for templates
         prices = {}
-        for row in cursor.fetchall():
-            product_id, retailer, price, in_stock, scraped_at, url = row
-            
+        for product_id, product_prices in data.items():
             if product_id not in prices:
                 prices[product_id] = []
             
-            prices[product_id].append({
-                'retailer': retailer,
-                'price': float(price),
-                'in_stock': bool(in_stock),
-                'scraped_at': scraped_at,
-                'url': url
-            })
+            # Get the latest price for each retailer
+            retailers_seen = set()
+            for price_data in reversed(product_prices):  # Most recent first
+                retailer = price_data['retailer']
+                if retailer not in retailers_seen:
+                    retailers_seen.add(retailer)
+                    prices[product_id].append({
+                        'retailer': retailer,
+                        'price': price_data['price'],
+                        'in_stock': price_data['in_stock'],
+                        'scraped_at': price_data['scraped_at'],
+                        'url': price_data['url']
+                    })
+            
+            # Sort by price
+            prices[product_id].sort(key=lambda x: x['price'] if x['price'] else float('inf'))
         
-        cursor.close()
-        conn.close()
         return prices
         
-    except mariadb.Error as e:
-        logging.error(f"Failed to fetch prices: {e}")
+    except Exception as e:
+        logging.error(f"Failed to load prices from {latest_file}: {e}")
         return {}
+    
+    # Fallback to database if JSON fails and database is available
+    if HAS_MARIADB:
+        conn = get_db_connection()
+        if conn:
+            try:
+                cursor = conn.cursor()
+                cursor.execute("""
+                    SELECT product_id, retailer, price, in_stock, scraped_at, url
+                    FROM latest_prices
+                    ORDER BY product_id, price ASC
+                """)
+                
+                prices = {}
+                for row in cursor.fetchall():
+                    product_id, retailer, price, in_stock, scraped_at, url = row
+                    
+                    if product_id not in prices:
+                        prices[product_id] = []
+                    
+                    prices[product_id].append({
+                        'retailer': retailer,
+                        'price': float(price),
+                        'in_stock': bool(in_stock),
+                        'scraped_at': scraped_at,
+                        'url': url
+                    })
+                
+                cursor.close()
+                conn.close()
+                return prices
+                
+            except mariadb.Error as e:
+                logging.error(f"Failed to fetch prices from database: {e}")
+    
+    return {}
 
 def generate_site():
     """Main site generation function"""

@@ -92,9 +92,47 @@ class BaseScraper:
             return None
     
     def save_price(self, price_data):
-        """Save price data to database or log for testing"""
+        """Save price data to JSON and optionally database"""
+        import json
+        from pathlib import Path
+        from datetime import datetime
+        
+        # Save to JSON file
+        prices_dir = Path(__file__).parent.parent / "data" / "prices"
+        prices_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Create filename with today's date
+        today = datetime.now().strftime("%Y-%m-%d")
+        prices_file = prices_dir / f"prices_{today}.json"
+        
+        # Load existing data or create new
+        if prices_file.exists():
+            with open(prices_file, 'r') as f:
+                data = json.load(f)
+        else:
+            data = {}
+        
+        # Add new price data
+        product_id = price_data['product_id']
+        if product_id not in data:
+            data[product_id] = []
+        
+        data[product_id].append({
+            'retailer': price_data['retailer'],
+            'price': price_data['price'],
+            'in_stock': price_data['in_stock'],
+            'scraped_at': datetime.now().isoformat(),
+            'url': price_data['url']
+        })
+        
+        # Save back to file
+        with open(prices_file, 'w') as f:
+            json.dump(data, f, indent=2)
+        
+        self.logger.info(f"Saved price to JSON: {price_data['product_id']} @ {price_data['retailer']}")
+        
+        # Also try database if available
         if not HAS_MARIADB:
-            self.logger.info(f"TEST MODE: Would save to DB: {price_data}")
             return
             
         try:
