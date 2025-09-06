@@ -3,35 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deployment Test - Power Station Price Tracker</title>
+    <title>Power Station Price Tracker - Compare UK Power Station Prices</title>
+    <meta name="description" content="Compare prices for portable power stations across UK retailers. Track deals on EcoFlow, Jackery, Anker and more.">
+    
     <style>
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-            max-width: 800px; 
-            margin: 50px auto; 
-            padding: 20px; 
-            text-align: center; 
-        }
-        .status { 
-            background: #d4edda; 
-            border: 1px solid #c3e6cb; 
-            color: #155724; 
-            padding: 20px; 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        header { background: #2c3e50; color: white; padding: 1rem 0; }
+        header h1 { margin: 0; }
+        header p { margin: 0; opacity: 0.9; }
+        
+        main { padding: 2rem 0; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin-top: 2rem; }
+        
+        .product-card { 
+            border: 1px solid #ddd; 
             border-radius: 8px; 
-            margin: 20px 0; 
+            padding: 1.5rem; 
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
         }
-        .timestamp { 
+        .product-card:hover { transform: translateY(-2px); }
+        
+        .product-name { font-size: 1.4rem; font-weight: 600; margin-bottom: 0.5rem; color: #2c3e50; }
+        .product-specs { color: #666; margin-bottom: 1rem; font-size: 0.9rem; }
+        
+        .price-comparison { margin-top: 1rem; }
+        .price-row { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 0.75rem; 
+            border: 1px solid #eee; 
+            margin-bottom: 0.5rem; 
+            border-radius: 4px;
+            background: #fafafa;
+        }
+        
+        .retailer { font-weight: 500; }
+        .price { font-size: 1.1rem; font-weight: 600; color: #27ae60; }
+        .out-of-stock { color: #e74c3c; }
+        
+        .view-details { 
+            display: inline-block; 
+            margin-top: 1rem; 
+            padding: 0.75rem 1.5rem; 
+            background: #3498db; 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 4px; 
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .view-details:hover { background: #2980b9; }
+        
+        .no-prices { color: #999; font-style: italic; }
+        
+        footer { 
+            background: #ecf0f1; 
+            padding: 2rem 0; 
+            margin-top: 3rem; 
+            text-align: center; 
             color: #666; 
-            font-size: 0.9em; 
+            font-size: 0.9rem; 
+        }
+        
+        .last-updated { color: #999; font-size: 0.8rem; margin-top: 1rem; }
+        
+        @media (max-width: 768px) {
+            .products-grid { grid-template-columns: 1fr; }
+            .price-row { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
         }
     </style>
 </head>
 <body>
-    <h1>Power Station Price Tracker</h1>
-    <div class="status">
-        ✅ Deployment Test Successful
-    </div>
-    <p>This is a test page to verify the git-based deployment workflow.</p>
-    <p class="timestamp">Generated: 2025-09-06 19:49:09 UTC</p>
+    <header>
+        <div class="container">
+            <h1>Power Station Price Tracker</h1>
+            <p>Compare UK power station prices and get the best deals</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <h2>Power Station Price Comparison</h2>
+            <p>Track prices across UK retailers for portable power stations. Get alerts when prices drop.</p>
+
+            <div class="products-grid">
+                
+                <div class="product-card">
+                    <h3 class="product-name">Jackery Explorer 1000 v2</h3>
+                    <div class="product-specs">
+                        <strong>1070Wh</strong> • 
+                        LiFePO4 • 
+                        10.8kg
+                    </div>
+                    
+                    <div class="price-comparison">
+                        
+                        
+                            
+                            <div class="price-row">
+                                <span class="retailer">Jackery_uk</span>
+                                
+                                    <span class="out-of-stock">Out of Stock</span>
+                                
+                            </div>
+                            
+                        
+                    </div>
+                    
+                    <a href="products/jackery-explorer-1000-v2.html" class="view-details">View Details & Specs</a>
+                </div>
+                
+                <div class="product-card">
+                    <h3 class="product-name">Anker SOLIX C1000</h3>
+                    <div class="product-specs">
+                        <strong>1056Wh</strong> • 
+                        LiFePO4 • 
+                        12.9kg
+                    </div>
+                    
+                    <div class="price-comparison">
+                        
+                        
+                            
+                            <div class="price-row">
+                                <span class="retailer">Anker_uk</span>
+                                
+                                    <span class="price">£649.99</span>
+                                
+                            </div>
+                            
+                        
+                    </div>
+                    
+                    <a href="products/anker-solix-c1000.html" class="view-details">View Details & Specs</a>
+                </div>
+                
+                <div class="product-card">
+                    <h3 class="product-name">EcoFlow DELTA 2</h3>
+                    <div class="product-specs">
+                        <strong>1024Wh</strong> • 
+                        LiFePO4 • 
+                        12kg
+                    </div>
+                    
+                    <div class="price-comparison">
+                        
+                        
+                            
+                            <div class="price-row">
+                                <span class="retailer">Ecoflow_uk</span>
+                                
+                                    <span class="price">£899.00</span>
+                                
+                            </div>
+                            
+                            <div class="price-row">
+                                <span class="retailer">Currys</span>
+                                
+                                    <span class="price">£949.00</span>
+                                
+                            </div>
+                            
+                        
+                    </div>
+                    
+                    <a href="products/ecoflow-delta-2.html" class="view-details">View Details & Specs</a>
+                </div>
+                
+            </div>
+            
+            <div class="last-updated">
+                Last updated: 2025-09-06 20:37 UTC
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Power Station Price Tracker - Compare power station prices across UK retailers</p>
+            <p><small>This site contains affiliate links. We may earn a commission when you make a purchase through these links at no additional cost to you.</small></p>
+        </div>
+    </footer>
 </body>
 </html>

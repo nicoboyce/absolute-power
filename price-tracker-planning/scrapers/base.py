@@ -8,7 +8,12 @@ import random
 import logging
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
-import mariadb
+try:
+    import mariadb
+    HAS_MARIADB = True
+except ImportError:
+    HAS_MARIADB = False
+    print("MariaDB not available - running in test mode")
 from config import USER_AGENTS, REQUEST_DELAY, TIMEOUT, DB_CONFIG
 
 class BaseScraper:
@@ -87,7 +92,11 @@ class BaseScraper:
             return None
     
     def save_price(self, price_data):
-        """Save price data to database"""
+        """Save price data to database or log for testing"""
+        if not HAS_MARIADB:
+            self.logger.info(f"TEST MODE: Would save to DB: {price_data}")
+            return
+            
         try:
             conn = mariadb.connect(**DB_CONFIG)
             cursor = conn.cursor()
@@ -111,7 +120,11 @@ class BaseScraper:
             self.logger.error(f"Database error: {e}")
     
     def log_scrape_result(self, product_id, status, error_message=None):
-        """Log scraping result to database"""
+        """Log scraping result to database or console for testing"""
+        if not HAS_MARIADB:
+            self.logger.info(f"TEST MODE: Scrape result - {product_id}: {status} {error_message or ''}")
+            return
+            
         try:
             conn = mariadb.connect(**DB_CONFIG)
             cursor = conn.cursor()

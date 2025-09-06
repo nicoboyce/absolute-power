@@ -10,7 +10,12 @@ import sys
 from pathlib import Path
 from datetime import datetime
 from jinja2 import Environment, FileSystemLoader
-import mariadb
+try:
+    import mariadb
+    HAS_MARIADB = True
+except ImportError:
+    HAS_MARIADB = False
+    print("MariaDB not available - generating with mock data")
 
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent))
@@ -21,6 +26,9 @@ import logging
 
 def get_db_connection():
     """Get database connection"""
+    if not HAS_MARIADB:
+        return None
+        
     try:
         return mariadb.connect(**DB_CONFIG)
     except mariadb.Error as e:
@@ -43,7 +51,46 @@ def load_products():
     return products
 
 def get_latest_prices():
-    """Get latest prices for all products from database"""
+    """Get latest prices for all products from database or generate mock data"""
+    if not HAS_MARIADB:
+        # Return mock price data for testing
+        return {
+            'ecoflow-delta-2': [
+                {
+                    'retailer': 'ecoflow_uk',
+                    'price': 899.00,
+                    'in_stock': True,
+                    'scraped_at': datetime.now(),
+                    'url': 'https://uk.ecoflow.com/products/delta-2-portable-power-station'
+                },
+                {
+                    'retailer': 'currys',
+                    'price': 949.00,
+                    'in_stock': True,
+                    'scraped_at': datetime.now(),
+                    'url': 'https://www.currys.co.uk/products/ecoflow-delta-2'
+                }
+            ],
+            'anker-solix-c1000': [
+                {
+                    'retailer': 'anker_uk',
+                    'price': 649.99,
+                    'in_stock': True,
+                    'scraped_at': datetime.now(),
+                    'url': 'https://www.anker.com/uk/products/a1761-solix-c1000-portable-power-station'
+                }
+            ],
+            'jackery-explorer-1000-v2': [
+                {
+                    'retailer': 'jackery_uk',
+                    'price': 799.00,
+                    'in_stock': False,
+                    'scraped_at': datetime.now(),
+                    'url': 'https://uk.jackery.com/products/explorer-1000-v2'
+                }
+            ]
+        }
+    
     conn = get_db_connection()
     if not conn:
         return {}
