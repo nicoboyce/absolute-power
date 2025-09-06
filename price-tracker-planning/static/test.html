@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absolute Power - UK's Best Power Station Deals (TEST)</title>
+    <meta name="description" content="Find the perfect portable power station. Compare prices, specs and deals across all major UK retailers.">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Header */
+        header { background: linear-gradient(135deg, #2c3e50, #34495e); color: white; padding: 2rem 0; text-align: center; }
+        header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        header p { font-size: 1.1rem; opacity: 0.9; }
+        
+        /* Hero Section - Bargain of the Moment */
+        .hero-deal { 
+            background: linear-gradient(135deg, #e74c3c, #c0392b); 
+            color: white; 
+            padding: 2rem; 
+            margin: 2rem 0; 
+            border-radius: 12px; 
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+        }
+        .hero-deal h2 { font-size: 1.8rem; margin-bottom: 1rem; }
+        .hero-deal .product-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .hero-deal .price-info { font-size: 1.3rem; margin: 0.5rem 0; }
+        .hero-deal .savings { background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 20px; display: inline-block; margin-top: 1rem; }
+        .hero-deal .cta { background: white; color: #e74c3c; padding: 0.8rem 2rem; border-radius: 25px; text-decoration: none; font-weight: 600; margin-top: 1rem; display: inline-block; transition: transform 0.2s; }
+        .hero-deal .cta:hover { transform: translateY(-2px); }
+        
+        /* Card Grid Layout */
+        .cards-grid { display: grid; gap: 2rem; margin: 2rem 0; }
+        .cards-grid.two-col { grid-template-columns: 1fr 1fr; }
+        .cards-grid.three-col { grid-template-columns: repeat(3, 1fr); }
+        .cards-grid.four-col { grid-template-columns: repeat(4, 1fr); }
+        .cards-grid.five-col { grid-template-columns: repeat(5, 1fr); }
+        
+        @media (max-width: 1024px) { .cards-grid.five-col { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 768px) { 
+            .cards-grid.two-col, .cards-grid.three-col, .cards-grid.four-col, .cards-grid.five-col { grid-template-columns: 1fr; }
+        }
+        
+        /* Card Styles */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #e1e8ed;
+        }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+        
+        .card-header { margin-bottom: 1rem; }
+        .card-title { font-size: 1.3rem; font-weight: 700; color: #2c3e50; margin-bottom: 0.5rem; }
+        .card-subtitle { color: #7f8c8d; font-size: 0.9rem; }
+        
+        /* Power Station Finder */
+        .finder-card { background: linear-gradient(135deg, #3498db, #2980b9); color: white; text-align: center; }
+        .finder-card .card-title { color: white; font-size: 1.5rem; }
+        .finder-quiz { text-align: left; margin: 1rem 0; }
+        .quiz-question { margin-bottom: 1rem; }
+        .quiz-question label { display: block; margin-bottom: 0.3rem; font-weight: 500; }
+        .quiz-question select, .quiz-question input[type="range"] { width: 100%; padding: 0.5rem; border: none; border-radius: 6px; }
+        .find-btn { background: white; color: #3498db; padding: 0.8rem 2rem; border: none; border-radius: 25px; font-weight: 600; cursor: pointer; transition: transform 0.2s; }
+        .find-btn:hover { transform: translateY(-2px); }
+        
+        /* Capacity Categories */
+        .category-card { text-align: center; cursor: pointer; }
+        .category-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .category-price { color: #27ae60; font-weight: 600; font-size: 1.1rem; margin-top: 0.5rem; }
+        
+        /* Education Cards */
+        .edu-card { }
+        .chemistry-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .chemistry-item { background: #f8f9fa; padding: 1rem; border-radius: 8px; text-align: center; }
+        .chemistry-item h4 { color: #2c3e50; margin-bottom: 0.5rem; }
+        .chemistry-item .cycles { color: #27ae60; font-weight: 600; }
+        
+        /* UPS Info */
+        .ups-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .ups-item { padding: 1rem; border-radius: 8px; text-align: center; border-left: 4px solid; }
+        .ups-item.excellent { border-left-color: #27ae60; background: #d5f4e6; }
+        .ups-item.good { border-left-color: #f39c12; background: #fef5e7; }
+        .ups-item.basic { border-left-color: #e74c3c; background: #fdedec; }
+        
+        /* Section Headers */
+        .section { margin: 3rem 0; }
+        .section-title { font-size: 2rem; font-weight: 700; color: #2c3e50; margin-bottom: 1rem; text-align: center; }
+        .section-subtitle { text-align: center; color: #7f8c8d; margin-bottom: 2rem; }
+        
+        /* Filter Bar */
+        .filter-bar { background: white; padding: 1.5rem; border-radius: 12px; margin: 2rem 0; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .filters-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+        .filter-group label { display: block; margin-bottom: 0.3rem; font-weight: 500; color: #2c3e50; }
+        .filter-group select { width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 6px; }
+        
+        /* Latest Deals Ticker */
+        .deals-ticker { background: #2c3e50; color: white; padding: 1rem 0; text-align: center; margin: 2rem 0; border-radius: 8px; overflow: hidden; }
+        .ticker-content { white-space: nowrap; animation: scroll 30s linear infinite; }
+        @keyframes scroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        
+        /* Product Cards */
+        .product-card { 
+            border: 1px solid #ddd; 
+            border-radius: 12px; 
+            padding: 1.5rem; 
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+        
+        .product-name { font-size: 1.4rem; font-weight: 600; margin-bottom: 0.5rem; color: #2c3e50; }
+        .product-specs { color: #666; margin-bottom: 1rem; font-size: 0.9rem; }
+        
+        .price-comparison { margin-top: 1rem; }
+        .price-row { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 0.75rem; 
+            border: 1px solid #eee; 
+            margin-bottom: 0.5rem; 
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        
+        .retailer { font-weight: 500; text-transform: capitalize; }
+        .price { font-size: 1.1rem; font-weight: 600; color: #27ae60; }
+        .out-of-stock { color: #e74c3c; }
+        
+        .view-details { 
+            display: inline-block; 
+            margin-top: 1rem; 
+            padding: 0.75rem 1.5rem; 
+            background: #3498db; 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 8px; 
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .view-details:hover { background: #2980b9; transform: translateY(-1px); }
+        
+        /* Products Grid */
+        .products-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+            gap: 2rem; 
+            margin-top: 2rem; 
+        }
+        
+        @media (max-width: 768px) {
+            .products-grid { grid-template-columns: 1fr; }
+            .price-row { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Absolute Power</h1>
+            <p>UK's most comprehensive power station price tracker (TEST PAGE)</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Hero Deal Section -->
+        
+        <div class="hero-deal">
+            <h2>🔥 Bargain of the Moment</h2>
+            <div class="product-name">Jackery Explorer 1000 Plus</div>
+            <div class="price-info">£799 
+                
+                <span style="text-decoration: line-through; opacity: 0.7;">£1198</span>
+                
+            </div>
+            
+            <div class="savings">Save £400 • 33% OFF</div>
+            
+            <a href="products/jackery-explorer-1000-plus.html" class="cta">View Deal</a>
+        </div>
+        
+
+        <!-- Power Station Finder -->
+        <div class="section">
+            <h2 class="section-title">Find Your Perfect Power Station</h2>
+            <p class="section-subtitle">Answer a few questions to get personalised recommendations</p>
+            
+            <div class="cards-grid two-col">
+                <div class="card finder-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Power Station Finder</h3>
+                        <p class="card-subtitle">Get matched in 30 seconds</p>
+                    </div>
+                    <div class="finder-quiz">
+                        <div class="quiz-question">
+                            <label>What will you power?</label>
+                            <select id="usage">
+                                <option>Phones & tablets</option>
+                                <option>Laptops & small devices</option>
+                                <option>Fridge & essential appliances</option>
+                                <option>Whole home backup</option>
+                            </select>
+                        </div>
+                        <div class="quiz-question">
+                            <label>How long do you need power?</label>
+                            <select id="duration">
+                                <option>Few hours</option>
+                                <option>8-12 hours</option>
+                                <option>1-2 days</option>
+                                <option>3+ days</option>
+                            </select>
+                        </div>
+                        <div class="quiz-question">
+                            <label>Budget range?</label>
+                            <select id="budget">
+                                <option>Under £200</option>
+                                <option>£200-500</option>
+                                <option>£500-1000</option>
+                                <option>£1000+</option>
+                            </select>
+                        </div>
+                        <button class="find-btn" onclick="findRecommendations()">Find My Match</button>
+                    </div>
+                </div>
+                
+                <div class="card edu-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Battery Chemistry Guide</h3>
+                        <p class="card-subtitle">Understanding the tech behind power stations</p>
+                    </div>
+                    <div class="chemistry-grid">
+                        <div class="chemistry-item">
+                            <h4>LiFePO4</h4>
+                            <p class="cycles">3000+ cycles</p>
+                            <p>Safest, longest lasting</p>
+                        </div>
+                        <div class="chemistry-item">
+                            <h4>Li-ion NMC</h4>
+                            <p class="cycles">800-1500 cycles</p>
+                            <p>Higher density, lighter</p>
+                        </div>
+                        <div class="chemistry-item">
+                            <h4>Lead Acid</h4>
+                            <p class="cycles">300-500 cycles</p>
+                            <p>Cheapest, heaviest</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Capacity Categories -->
+        <div class="section">
+            <h2 class="section-title">Shop by Capacity</h2>
+            <p class="section-subtitle">Find the right size for your needs</p>
+            
+            <div class="cards-grid five-col">
+                <div class="card category-card" onclick="filterByCapacity('100-250')">
+                    <div class="category-icon">📱</div>
+                    <h3 class="card-title">Ultra-Portable</h3>
+                    <p class="card-subtitle">100-250Wh</p>
+                    <p>Phone & device charging</p>
+                    <p class="category-price">from £99</p>
+                </div>
+                
+                <div class="card category-card" onclick="filterByCapacity('251-500')">
+                    <div class="category-icon">⛺</div>
+                    <h3 class="card-title">Portable</h3>
+                    <p class="card-subtitle">251-500Wh</p>
+                    <p>Weekend adventures</p>
+                    <p class="category-price">from £229</p>
+                </div>
+                
+                <div class="card category-card" onclick="filterByCapacity('501-1000')">
+                    <div class="category-icon">🔧</div>
+                    <h3 class="card-title">Medium</h3>
+                    <p class="card-subtitle">501-1000Wh</p>
+                    <p>Home essentials backup</p>
+                    <p class="category-price">from £799</p>
+                </div>
+                
+                <div class="card category-card" onclick="filterByCapacity('1001-2100')">
+                    <div class="category-icon">🏠</div>
+                    <h3 class="card-title">Large</h3>
+                    <p class="card-subtitle">1001-2100Wh</p>
+                    <p>Extended home power</p>
+                    <p class="category-price">from £1399</p>
+                </div>
+                
+                <div class="card category-card" onclick="filterByCapacity('2100+')">
+                    <div class="category-icon">🏭</div>
+                    <h3 class="card-title">Whole-Home</h3>
+                    <p class="card-subtitle">2100Wh+</p>
+                    <p>Complete backup systems</p>
+                    <p class="category-price">from £1699</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Features -->
+        <div class="section">
+            <h2 class="section-title">Technical Features</h2>
+            <p class="section-subtitle">Understanding advanced capabilities</p>
+            
+            <div class="cards-grid two-col">
+                <div class="card edu-card">
+                    <div class="card-header">
+                        <h3 class="card-title">UPS Capability & Switching Times</h3>
+                        <p class="card-subtitle">Can your power station act as a UPS?</p>
+                    </div>
+                    <div class="ups-grid">
+                        <div class="ups-item excellent">
+                            <h4>True UPS</h4>
+                            <p>&lt;20ms switching</p>
+                            <small>Zero interruption</small>
+                        </div>
+                        <div class="ups-item good">
+                            <h4>Fast Switch</h4>
+                            <p>20-50ms</p>
+                            <small>Minor blip possible</small>
+                        </div>
+                        <div class="ups-item basic">
+                            <h4>Standard</h4>
+                            <p>50ms+</p>
+                            <small>Brief power loss</small>
+                        </div>
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; color: #7f8c8d;">
+                        <strong>Note:</strong> One AC cycle = 20ms (50Hz UK mains). True UPS switches within one cycle.
+                    </p>
+                </div>
+                
+                <div class="card edu-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Charging Speed Comparison</h3>
+                        <p class="card-subtitle">How fast can you recharge?</p>
+                    </div>
+                    <div class="ups-grid">
+                        <div class="ups-item excellent">
+                            <h4>Ultra-Fast</h4>
+                            <p>&lt;1 hour</p>
+                            <small>0-80% charge</small>
+                        </div>
+                        <div class="ups-item good">
+                            <h4>Fast</h4>
+                            <p>1-3 hours</p>
+                            <small>Full charge</small>
+                        </div>
+                        <div class="ups-item basic">
+                            <h4>Standard</h4>
+                            <p>3+ hours</p>
+                            <small>Full charge</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Filters -->
+        <div class="filter-bar">
+            <h3 style="margin-bottom: 1rem; color: #2c3e50;">Advanced Filters</h3>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label>Power Output</label>
+                    <select id="power-filter" onchange="applyFilters()">
+                        <option>All power levels</option>
+                        <option>&lt;500W</option>
+                        <option>500-1000W</option>
+                        <option>1000-2000W</option>
+                        <option>2000W+</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Battery Chemistry</label>
+                    <select id="chemistry-filter" onchange="applyFilters()">
+                        <option>All chemistry types</option>
+                        <option>LiFePO4</option>
+                        <option>Li-ion NMC</option>
+                        <option>Lead Acid</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Charging Speed</label>
+                    <select id="charging-filter" onchange="applyFilters()">
+                        <option>All charging speeds</option>
+                        <option>&lt;2 hours</option>
+                        <option>2-4 hours</option>
+                        <option>4+ hours</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Solar Input</label>
+                    <select id="solar-filter" onchange="applyFilters()">
+                        <option>All solar capabilities</option>
+                        <option>&lt;200W</option>
+                        <option>200-400W</option>
+                        <option>400W+</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>UPS Function</label>
+                    <select id="ups-filter" onchange="applyFilters()">
+                        <option>All UPS capabilities</option>
+                        <option>True UPS (&lt;20ms)</option>
+                        <option>Fast switch (20-50ms)</option>
+                        <option>Standard (50ms+)</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Brand</label>
+                    <select id="brand-filter" onchange="applyFilters()">
+                        <option>All brands</option>
+                        <option>Jackery</option>
+                        <option>EcoFlow</option>
+                        <option>Anker SOLIX</option>
+                        <option>Bluetti</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Latest Deals Ticker -->
+        <div class="deals-ticker">
+            <div class="ticker-content">
+                🔥 Jackery Explorer 100 Plus: £99 (Best Price!) • ⚡ Anker SOLIX F2000: £1699 (In Stock) • 🆕 New: Explorer 3000 v2 now available • 💰 Limited time deals on all Jackery models
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="section">
+            <h2 class="section-title">All Power Stations</h2>
+            <div class="products-grid" id="products-container">
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <div class="product-card" data-product="jackery-explorer-100-plus" 
+                     data-brand="jackery" 
+                     data-chemistry="LiFePO4"
+                     data-capacity="99">
+                    <h3 class="product-name">Jackery Explorer 100 Plus</h3>
+                    <div class="product-specs">
+                        <strong>99Wh</strong> • 
+                        LiFePO4 • 
+                        0.96kg
+                    </div>
+                    
+                    <div class="price-comparison">
+                        
+                        <div class="price-row">
+                            <span class="retailer">Jackery Uk</span>
+                            
+                                <span class="price">£99.00</span>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    <a href="products/jackery-explorer-100-plus.html" class="view-details">View Details & Specs</a>
+                </div>
+                
+                
+                
+                
+                
+                
+                
+                <div class="product-card" data-product="jackery-explorer-2000-plus" 
+                     data-brand="jackery" 
+                     data-chemistry="LiFePO4"
+                     data-capacity="2042">
+                    <h3 class="product-name">Jackery Explorer 2000 Plus</h3>
+                    <div class="product-specs">
+                        <strong>2042Wh</strong> • 
+                        LiFePO4 • 
+                        27.9kg
+                    </div>
+                    
+                    <div class="price-comparison">
+                        
+                        <div class="price-row">
+                            <span class="retailer">Jackery Uk</span>
+                            
+                                <span class="price">£1399.00</span>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    <a href="products/jackery-explorer-2000-plus.html" class="view-details">View Details & Specs</a>
+                </div>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <div class="product-card" data-product="jackery-explorer-3000-v2" 
+                     data-brand="jackery" 
+                     data-chemistry="LiFePO4"
+                     data-capacity="3072">
+                    <h3 class="product-name">Jackery Explorer 3000 v2</h3>
+                    <div class="product-specs">
+                        <strong>3072Wh</strong> • 
+                        LiFePO4 • 
+                        29kg
+                    </div>
+                    
+                    <div class="price-comparison">
+                        
+                        <div class="price-row">
+                            <span class="retailer">Jackery Uk</span>
+                            
+                                <span class="price">£1999.00</span>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    <a href="products/jackery-explorer-3000-v2.html" class="view-details">View Details & Specs</a>
+                </div>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <div class="product-card" data-product="anker-solix-f2000" 
+                     data-brand="anker" 
+                     data-chemistry="LiFePO4"
+                     data-capacity="2048">
+                    <h3 class="product-name">Anker SOLIX F2000</h3>
+                    <div class="product-specs">
+                        <strong>2048Wh</strong> • 
+                        LiFePO4 • 
+                        22.8kg
+                    </div>
+                    
+                    <div class="price-comparison">
+                        
+                        <div class="price-row">
+                            <span class="retailer">Anker Uk</span>
+                            
+                                <span class="price">£1699.00</span>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    <a href="products/anker-solix-f2000.html" class="view-details">View Details & Specs</a>
+                </div>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <div class="product-card" data-product="jackery-explorer-300-plus" 
+                     data-brand="jackery" 
+                     data-chemistry="LiFePO4"
+                     data-capacity="288">
+                    <h3 class="product-name">Jackery Explorer 300 Plus</h3>
+                    <div class="product-specs">
+                        <strong>288Wh</strong> • 
+                        LiFePO4 • 
+                        3.75kg
+                    </div>
+                    
+                    <div class="price-comparison">
+                        
+                        <div class="price-row">
+                            <span class="retailer">Jackery Uk</span>
+                            
+                                <span class="price">£229.00</span>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    <a href="products/jackery-explorer-300-plus.html" class="view-details">View Details & Specs</a>
+                </div>
+                
+                
+                
+                
+                <div class="product-card" data-product="anker-solix-f3800" 
+                     data-brand="anker" 
+                     data-chemistry="LiFePO4"
+                     data-capacity="3840">
+                    <h3 class="product-name">Anker SOLIX F3800</h3>
+                    <div class="product-specs">
+                        <strong>3840Wh</strong> • 
+                        LiFePO4 • 
+                        60kg
+                    </div>
+                    
+                    <div class="price-comparison">
+                        
+                        <div class="price-row">
+                            <span class="retailer">Anker Uk</span>
+                            
+                                <span class="price">£3699.00</span>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    <a href="products/anker-solix-f3800.html" class="view-details">View Details & Specs</a>
+                </div>
+                
+                
+                
+                
+                <div class="product-card" data-product="jackery-explorer-1000-plus" 
+                     data-brand="jackery" 
+                     data-chemistry="LiFePO4"
+                     data-capacity="1264">
+                    <h3 class="product-name">Jackery Explorer 1000 Plus</h3>
+                    <div class="product-specs">
+                        <strong>1264Wh</strong> • 
+                        LiFePO4 • 
+                        14.5kg
+                    </div>
+                    
+                    <div class="price-comparison">
+                        
+                        <div class="price-row">
+                            <span class="retailer">Jackery Uk</span>
+                            
+                                <span class="price">£799.00</span>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    <a href="products/jackery-explorer-1000-plus.html" class="view-details">View Details & Specs</a>
+                </div>
+                
+                
+                
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function findRecommendations() {
+            const usage = document.getElementById('usage').value;
+            const duration = document.getElementById('duration').value;
+            const budget = document.getElementById('budget').value;
+            
+            // Simple recommendation logic - would be more sophisticated in production
+            let recommendations = [];
+            
+            if (budget === 'Under £200' && usage === 'Phones & tablets') {
+                recommendations.push('Jackery Explorer 100 Plus - Perfect for phone charging!');
+            } else if (budget === '£200-500' && usage === 'Laptops & small devices') {
+                recommendations.push('Jackery Explorer 300 Plus - Great for weekend trips!');
+            } else if (budget === '£500-1000' && usage === 'Fridge & essential appliances') {
+                recommendations.push('Jackery Explorer 1000 Plus - Ideal for home backup!');
+            } else if (budget === '£1000+' && usage === 'Whole home backup') {
+                recommendations.push('Anker SOLIX F2000 or F3800 - Complete home solutions!');
+            } else {
+                recommendations.push('Check our capacity categories below to find your perfect match!');
+            }
+            
+            alert(`Based on your needs (${usage}, ${duration}, ${budget}):\n\n${recommendations.join('\n')}`);
+        }
+        
+        function filterByCapacity(range) {
+            const products = document.querySelectorAll('.product-card');
+            
+            products.forEach(product => {
+                const capacity = parseInt(product.dataset.capacity);
+                let show = false;
+                
+                switch(range) {
+                    case '100-250':
+                        show = capacity >= 100 && capacity <= 250;
+                        break;
+                    case '251-500':
+                        show = capacity >= 251 && capacity <= 500;
+                        break;
+                    case '501-1000':
+                        show = capacity >= 501 && capacity <= 1000;
+                        break;
+                    case '1001-2100':
+                        show = capacity >= 1001 && capacity <= 2100;
+                        break;
+                    case '2100+':
+                        show = capacity > 2100;
+                        break;
+                }
+                
+                product.style.display = show ? 'block' : 'none';
+            });
+            
+            // Scroll to products
+            document.getElementById('products-container').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function applyFilters() {
+            const powerFilter = document.getElementById('power-filter').value;
+            const chemistryFilter = document.getElementById('chemistry-filter').value;
+            const brandFilter = document.getElementById('brand-filter').value;
+            
+            const products = document.querySelectorAll('.product-card');
+            
+            products.forEach(product => {
+                let show = true;
+                
+                // Apply brand filter
+                if (brandFilter !== 'All brands') {
+                    const productBrand = product.dataset.brand;
+                    if (!productBrand.includes(brandFilter.toLowerCase())) {
+                        show = false;
+                    }
+                }
+                
+                // Apply chemistry filter
+                if (chemistryFilter !== 'All chemistry types') {
+                    const productChemistry = product.dataset.chemistry;
+                    if (productChemistry !== chemistryFilter) {
+                        show = false;
+                    }
+                }
+                
+                product.style.display = show ? 'block' : 'none';
+            });
+        }
+        
+        // Reset filters function
+        function resetFilters() {
+            document.querySelectorAll('select').forEach(select => {
+                select.selectedIndex = 0;
+            });
+            applyFilters();
+        }
+    </script>
+</body>
+</html>

@@ -18,6 +18,7 @@ from logging_config import setup_logging
 from scrapers.ecoflow import EcoFlowScraper
 from scrapers.jackery import JackeryScraper  
 from scrapers.anker import AnkerScraper
+from scrapers.currys import CurrysScraper
 
 # Import headless scrapers with fallback
 try:
@@ -52,7 +53,8 @@ def scrape_all_retailers():
     # Initialize scrapers - mix of standard and headless
     scrapers = {
         'jackery_uk': JackeryScraper(),
-        'anker_uk': AnkerScraper()
+        'anker_uk': AnkerScraper(),
+        'currys': CurrysScraper()
     }
     
     # Add headless scrapers if available (for JS-heavy sites)

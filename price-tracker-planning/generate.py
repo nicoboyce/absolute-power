@@ -181,9 +181,56 @@ def generate_site():
     
     logger.info("Generated homepage")
     
+    pages_generated = 1  # Homepage
+    
+    # Generate test page with modern design
+    try:
+        test_template = env.get_template('test.html')
+        
+        # Find best deal for hero section
+        hero_deal = None
+        best_value = 0
+        for product in products:
+            product_prices = prices.get(product['id'], [])
+            if product_prices:
+                # Calculate value per Wh for best deal detection
+                capacity_wh = int(product['specs']['capacity'].replace('Wh', '').replace(',', ''))
+                lowest_price = min([p['price'] for p in product_prices if p['in_stock']], default=None)
+                if lowest_price and capacity_wh > 0:
+                    value_per_wh = capacity_wh / lowest_price
+                    if value_per_wh > best_value:
+                        best_value = value_per_wh
+                        # Simulate savings for demo
+                        original_price = lowest_price * 1.5  # Mock original price
+                        hero_deal = {
+                            'id': product['id'],
+                            'name': product['name'],
+                            'current_price': lowest_price,
+                            'original_price': original_price,
+                            'savings': original_price - lowest_price,
+                            'discount_percent': int(((original_price - lowest_price) / original_price) * 100)
+                        }
+        
+        test_html = test_template.render(
+            products=products,
+            prices=prices,
+            hero_deal=hero_deal,
+            site_name=SITE_NAME,
+            site_url=SITE_URL,
+            generated_at=datetime.now()
+        )
+        
+        with open(STATIC_DIR / "test.html", 'w') as f:
+            f.write(test_html)
+        
+        logger.info("Generated test page")
+        pages_generated += 1
+        
+    except Exception as e:
+        logger.error(f"Failed to generate test page: {e}")
+    
     # Generate individual product pages
     product_template = env.get_template('product.html')
-    pages_generated = 1  # Homepage
     
     for product in products:
         product_id = product['id']
