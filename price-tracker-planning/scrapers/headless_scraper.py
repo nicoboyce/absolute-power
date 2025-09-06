@@ -1,73 +1,69 @@
 """
 Headless browser scraper for JavaScript-heavy sites
-Uses Playwright for reliable scraping of dynamic content
+Uses Selenium for reliable scraping of dynamic content
 """
 
-import asyncio
 import logging
-from playwright.async_api import async_playwright
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 import time
 import random
 from scrapers.base import BaseScraper, clean_price_string
 
 class HeadlessScraper(BaseScraper):
-    """Base class for headless browser scraping using Playwright"""
+    """Base class for headless browser scraping using Selenium"""
     
     def __init__(self, retailer_name, base_url):
         super().__init__(retailer_name, base_url)
-        self.browser = None
-        self.context = None
-        self.page = None
-        self.playwright = None
+        self.driver = None
         
-    async def init_browser(self):
-        """Initialize Playwright browser"""
-        self.playwright = await async_playwright().start()
+    def init_browser(self):
+        """Initialize Selenium browser"""
+        options = Options()
+        options.add_argument('--headless=new')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--disable-blink-features=AutomationControlled')
+        options.add_argument('--disable-web-security')
+        options.add_argument('--disable-extensions')
+        options.add_argument('--disable-gpu')
+        options.add_argument('--disable-software-rasterizer')
+        options.add_argument('--window-size=1920,1080')
+        options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
         
-        # Launch browser with stealth settings
-        self.browser = await self.playwright.chromium.launch(
-            headless=True,
-            args=[
-                '--no-sandbox',
-                '--disable-dev-shm-usage',
-                '--disable-blink-features=AutomationControlled',
-                '--disable-web-security',
-                '--disable-extensions',
-            ]
-        )
+        # ARM-specific options
+        options.add_argument('--disable-features=VizDisplayCompositor')
         
-        # Create context with realistic settings
-        self.context = await self.browser.new_context(
-            viewport={'width': 1920, 'height': 1080},
-            user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            java_script_enabled=True,
-            ignore_https_errors=True
-        )
+        # Use system chromium-driver
+        service = Service('/usr/bin/chromedriver')
         
-        # Set realistic headers
-        await self.context.set_extra_http_headers({
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-            'Accept-Language': 'en-GB,en;q=0.5',
-            'Accept-Encoding': 'gzip, deflate',
-            'Connection': 'keep-alive',
-            'Upgrade-Insecure-Requests': '1',
-        })
+        try:
+            self.logger.info("Initializing Chrome driver...")
+            self.driver = webdriver.Chrome(service=service, options=options)
+            self.driver.set_page_load_timeout(30)
+            self.driver.implicitly_wait(10)
+            self.logger.info("Browser initialized successfully")
+        except Exception as e:
+            self.logger.error(f"Failed to initialize browser: {e}")
+            raise
         
-        self.page = await self.context.new_page()
-        
-    async def close_browser(self):
+    def close_browser(self):
         """Clean up browser resources"""
-        if self.page:
-            await self.page.close()
-        if self.context:
-            await self.context.close()
-        if self.browser:
-            await self.browser.close()
-        if self.playwright:
-            await self.playwright.stop()
+        if self.driver:
+            try:
+                self.driver.quit()
+                self.logger.info("Browser closed")
+            except Exception as e:
+                self.logger.error(f"Error closing browser: {e}")
+            finally:
+                self.driver = None
             
-    async def get_page_content(self, url, wait_for_selector=None, wait_time=3):
+    def get_page_content(self, url, wait_for_selector=None, wait_time=3):
         """
         Fetch page content with JavaScript rendering
         
@@ -78,27 +74,24 @@ class HeadlessScraper(BaseScraper):
         """
         try:
             # Random delay before request
-            await asyncio.sleep(random.uniform(1, 3))
+            time.sleep(random.uniform(1, 3))
             
             # Navigate to page
-            response = await self.page.goto(url, wait_until='networkidle', timeout=30000)
+            self.driver.get(url)
             
-            if response.status != 200:
-                self.logger.error(f"HTTP {response.status} for {url}")
-                return None
-                
             # Wait for specific content if specified
             if wait_for_selector:
                 try:
-                    await self.page.wait_for_selector(wait_for_selector, timeout=10000)
-                except:
-                    self.logger.warning(f"Selector {wait_for_selector} not found on {url}")
+                    wait = WebDriverWait(self.driver, 10)
+                    wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, wait_for_selector)))
+                except Exception as e:
+                    self.logger.warning(f"Selector {wait_for_selector} not found on {url}: {e}")
             else:
                 # Generic wait for page stability
-                await asyncio.sleep(wait_time)
+                time.sleep(wait_time)
                 
             # Get page content
-            content = await self.page.content()
+            content = self.driver.page_source
             self.logger.info(f"Successfully fetched: {url}")
             
             return BeautifulSoup(content, 'html.parser')
@@ -107,12 +100,12 @@ class HeadlessScraper(BaseScraper):
             self.logger.error(f"Failed to fetch {url}: {e}")
             return None
 
-    async def scrape_product_async(self, product_id, url, price_selector=None, stock_selector=None):
-        """Async version of scrape_product for headless browser"""
-        if not self.browser:
-            await self.init_browser()
+    def scrape_product(self, product_id, url, price_selector=None, stock_selector=None):
+        """Scrape product using headless browser"""
+        if not self.driver:
+            self.init_browser()
             
-        soup = await self.get_page_content(url)
+        soup = self.get_page_content(url, wait_for_selector=price_selector)
         if not soup:
             self.log_scrape_result(product_id, 'error', 'Failed to fetch page')
             return None
@@ -165,10 +158,6 @@ class HeadlessScraper(BaseScraper):
             return False
         else:
             return True  # Default to in stock if unclear
-            
-    def scrape_product(self, product_id, url):
-        """Sync wrapper for async scrape method"""
-        return asyncio.run(self.scrape_product_async(product_id, url))
 
 class EcoFlowHeadlessScraper(HeadlessScraper):
     """EcoFlow scraper using headless browser"""
@@ -251,33 +240,29 @@ class BluettiHeadlessScraper(HeadlessScraper):
         """Extract availability from Bluetti product page"""
         return self.parse_stock_status(soup.get_text())
 
-# Usage example for running all headless scrapers
-async def run_headless_scrapers():
-    """Run all headless scrapers concurrently"""
+# Usage example for running headless scrapers
+def run_headless_scrapers():
+    """Run headless scrapers sequentially"""
     scrapers = [
         EcoFlowHeadlessScraper(),
         BluettiHeadlessScraper()
     ]
     
-    # Initialize all browsers
+    results = []
     for scraper in scrapers:
-        await scraper.init_browser()
-        
-    try:
-        # Run scraping tasks
-        tasks = []
-        for scraper in scrapers:
+        try:
+            scraper.init_browser()
             # Add your product URLs here
-            tasks.append(scraper.scrape_product_async('test-product', scraper.base_url))
-            
-        results = await asyncio.gather(*tasks, return_exceptions=True)
-        
-        return results
-        
-    finally:
-        # Clean up
-        for scraper in scrapers:
-            await scraper.close_browser()
+            result = scraper.scrape_product('test-product', scraper.base_url)
+            results.append(result)
+        except Exception as e:
+            logging.error(f"Error with {scraper.retailer_name}: {e}")
+            results.append(None)
+        finally:
+            scraper.close_browser()
+    
+    return results
 
 if __name__ == '__main__':
-    asyncio.run(run_headless_scrapers())
+    logging.basicConfig(level=logging.INFO)
+    run_headless_scrapers()

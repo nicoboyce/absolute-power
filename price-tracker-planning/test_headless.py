@@ -4,11 +4,10 @@ Test script for headless browser functionality
 Tests both standard and headless scrapers
 """
 
-import asyncio
 import logging
 from scrapers.headless_scraper import EcoFlowHeadlessScraper
 
-async def test_headless_scraper():
+def test_headless_scraper():
     """Test the headless scraper functionality"""
     logging.basicConfig(level=logging.INFO)
     
@@ -16,10 +15,10 @@ async def test_headless_scraper():
     
     try:
         # Initialize browser
-        await scraper.init_browser()
+        scraper.init_browser()
         
         # Test fetching EcoFlow homepage
-        soup = await scraper.get_page_content('https://uk.ecoflow.com/')
+        soup = scraper.get_page_content('https://uk.ecoflow.com/')
         
         if soup:
             print("✅ Successfully loaded EcoFlow homepage with headless browser")
@@ -39,9 +38,9 @@ async def test_headless_scraper():
     except Exception as e:
         print(f"❌ Error: {e}")
     finally:
-        await scraper.close_browser()
+        scraper.close_browser()
         print("Browser closed")
 
 if __name__ == '__main__':
     print("Testing headless browser scraper...")
-    asyncio.run(test_headless_scraper())
+    test_headless_scraper()

@@ -22,10 +22,13 @@ from scrapers.anker import AnkerScraper
 # Import headless scrapers with fallback
 try:
     from scrapers.headless_scraper import EcoFlowHeadlessScraper, BluettiHeadlessScraper
+    # Note: On Raspberry Pi, Selenium/Chromium may have issues in headless mode
+    # Falling back to standard scrapers if needed
     HEADLESS_AVAILABLE = True
-except ImportError:
+    logging.info("Headless scrapers available (may not work on ARM)")
+except ImportError as e:
     HEADLESS_AVAILABLE = False
-    logging.warning("Playwright not available - headless scrapers disabled")
+    logging.warning(f"Headless scrapers disabled: {e}")
 
 def load_products():
     """Load all product JSON files"""
