@@ -1,0 +1,34 @@
+{
+  "id": "ecoflow-delta-pro-3",
+  "name": "EcoFlow DELTA Pro 3",
+  "brand": "EcoFlow",
+  "model": "DELTA Pro 3",
+  "category": "power-stations",
+  "specs": {
+    "capacity": "4096Wh",
+    "chemistry": "LiFePO4",
+    "weight": "51.5kg",
+    "dimensions": "68.3 × 28.5 × 41.5cm",
+    "ac_output": {
+      "outlets": "6",
+      "continuous": "4000W",
+      "surge": "8000W"
+    },
+    "performance": {
+      "cycle_life": "4000+ cycles to 80%",
+      "charging_times": {
+        "ac": "2.7 hours",
+        "solar": "1600W solar input"
+      }
+    },
+    "expandable": "Up to 12kWh with additional batteries",
+    "ups": "Less than 10ms switchover",
+    "dual_voltage": "120V/240V output",
+    "warranty": "5 years"
+  },
+  "retailers": {
+    "ecoflow_uk": {
+      "url": "https://uk.ecoflow.com/products/delta-pro-3-portable-power-station"
+    }
+  }
+}

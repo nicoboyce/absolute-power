@@ -1,0 +1,31 @@
+{
+  "id": "bluetti-eb3a",
+  "name": "Bluetti EB3A",
+  "brand": "Bluetti",
+  "model": "EB3A",
+  "category": "power-stations",
+  "specs": {
+    "capacity": "268Wh",
+    "chemistry": "LiFePO4",
+    "weight": "4.6kg",
+    "dimensions": "25.5 × 18.0 × 18.3cm",
+    "ac_output": {
+      "outlets": "2",
+      "continuous": "600W",
+      "surge": "1200W"
+    },
+    "performance": {
+      "cycle_life": "2500+ cycles to 80%",
+      "charging_times": {
+        "ac": "30 minutes (0-80%)",
+        "solar": "200W solar input"
+      }
+    },
+    "warranty": "2 years"
+  },
+  "retailers": {
+    "bluetti_uk": {
+      "url": "https://bluettipower.co.uk/products/bluetti-eb3a-portable-power-station"
+    }
+  }
+}

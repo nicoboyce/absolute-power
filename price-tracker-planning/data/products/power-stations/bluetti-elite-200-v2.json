@@ -1,0 +1,31 @@
+{
+  "id": "bluetti-elite-200-v2",
+  "name": "Bluetti Elite 200 V2",
+  "brand": "Bluetti",
+  "model": "Elite 200 V2",
+  "category": "power-stations",
+  "specs": {
+    "capacity": "2073.6Wh",
+    "chemistry": "LiFePO4",
+    "weight": "30kg",
+    "dimensions": "42.5 × 28.5 × 32.0cm",
+    "ac_output": {
+      "outlets": "6",
+      "continuous": "2600W",
+      "surge": "5200W"
+    },
+    "performance": {
+      "cycle_life": "3000+ cycles to 80%",
+      "charging_times": {
+        "ac": "1.5 hours",
+        "solar": "1200W solar input"
+      }
+    },
+    "warranty": "5 years"
+  },
+  "retailers": {
+    "bluetti_uk": {
+      "url": "https://bluettipower.co.uk/products/elite-200-v2-portable-power-station"
+    }
+  }
+}

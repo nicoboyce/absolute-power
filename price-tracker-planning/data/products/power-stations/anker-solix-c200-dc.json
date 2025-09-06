@@ -1,0 +1,36 @@
+{
+  "id": "anker-solix-c200-dc",
+  "name": "Anker SOLIX C200 DC",
+  "brand": "Anker",
+  "model": "SOLIX C200 DC",
+  "category": "power-stations",
+  "specs": {
+    "capacity": "192Wh",
+    "chemistry": "LiFePO4",
+    "weight": "2.9kg",
+    "dimensions": "21.6 × 21.1 × 11.4cm",
+    "ac_output": {
+      "outlets": "0",
+      "continuous": "0W",
+      "surge": "0W"
+    },
+    "dc_output": {
+      "power": "200W",
+      "usb_c": "3 ports, 100W max",
+      "usb_a": "2 ports"
+    },
+    "performance": {
+      "cycle_life": "3000+ cycles to 80%",
+      "charging_times": {
+        "ac": "1.8 hours",
+        "solar": "100W solar input"
+      }
+    },
+    "warranty": "5 years"
+  },
+  "retailers": {
+    "anker_uk": {
+      "url": "https://www.ankersolix.com/uk/products/c200-dc-portable-power-station"
+    }
+  }
+}

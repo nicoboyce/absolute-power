@@ -53,6 +53,10 @@
     "amazon_uk": {
       "url": "https://www.amazon.co.uk/dp/B0CJVH8F8K",
       "affiliate_url": ""
+    },
+    "currys": {
+      "url": "https://www.currys.co.uk/products/jackery-explorer-1000-v2-portable-power-station",
+      "affiliate_url": ""
     }
   },
   "images": {

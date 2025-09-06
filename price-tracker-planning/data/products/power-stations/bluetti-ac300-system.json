@@ -1,0 +1,33 @@
+{
+  "id": "bluetti-ac300-system",
+  "name": "Bluetti AC300 System",
+  "brand": "Bluetti",
+  "model": "AC300 + B300K",
+  "category": "power-stations",
+  "specs": {
+    "capacity": "2764.8Wh",
+    "chemistry": "LiFePO4",
+    "weight": "45kg",
+    "dimensions": "52.0 × 32.0 × 35.5cm",
+    "ac_output": {
+      "outlets": "6",
+      "continuous": "3000W",
+      "surge": "6000W"
+    },
+    "performance": {
+      "cycle_life": "3000+ cycles to 80%",
+      "charging_times": {
+        "ac": "1.8 hours",
+        "solar": "2400W solar input"
+      }
+    },
+    "expandable": "Up to 22.1kWh with 4×B300K batteries",
+    "ups": "24/7 home backup capability",
+    "warranty": "4 years"
+  },
+  "retailers": {
+    "bluetti_uk": {
+      "url": "https://bluettipower.co.uk/products/ac300-b300k-home-battery-backup"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "id": "anker-solix-f2000",
+  "name": "Anker SOLIX F2000",
+  "brand": "Anker",
+  "model": "SOLIX F2000",
+  "category": "power-stations",
+  "specs": {
+    "capacity": "2048Wh",
+    "chemistry": "LiFePO4",
+    "weight": "22.8kg",
+    "dimensions": "40.6 × 28.0 × 31.5cm",
+    "ac_output": {
+      "outlets": "6",
+      "continuous": "2300W",
+      "surge": "4600W"
+    },
+    "performance": {
+      "cycle_life": "3000+ cycles to 80%",
+      "charging_times": {
+        "ac": "1.5 hours",
+        "solar": "1000W solar input"
+      }
+    },
+    "expandable": "Up to 4096Wh with expansion battery",
+    "warranty": "5 years"
+  },
+  "retailers": {
+    "anker_uk": {
+      "url": "https://www.ankersolix.com/uk/products/f2000-portable-power-station"
+    }
+  }
+}

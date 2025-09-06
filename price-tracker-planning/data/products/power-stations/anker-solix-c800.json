@@ -1,0 +1,32 @@
+{
+  "id": "anker-solix-c800",
+  "name": "Anker SOLIX C800",
+  "brand": "Anker",
+  "model": "SOLIX C800",
+  "category": "power-stations",
+  "specs": {
+    "capacity": "768Wh",
+    "chemistry": "LiFePO4",
+    "weight": "10.5kg",
+    "dimensions": "31.6 × 18.5 × 25.2cm",
+    "ac_output": {
+      "outlets": "3",
+      "continuous": "1200W",
+      "surge": "1800W"
+    },
+    "performance": {
+      "cycle_life": "3000+ cycles to 80%",
+      "charging_times": {
+        "ac": "58 minutes",
+        "solar": "200W solar input"
+      }
+    },
+    "connectivity": "Wi-Fi, Bluetooth",
+    "warranty": "5 years"
+  },
+  "retailers": {
+    "anker_uk": {
+      "url": "https://www.ankersolix.com/uk/products/c800-portable-power-station"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "ecoflow-river-3-plus",
+  "name": "EcoFlow RIVER 3 Plus",
+  "brand": "EcoFlow",
+  "model": "RIVER 3 Plus",
+  "category": "power-stations",
+  "specs": {
+    "capacity": "286Wh",
+    "chemistry": "LiFePO4",
+    "weight": "3.5kg",
+    "dimensions": "24.5 × 21.5 × 14.5cm",
+    "ac_output": {
+      "outlets": "3",
+      "continuous": "600W",
+      "surge": "1200W"
+    },
+    "performance": {
+      "cycle_life": "4000+ cycles to 80%",
+      "charging_times": {
+        "ac": "1 hour",
+        "solar": "110W solar input"
+      }
+    },
+    "expandable": "Up to 858Wh with additional battery",
+    "ups": "Less than 10ms switchover",
+    "warranty": "5 years"
+  },
+  "retailers": {
+    "ecoflow_uk": {
+      "url": "https://uk.ecoflow.com/products/river-3-plus-portable-power-station"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "bluetti-ac70",
+  "name": "Bluetti AC70",
+  "brand": "Bluetti",
+  "model": "AC70",
+  "category": "power-stations",
+  "specs": {
+    "capacity": "768Wh",
+    "chemistry": "LiFePO4",
+    "weight": "10.2kg",
+    "dimensions": "31.2 × 20.8 × 22.5cm",
+    "ac_output": {
+      "outlets": "2",
+      "continuous": "1000W",
+      "surge": "2000W"
+    },
+    "performance": {
+      "cycle_life": "3000+ cycles to 80%",
+      "charging_times": {
+        "ac": "45 minutes (0-80%)",
+        "solar": "500W solar input"
+      }
+    },
+    "warranty": "5 years"
+  },
+  "retailers": {
+    "bluetti_uk": {
+      "url": "https://bluettipower.co.uk/products/bluetti-ac70-portable-power-station"
+    }
+  }
+}

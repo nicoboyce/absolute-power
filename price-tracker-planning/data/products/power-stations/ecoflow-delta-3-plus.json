@@ -1,0 +1,33 @@
+{
+  "id": "ecoflow-delta-3-plus",
+  "name": "EcoFlow DELTA 3 Plus",
+  "brand": "EcoFlow",
+  "model": "DELTA 3 Plus",
+  "category": "power-stations",
+  "specs": {
+    "capacity": "1024Wh",
+    "chemistry": "LiFePO4",
+    "weight": "12.2kg",
+    "dimensions": "35.5 × 24.0 × 26.5cm",
+    "ac_output": {
+      "outlets": "4",
+      "continuous": "1800W",
+      "surge": "2700W"
+    },
+    "performance": {
+      "cycle_life": "4000+ cycles to 80%",
+      "charging_times": {
+        "ac": "1 hour",
+        "solar": "500W dual MPPT"
+      }
+    },
+    "expandable": "Up to 5kWh with additional batteries",
+    "x_boost": "Up to 3600W with X-Boost",
+    "warranty": "5 years"
+  },
+  "retailers": {
+    "ecoflow_uk": {
+      "url": "https://uk.ecoflow.com/products/delta-3-plus-portable-power-station"
+    }
+  }
+}

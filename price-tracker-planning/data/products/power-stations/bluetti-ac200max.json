@@ -1,0 +1,32 @@
+{
+  "id": "bluetti-ac200max",
+  "name": "Bluetti AC200MAX",
+  "brand": "Bluetti",
+  "model": "AC200MAX",
+  "category": "power-stations",
+  "specs": {
+    "capacity": "2048Wh",
+    "chemistry": "LiFePO4",
+    "weight": "28.1kg",
+    "dimensions": "42.0 × 28.0 × 31.6cm",
+    "ac_output": {
+      "outlets": "5",
+      "continuous": "2200W",
+      "surge": "4800W"
+    },
+    "performance": {
+      "cycle_life": "3500+ cycles to 80%",
+      "charging_times": {
+        "ac": "2 hours",
+        "solar": "900W solar input"
+      }
+    },
+    "expandable": "Up to 8192Wh with 2×B300 batteries",
+    "warranty": "4 years"
+  },
+  "retailers": {
+    "bluetti_uk": {
+      "url": "https://bluettipower.co.uk/products/bluetti-ac200max"
+    }
+  }
+}

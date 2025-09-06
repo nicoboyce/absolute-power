@@ -1,0 +1,30 @@
+{
+  "id": "jackery-explorer-500-v2",
+  "name": "Jackery Explorer 500 v2",
+  "brand": "Jackery",
+  "model": "Explorer 500 v2",
+  "category": "power-stations",
+  "specs": {
+    "capacity": "512Wh",
+    "chemistry": "LiFePO4",
+    "weight": "6.2kg",
+    "dimensions": "29.9 × 19.1 × 19.1cm",
+    "ac_output": {
+      "outlets": "1",
+      "continuous": "800W",
+      "surge": "1600W"
+    },
+    "performance": {
+      "cycle_life": "4000+ cycles to 70%",
+      "charging_times": {
+        "ac": "1 hour"
+      }
+    },
+    "warranty": "5 years"
+  },
+  "retailers": {
+    "jackery_uk": {
+      "url": "https://uk.jackery.com/products/explorer-500-v2-portable-power-station"
+    }
+  }
+}

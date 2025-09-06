@@ -1,0 +1,33 @@
+{
+  "id": "ecoflow-delta-2-max",
+  "name": "EcoFlow DELTA 2 Max",
+  "brand": "EcoFlow",
+  "model": "DELTA 2 Max",
+  "category": "power-stations",
+  "specs": {
+    "capacity": "2048Wh",
+    "chemistry": "LiFePO4",
+    "weight": "23kg",
+    "dimensions": "49.7 × 24.2 × 30.5cm",
+    "ac_output": {
+      "outlets": "6",
+      "continuous": "2400W",
+      "surge": "4800W"
+    },
+    "performance": {
+      "cycle_life": "4000+ cycles to 80%",
+      "charging_times": {
+        "ac": "1 hour",
+        "solar": "1000W solar input"
+      }
+    },
+    "expandable": "Up to 6kWh with additional batteries",
+    "x_boost": "Up to 3100W with X-Boost",
+    "warranty": "5 years"
+  },
+  "retailers": {
+    "ecoflow_uk": {
+      "url": "https://uk.ecoflow.com/products/delta-2-max-portable-power-station"
+    }
+  }
+}

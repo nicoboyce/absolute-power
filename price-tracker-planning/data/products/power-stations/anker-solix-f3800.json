@@ -1,0 +1,32 @@
+{
+  "id": "anker-solix-f3800",
+  "name": "Anker SOLIX F3800",
+  "brand": "Anker",
+  "model": "SOLIX F3800",
+  "category": "power-stations",
+  "specs": {
+    "capacity": "3840Wh",
+    "chemistry": "LiFePO4",
+    "weight": "60kg",
+    "dimensions": "62.0 × 32.0 × 45.5cm",
+    "ac_output": {
+      "outlets": "5",
+      "continuous": "6000W",
+      "surge": "9000W"
+    },
+    "performance": {
+      "cycle_life": "3000+ cycles to 80%",
+      "charging_times": {
+        "ac": "2.5 hours",
+        "solar": "2400W solar input"
+      }
+    },
+    "expandable": "Up to 26.88kWh with expansion batteries",
+    "warranty": "5 years"
+  },
+  "retailers": {
+    "anker_uk": {
+      "url": "https://www.ankersolix.com/uk/products/f3800-portable-power-station"
+    }
+  }
+}

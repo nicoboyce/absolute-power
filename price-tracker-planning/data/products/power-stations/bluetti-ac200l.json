@@ -1,0 +1,31 @@
+{
+  "id": "bluetti-ac200l",
+  "name": "Bluetti AC200L",
+  "brand": "Bluetti",
+  "model": "AC200L",
+  "category": "power-stations",
+  "specs": {
+    "capacity": "2048Wh",
+    "chemistry": "LiFePO4",
+    "weight": "28.1kg",
+    "dimensions": "42.0 × 28.0 × 31.6cm",
+    "ac_output": {
+      "outlets": "4",
+      "continuous": "2400W",
+      "surge": "3600W"
+    },
+    "performance": {
+      "cycle_life": "3000+ cycles to 80%",
+      "charging_times": {
+        "ac": "1.2 hours",
+        "solar": "1200W solar input"
+      }
+    },
+    "warranty": "5 years"
+  },
+  "retailers": {
+    "bluetti_uk": {
+      "url": "https://bluettipower.co.uk/products/ac200l-power-station"
+    }
+  }
+}

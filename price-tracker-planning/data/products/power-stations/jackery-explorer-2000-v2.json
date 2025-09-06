@@ -1,0 +1,30 @@
+{
+  "id": "jackery-explorer-2000-v2",
+  "name": "Jackery Explorer 2000 v2",
+  "brand": "Jackery",
+  "model": "Explorer 2000 v2",
+  "category": "power-stations",
+  "specs": {
+    "capacity": "2042Wh",
+    "chemistry": "LiFePO4",
+    "weight": "19.5kg",
+    "dimensions": "38.4 × 26.9 × 30.7cm",
+    "ac_output": {
+      "outlets": "3",
+      "continuous": "3000W",
+      "surge": "6000W"
+    },
+    "performance": {
+      "cycle_life": "4000+ cycles to 70%",
+      "charging_times": {
+        "ac": "1 hour"
+      }
+    },
+    "warranty": "5 years"
+  },
+  "retailers": {
+    "jackery_uk": {
+      "url": "https://uk.jackery.com/products/explorer-2000-v2-portable-power-station"
+    }
+  }
+}

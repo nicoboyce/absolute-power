@@ -1,0 +1,31 @@
+{
+  "id": "anker-solix-c300",
+  "name": "Anker SOLIX C300",
+  "brand": "Anker",
+  "model": "SOLIX C300",
+  "category": "power-stations",
+  "specs": {
+    "capacity": "288Wh",
+    "chemistry": "LiFePO4",
+    "weight": "3.6kg",
+    "dimensions": "25.0 × 15.0 × 17.8cm",
+    "ac_output": {
+      "outlets": "1",
+      "continuous": "300W",
+      "surge": "600W"
+    },
+    "performance": {
+      "cycle_life": "3000+ cycles to 80%",
+      "charging_times": {
+        "ac": "2.5 hours",
+        "solar": "100W solar input"
+      }
+    },
+    "warranty": "5 years"
+  },
+  "retailers": {
+    "anker_uk": {
+      "url": "https://www.ankersolix.com/uk/products/c300-portable-power-station"
+    }
+  }
+}
