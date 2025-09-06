@@ -1,18 +1,46 @@
 # Complete Affiliate Programs Research - All Niches
 
-## Power Stations (Primary)
+## Power Stations (Primary - ACTIVE)
+
 ### EcoFlow UK
-- Commission: 5%, Cookie: 7 days, AOV: £1,000, Network: Awin
+- **Commission**: 5% 
+- **Network**: Awin
+- **Cookie**: 7 days
+- **AOV**: £1,000
+- **Notes**: Also available on Commission Factory, CueLinks
 
-### Jackery UK
-- Commission: 8% (direct), Cookie: 30 days, AOV: ~£1,300
-- Best option: Direct UK program
+### Jackery UK  
+- **Commission**: 8% (direct) / 6% (Webgains) / 5% (third-party)
+- **Cookie**: 30 days
+- **AOV**: ~£1,300
+- **Potential earnings**: £15-150+ per sale
+- **Networks**: Direct UK, Awin, Webgains
+- **Notes**: Highest commission rate found - PRIORITY APPLICATION
 
-### Bluetti UK  
-- Commission: 5-10%, Cookie: 15-45 days, Min: £100
+### Bluetti UK
+- **Commission**: 5% standard, up to 10%
+- **Cookie**: 15-45 days  
+- **Min payout**: £100
+- **Payment**: Within 30 days
+- **Notes**: Free program, competitive rates
 
 ### Goal Zero
-- Commission: 5%, Cookie: 14 days, Networks: FlexOffers/Partnerize
+- **Commission**: 5%
+- **Cookie**: 14 days
+- **Networks**: FlexOffers, Ascend by Partnerize
+- **Payment**: Monthly via Payoneer/bank/direct deposit
+- **Notes**: Global program, requires website/social presence
+
+### Anker UK
+- **Commission**: TBC (not found in search)
+- **Notes**: Need to research direct with Anker
+
+### Power Stations Summary
+**Best Commission**: Jackery UK (8% direct)
+**Best Cookie Duration**: Jackery (30 days) 
+**Best AOV**: EcoFlow (£1,000)
+**Most Flexible**: Bluetti (5-10% variable)
+**Revenue Potential**: £25-150 per sale, target 10 sales/month = £250-1500
 
 ---
 
