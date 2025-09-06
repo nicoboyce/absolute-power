@@ -91,20 +91,48 @@
 
 ## APPLICATION STRATEGY
 
+### ⚠️ CRITICAL RULE: ONE NETWORK PER BRAND
+**You can only be approved on ONE network per brand. Apply direct first for highest commissions!**
+
 ### Week 1: Direct Brand Programs (Highest Priority)
-1. **Jackery UK Direct** - Apply immediately (wait for response before networks)
+1. **Jackery UK Direct** - Apply immediately 
+   - ✅ **DO**: Apply direct first (8% commission)
+   - ❌ **DON'T**: Apply to Awin/Webgains yet
+   - ⏱️ **WAIT**: 1-2 weeks for response
+   - 💰 **Why**: £26 more per £1,300 sale vs networks
+
 2. **Bluetti UK Direct** - Apply immediately  
 3. **Anker SOLIX** - Research affiliate page, then apply
 
-### Week 2: Network Programs (Only if direct programs reject)
-1. **Join Awin** - Then apply to EcoFlow + Jackery (if direct rejected)
-2. **Join Webgains** - Backup for Jackery if Awin rejects
-3. **Join FlexOffers** - Then apply to Goal Zero
+### Week 2: Network Programs (ONLY if direct programs reject)
+1. **IF Jackery rejects direct**: Join Awin, then apply to Jackery on Awin (6%)
+2. **IF Awin rejects Jackery**: Try Webgains as backup (6%)  
+3. **Join Awin** - Apply to EcoFlow
+4. **Join FlexOffers** - Apply to Goal Zero
 
 ### Week 3: Retailer Programs
 1. **Amazon Associates** - Apply (easy backup)
 2. **Research Currys** - Find affiliate program
 3. **Research Argos** - Check Sainsbury's/Nectar program
+
+### 🎯 **JACKERY SPECIFIC INSTRUCTIONS**
+```
+Step 1: Apply Jackery Direct → Wait for response
+        ↓ (if APPROVED)
+        ✅ Done! 8% commission 
+        
+        ↓ (if REJECTED)  
+Step 2: Join Awin → Apply Jackery on Awin → Wait for response
+        ↓ (if APPROVED)
+        ✅ Done! 6% commission
+        
+        ↓ (if REJECTED)
+Step 3: Join Webgains → Apply Jackery on Webgains
+        ↓ (if APPROVED)
+        ✅ Done! 6% commission
+```
+
+**Remember**: Networks take a cut, that's why direct pays more (8% vs 6%)
 
 ---
 
@@ -136,8 +164,22 @@
 
 ## NOTES FOR COLLEAGUE
 
-1. **Start with Jackery** - 8% direct commission is exceptional
-2. **Awin membership** essential for EcoFlow and potentially others  
-3. **Document all application dates** for follow-up
-4. **Request media kits** from approved programs for content creation
-5. **Set up separate tracking** for each affiliate program
+### ⚠️ **MOST IMPORTANT RULE**
+**ONE NETWORK PER BRAND** - Never apply to multiple networks for the same brand simultaneously!
+
+### **Application Order for Every Brand:**
+1. **Try DIRECT program first** (highest commissions)
+2. **Wait for response** (1-2 weeks)  
+3. **If rejected, then try networks** (Awin → Webgains → Others)
+
+### **Why This Matters:**
+- **Direct programs pay more** (8% vs 6% for Jackery)
+- **Networks compete** - can't be on multiple networks for same brand
+- **Patience pays** - Direct rejection → network backup still works
+
+### **Action Items:**
+1. **Start with Jackery Direct** - 8% commission is exceptional
+2. **Document all application dates** for follow-up  
+3. **Request media kits** from approved programs for content creation
+4. **Set up separate tracking** for each affiliate program
+5. **Never rush to networks** - direct programs are worth waiting for
