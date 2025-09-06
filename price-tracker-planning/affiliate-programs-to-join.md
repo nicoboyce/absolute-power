@@ -8,8 +8,9 @@
 - **AOV**: ~£1,300
 - **Earnings**: £15-150+ per sale
 - **Application**: https://uk.jackery.com/pages/affiliate-program
-- **Status**: ❌ APPLY NOW
+- **Status**: ❌ APPLY FIRST
 - **Why**: Best commission rate found, excellent cookie duration
+- **Backup Networks**: If rejected, try Awin (6%) or Webgains (6%)
 
 ### 2. **Bluetti UK Direct** 
 - **Commission**: 5-10% (variable)
@@ -91,13 +92,14 @@
 ## APPLICATION STRATEGY
 
 ### Week 1: Direct Brand Programs (Highest Priority)
-1. **Jackery UK Direct** - Apply immediately
+1. **Jackery UK Direct** - Apply immediately (wait for response before networks)
 2. **Bluetti UK Direct** - Apply immediately  
 3. **Anker SOLIX** - Research affiliate page, then apply
 
-### Week 2: Network Programs
-1. **Join Awin** - Then apply to EcoFlow
-2. **Join FlexOffers** - Then apply to Goal Zero
+### Week 2: Network Programs (Only if direct programs reject)
+1. **Join Awin** - Then apply to EcoFlow + Jackery (if direct rejected)
+2. **Join Webgains** - Backup for Jackery if Awin rejects
+3. **Join FlexOffers** - Then apply to Goal Zero
 
 ### Week 3: Retailer Programs
 1. **Amazon Associates** - Apply (easy backup)
