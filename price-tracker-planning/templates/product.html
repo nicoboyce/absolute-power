@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} Price Comparison - {{ site_name }}</title>
+    <meta name="description" content="Compare {{ product.name }} prices across UK retailers. {{ product.specs.capacity }} {{ product.specs.chemistry }} power station with price tracking.">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        header { background: #2c3e50; color: white; padding: 1rem 0; }
+        header h1 { margin: 0; font-size: 1.5rem; }
+        header a { color: white; text-decoration: none; }
+        header a:hover { text-decoration: underline; }
+        
+        main { padding: 2rem 0; }
+        .product-header { margin-bottom: 2rem; }
+        .product-title { font-size: 2.5rem; margin-bottom: 0.5rem; color: #2c3e50; }
+        .product-subtitle { color: #666; font-size: 1.2rem; }
+        
+        .content-grid { display: grid; grid-template-columns: 1fr 400px; gap: 3rem; margin-top: 2rem; }
+        
+        .specs-section h3 { color: #2c3e50; margin-bottom: 1rem; border-bottom: 2px solid #3498db; padding-bottom: 0.5rem; }
+        .spec-group { margin-bottom: 2rem; }
+        .spec-group h4 { color: #34495e; margin-bottom: 0.75rem; }
+        .spec-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+        .spec-item { display: flex; justify-content: space-between; padding: 0.5rem; background: #f8f9fa; border-radius: 4px; }
+        .spec-label { font-weight: 500; }
+        .spec-value { color: #666; }
+        
+        .prices-section { background: #f8f9fa; padding: 2rem; border-radius: 8px; }
+        .prices-section h3 { color: #2c3e50; margin-bottom: 1.5rem; }
+        
+        .price-card { 
+            background: white; 
+            border: 2px solid #ddd; 
+            border-radius: 8px; 
+            padding: 1.5rem; 
+            margin-bottom: 1rem; 
+        }
+        .price-card.best-price { border-color: #27ae60; position: relative; }
+        .price-card.best-price::before { 
+            content: "Best Price"; 
+            position: absolute; 
+            top: -12px; 
+            left: 1rem; 
+            background: #27ae60; 
+            color: white; 
+            padding: 0.25rem 0.75rem; 
+            border-radius: 4px; 
+            font-size: 0.8rem; 
+            font-weight: 600; 
+        }
+        
+        .retailer-name { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .price-amount { font-size: 2rem; font-weight: 700; color: #27ae60; margin-bottom: 1rem; }
+        .out-of-stock-price { color: #e74c3c; }
+        
+        .buy-button { 
+            display: inline-block; 
+            background: #3498db; 
+            color: white; 
+            padding: 0.75rem 2rem; 
+            text-decoration: none; 
+            border-radius: 4px; 
+            font-weight: 600;
+            transition: background 0.2s;
+            position: relative;
+        }
+        .buy-button:hover { background: #2980b9; }
+        .buy-button.out-of-stock { background: #95a5a6; cursor: not-allowed; }
+        
+        .affiliate-badge { 
+            font-size: 0.7rem; 
+            background: #f39c12; 
+            color: white; 
+            padding: 0.2rem 0.4rem; 
+            border-radius: 3px; 
+            margin-left: 0.5rem; 
+        }
+        
+        .no-prices { text-align: center; color: #666; padding: 2rem; }
+        
+        .last-updated { color: #999; font-size: 0.9rem; margin-top: 1.5rem; text-align: center; }
+        
+        footer { 
+            background: #ecf0f1; 
+            padding: 2rem 0; 
+            margin-top: 3rem; 
+            text-align: center; 
+            color: #666; 
+            font-size: 0.9rem; 
+        }
+        
+        @media (max-width: 1024px) {
+            .content-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .spec-list { grid-template-columns: 1fr; }
+        }
+        
+        @media (max-width: 768px) {
+            .product-title { font-size: 2rem; }
+            .price-amount { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><a href="../">{{ site_name }}</a></h1>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="product-header">
+                <h1 class="product-title">{{ product.name }}</h1>
+                <p class="product-subtitle">
+                    {{ product.specs.capacity }} {{ product.specs.chemistry }} Power Station by {{ product.brand }}
+                </p>
+            </div>
+
+            <div class="content-grid">
+                <div class="specs-section">
+                    <h3>Technical Specifications</h3>
+                    
+                    <div class="spec-group">
+                        <h4>Basic Specifications</h4>
+                        <div class="spec-list">
+                            <div class="spec-item">
+                                <span class="spec-label">Capacity</span>
+                                <span class="spec-value">{{ product.specs.capacity }}</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Chemistry</span>
+                                <span class="spec-value">{{ product.specs.chemistry }}</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Weight</span>
+                                <span class="spec-value">{{ product.specs.weight }}</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Dimensions</span>
+                                <span class="spec-value">{{ product.specs.dimensions }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="spec-group">
+                        <h4>AC Output</h4>
+                        <div class="spec-list">
+                            <div class="spec-item">
+                                <span class="spec-label">Outlets</span>
+                                <span class="spec-value">{{ product.specs.ac_output.outlets }}</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Continuous Power</span>
+                                <span class="spec-value">{{ product.specs.ac_output.continuous }}</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Surge Power</span>
+                                <span class="spec-value">{{ product.specs.ac_output.surge }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="spec-group">
+                        <h4>Performance</h4>
+                        <div class="spec-list">
+                            <div class="spec-item">
+                                <span class="spec-label">Cycle Life</span>
+                                <span class="spec-value">{{ product.specs.performance.cycle_life }}</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">AC Charging</span>
+                                <span class="spec-value">{{ product.specs.performance.charging_times.ac }}</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Warranty</span>
+                                <span class="spec-value">{{ product.specs.warranty }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prices-section">
+                    <h3>Current Prices</h3>
+                    
+                    {% if prices %}
+                        {% for price_info in prices %}
+                        <div class="price-card{% if loop.first and price_info.in_stock %} best-price{% endif %}">
+                            <div class="retailer-name">{{ price_info.retailer|replace('_', ' ')|title }}</div>
+                            {% if price_info.in_stock %}
+                                <div class="price-amount">£{{ "%.2f"|format(price_info.price) }}</div>
+                                <a href="{{ price_info.url }}" class="buy-button" target="_blank" rel="noopener">
+                                    Buy Now <span class="affiliate-badge">AD</span>
+                                </a>
+                            {% else %}
+                                <div class="price-amount out-of-stock-price">Out of Stock</div>
+                                <span class="buy-button out-of-stock">Currently Unavailable</span>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                        
+                        <div class="last-updated">
+                            {% if prices[0].scraped_at %}
+                            Prices last updated: {{ prices[0].scraped_at.strftime('%Y-%m-%d %H:%M UTC') }}
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="no-prices">
+                            <p>Price data is being collected...</p>
+                            <p>Check back soon for current pricing from UK retailers.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>{{ site_name }} - Compare power station prices across UK retailers</p>
+            <p><small>This site contains affiliate links. We may earn a commission when you make a purchase through these links at no additional cost to you.</small></p>
+        </div>
+    </footer>
+</body>
+</html>

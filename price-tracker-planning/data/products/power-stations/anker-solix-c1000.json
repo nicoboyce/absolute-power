@@ -1,0 +1,62 @@
+{
+  "id": "anker-solix-c1000",
+  "name": "Anker SOLIX C1000",
+  "brand": "Anker",
+  "model": "SOLIX C1000",
+  "category": "power-station",
+  "specs": {
+    "capacity": "1056Wh",
+    "ac_output": {
+      "outlets": 3,
+      "continuous": "1800W",
+      "surge": "2400W"
+    },
+    "chemistry": "LiFePO4",
+    "inputs": {
+      "solar": {
+        "max_power": "400W",
+        "voltage_range": "11-28V"
+      },
+      "ac_charging": "1.8 hrs (80%), 2.5 hrs (100%)",
+      "car_charging": "12V/24V"
+    },
+    "outputs": {
+      "ac": "3 outlets, 1800W max (2400W surge)",
+      "usb_a": "3x (12W max each)",
+      "usb_c": "3x (100W, 60W, 15W)",
+      "dc12v": "2x DC5521 ports, 1x car socket"
+    },
+    "connectivity": ["Bluetooth", "Anker app"],
+    "features": ["SurgePad technology", "fast charging", "impact resistant"],
+    "dimensions": "355×216×280mm",
+    "weight": "12.9kg",
+    "performance": {
+      "cycle_life": "3000+ cycles to 80%",
+      "operating_temp": {
+        "discharge": "-20°C to 40°C",
+        "charge": "0°C to 40°C"
+      },
+      "charging_times": {
+        "ac": "1.8 hrs (80%), 2.5 hrs (100%)",
+        "solar": "3-6 hrs (depending on conditions)",
+        "car": "10-20 hrs"
+      }
+    },
+    "warranty": "5 years"
+  },
+  "retailers": {
+    "anker_uk": {
+      "url": "https://www.anker.com/uk/products/a1760-solix-c1000-portable-power-station",
+      "affiliate_url": ""
+    },
+    "amazon_uk": {
+      "url": "https://www.amazon.co.uk/dp/B0CJMC4Y4J",
+      "affiliate_url": ""
+    }
+  },
+  "images": {
+    "main": "anker-solix-c1000-main.jpg",
+    "gallery": ["anker-solix-c1000-1.jpg", "anker-solix-c1000-2.jpg"]
+  },
+  "last_updated": "2025-01-20"
+}

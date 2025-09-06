@@ -1,0 +1,63 @@
+{
+  "id": "ecoflow-delta-2",
+  "name": "EcoFlow DELTA 2",
+  "brand": "EcoFlow",
+  "model": "DELTA 2",
+  "category": "power-station",
+  "specs": {
+    "capacity": "1024Wh",
+    "ac_output": {
+      "outlets": 6,
+      "continuous": "1800W",
+      "surge": "2700W",
+      "x_boost": "2200W"
+    },
+    "chemistry": "LiFePO4",
+    "inputs": {
+      "solar": {
+        "max_power": "500W",
+        "voltage_range": "11-60V"
+      },
+      "ac_charging": "1200W max",
+      "car_charging": "12V/24V 8A"
+    },
+    "outputs": {
+      "ac": "6 outlets, 1800W max (2700W surge)",
+      "usb_a": "4x (12W max each)",
+      "usb_c": "2x (100W max)",
+      "dc12v": "2x DC5521 ports"
+    },
+    "connectivity": ["Wi-Fi", "Bluetooth", "EcoFlow app"],
+    "features": ["X-Boost", "expandable", "UPS mode", "fast charging"],
+    "dimensions": "400×211×281mm",
+    "weight": "12kg",
+    "performance": {
+      "cycle_life": "3000+ cycles to 80%",
+      "operating_temp": {
+        "discharge": "-10°C to 45°C",
+        "charge": "0°C to 45°C"
+      },
+      "charging_times": {
+        "ac": "50min (80%), 70min (100%)",
+        "solar": "3-6 hrs (depending on conditions)",
+        "car": "8-16 hrs"
+      }
+    },
+    "warranty": "5 years"
+  },
+  "retailers": {
+    "ecoflow_uk": {
+      "url": "https://uk.ecoflow.com/products/delta-2-portable-power-station",
+      "affiliate_url": ""
+    },
+    "amazon_uk": {
+      "url": "https://www.amazon.co.uk/dp/B0B8Y8N5C6",
+      "affiliate_url": ""
+    }
+  },
+  "images": {
+    "main": "ecoflow-delta-2-main.jpg",
+    "gallery": ["ecoflow-delta-2-1.jpg", "ecoflow-delta-2-2.jpg"]
+  },
+  "last_updated": "2025-01-20"
+}
