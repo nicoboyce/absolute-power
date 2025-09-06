@@ -7,7 +7,7 @@
 #
 
 # Configuration - can be overridden via environment
-PROJECT_DIR="${PROJECT_DIR:-/home/pi/power-tracker}"
+PROJECT_DIR="${PROJECT_DIR:-/home/nico/absolute/absolute-power/price-tracker-planning}"
 STATIC_DIR="$PROJECT_DIR/static"
 
 # Log file (create logs directory if it doesn't exist)
@@ -41,6 +41,9 @@ if git remote get-url origin >/dev/null 2>&1; then
 else
     log "No git remote configured, skipping pull"
 fi
+
+# Activate virtual environment
+source "$PROJECT_DIR/venv/bin/activate" 2>/dev/null || log "Virtual environment not found, using system Python"
 
 # Run scraping (if scrape_all.py exists)
 if [ -f "scrape_all.py" ]; then
