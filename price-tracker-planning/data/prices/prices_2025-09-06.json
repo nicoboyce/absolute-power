@@ -1,0 +1,65 @@
+{
+  "jackery-explorer-3000-v2": [
+    {
+      "retailer": "jackery_uk",
+      "price": 1999.0,
+      "in_stock": true,
+      "scraped_at": "2025-09-06T23:55:58.850352",
+      "url": "https://uk.jackery.com/products/explorer-3000-v2-portable-power-station"
+    }
+  ],
+  "jackery-explorer-300-plus": [
+    {
+      "retailer": "jackery_uk",
+      "price": 229.0,
+      "in_stock": true,
+      "scraped_at": "2025-09-06T23:56:07.626916",
+      "url": "https://uk.jackery.com/products/explorer-300-plus-portable-power-station"
+    }
+  ],
+  "jackery-explorer-2000-plus": [
+    {
+      "retailer": "jackery_uk",
+      "price": 1399.0,
+      "in_stock": true,
+      "scraped_at": "2025-09-06T23:56:28.661849",
+      "url": "https://uk.jackery.com/products/explorer-2000-plus-portable-power-station"
+    }
+  ],
+  "jackery-explorer-100-plus": [
+    {
+      "retailer": "jackery_uk",
+      "price": 99.0,
+      "in_stock": true,
+      "scraped_at": "2025-09-06T23:58:16.221808",
+      "url": "https://uk.jackery.com/products/explorer-100-plus-portable-power-station"
+    }
+  ],
+  "jackery-explorer-1000-plus": [
+    {
+      "retailer": "jackery_uk",
+      "price": 799.0,
+      "in_stock": true,
+      "scraped_at": "2025-09-06T23:58:22.145641",
+      "url": "https://uk.jackery.com/products/explorer-1000-plus-portable-power-station"
+    }
+  ],
+  "anker-solix-f3800": [
+    {
+      "retailer": "anker_uk",
+      "price": 3699.0,
+      "in_stock": true,
+      "scraped_at": "2025-09-06T23:58:26.800200",
+      "url": "https://www.anker.com/uk/products/a1790"
+    }
+  ],
+  "anker-solix-f2000": [
+    {
+      "retailer": "anker_uk",
+      "price": 1699.0,
+      "in_stock": true,
+      "scraped_at": "2025-09-06T23:58:31.333057",
+      "url": "https://www.anker.com/uk/products/a1780"
+    }
+  ]
+}
