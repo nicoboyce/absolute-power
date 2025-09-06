@@ -27,16 +27,20 @@ cd "$PROJECT_DIR" || {
     exit 1
 }
 
-# Pull latest changes from git (skip if no remote or no upstream commits)
+# Test git connectivity first
 if git remote get-url origin >/dev/null 2>&1; then
-    if git ls-remote --exit-code --heads origin main >/dev/null 2>&1; then
-        log "Pulling latest changes from git..."
-        if ! git pull origin main; then
-            log "ERROR: Git pull failed"
-            exit 1
-        fi
-    else
-        log "No upstream main branch yet, skipping pull"
+    log "Testing git connectivity..."
+    if ! git ls-remote origin >/dev/null 2>&1; then
+        log "ERROR: Cannot connect to git remote - check authentication (SSH keys/tokens)"
+        log "Remote URL: $(git remote get-url origin)"
+        exit 1
+    fi
+    
+    # Pull latest changes with proper error handling
+    log "Pulling latest changes from git..."
+    if ! git pull origin main --rebase --autostash; then
+        log "WARNING: Git pull failed, attempting to continue with local changes"
+        log "This may cause push conflicts later"
     fi
 else
     log "No git remote configured, skipping pull"
@@ -113,8 +117,22 @@ fi
 
 log "Pushing changes to git..."
 if ! git push origin main; then
-    log "ERROR: Git push failed"
-    exit 1
+    log "Git push failed - attempting to pull and retry..."
+    
+    # Try to pull and merge remote changes
+    if git pull origin main --rebase --autostash; then
+        log "Successfully pulled remote changes, retrying push..."
+        if git push origin main; then
+            log "Push successful after pull"
+        else
+            log "ERROR: Git push failed even after pull - manual intervention required"
+            exit 1
+        fi
+    else
+        log "ERROR: Could not pull remote changes - manual git resolution required"
+        log "Run: git pull origin main --rebase --autostash"
+        exit 1
+    fi
 fi
 
 log "Build and deploy successful - static site updated in git"
