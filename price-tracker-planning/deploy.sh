@@ -47,9 +47,17 @@ source "$PROJECT_DIR/venv/bin/activate" 2>/dev/null || log "Virtual environment 
 
 # Run scraping (if scrape_all.py exists)
 if [ -f "scrape_all.py" ]; then
-    log "Running scraping process..."
-    if ! python3 scrape_all.py; then
-        log "WARNING: Scraping failed, continuing with existing data"
+    log "Running scraping process in background..."
+    # Run in background to prevent timeout, log output
+    nohup python3 scrape_all.py > "$PROJECT_DIR/logs/scrape.log" 2>&1 &
+    SCRAPE_PID=$!
+    log "Scraping started in background (PID: $SCRAPE_PID)"
+    log "Check logs/scrape.log for output"
+    
+    # Wait briefly to check if process started successfully
+    sleep 2
+    if ! kill -0 $SCRAPE_PID 2>/dev/null; then
+        log "WARNING: Scraping process may have failed to start"
     fi
 fi
 
