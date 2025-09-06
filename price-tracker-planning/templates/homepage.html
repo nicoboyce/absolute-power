@@ -94,6 +94,8 @@
 
             <div class="products-grid">
                 {% for product in products %}
+                {% set product_prices = prices.get(product.id, []) %}
+                {% if product_prices %}
                 <div class="product-card">
                     <h3 class="product-name">{{ product.name }}</h3>
                     <div class="product-specs">
@@ -103,25 +105,21 @@
                     </div>
                     
                     <div class="price-comparison">
-                        {% set product_prices = prices.get(product.id, []) %}
-                        {% if product_prices %}
-                            {% for price_info in product_prices %}
-                            <div class="price-row">
-                                <span class="retailer">{{ price_info.retailer|title }}</span>
-                                {% if price_info.in_stock %}
-                                    <span class="price">£{{ "%.2f"|format(price_info.price) }}</span>
-                                {% else %}
-                                    <span class="out-of-stock">Out of Stock</span>
-                                {% endif %}
-                            </div>
-                            {% endfor %}
-                        {% else %}
-                            <div class="no-prices">Prices loading...</div>
-                        {% endif %}
+                        {% for price_info in product_prices %}
+                        <div class="price-row">
+                            <span class="retailer">{{ price_info.retailer|title }}</span>
+                            {% if price_info.in_stock %}
+                                <span class="price">£{{ "%.2f"|format(price_info.price) }}</span>
+                            {% else %}
+                                <span class="out-of-stock">Out of Stock</span>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
                     </div>
                     
                     <a href="products/{{ product.id }}.html" class="view-details">View Details & Specs</a>
                 </div>
+                {% endif %}
                 {% endfor %}
             </div>
             
