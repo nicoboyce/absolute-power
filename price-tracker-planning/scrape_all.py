@@ -19,6 +19,14 @@ from scrapers.ecoflow import EcoFlowScraper
 from scrapers.jackery import JackeryScraper  
 from scrapers.anker import AnkerScraper
 
+# Import headless scrapers with fallback
+try:
+    from scrapers.headless_scraper import EcoFlowHeadlessScraper, BluettiHeadlessScraper
+    HEADLESS_AVAILABLE = True
+except ImportError:
+    HEADLESS_AVAILABLE = False
+    logging.warning("Playwright not available - headless scrapers disabled")
+
 def load_products():
     """Load all product JSON files"""
     products = []
@@ -38,12 +46,23 @@ def scrape_all_retailers():
     """Main scraping orchestrator"""
     logger = logging.getLogger(__name__)
     
-    # Initialize scrapers
+    # Initialize scrapers - mix of standard and headless
     scrapers = {
-        'ecoflow_uk': EcoFlowScraper(),
         'jackery_uk': JackeryScraper(),
         'anker_uk': AnkerScraper()
     }
+    
+    # Add headless scrapers if available (for JS-heavy sites)
+    if HEADLESS_AVAILABLE:
+        scrapers.update({
+            'ecoflow_uk': EcoFlowHeadlessScraper(),
+            'bluetti_uk': BluettiHeadlessScraper()
+        })
+        logger.info("Headless browser scrapers enabled")
+    else:
+        # Fallback to standard scraper for EcoFlow
+        scrapers['ecoflow_uk'] = EcoFlowScraper()
+        logger.warning("Using standard scrapers - some sites may fail")
     
     products = load_products()
     total_scrapes = 0
@@ -64,7 +83,13 @@ def scrape_all_retailers():
                     total_scrapes += 1
                     
                     try:
-                        result = scraper.scrape_product(product_id, url)
+                        # Check if it's a headless scraper and run async
+                        if hasattr(scraper, 'scrape_product_async'):
+                            import asyncio
+                            result = asyncio.run(scraper.scrape_product_async(product_id, url))
+                        else:
+                            result = scraper.scrape_product(product_id, url)
+                            
                         if result:
                             successful_scrapes += 1
                             logger.info(f"✓ {product_id} @ {retailer_key}: £{result['price']}")

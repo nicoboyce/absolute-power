@@ -16,6 +16,9 @@ source venv/bin/activate
 # Install dependencies
 pip install -r requirements.txt
 
+# Install Playwright browsers (headless browser support)
+playwright install chromium
+
 # Create logs directory
 mkdir -p logs
 
@@ -70,6 +73,10 @@ ls -la static/
 # Check Python dependencies
 pip list
 
+# Test Playwright installation
+playwright --version
+python3 -c "from playwright.async_api import async_playwright; print('Playwright OK')"
+
 # Test database connection (will show error if MariaDB not configured)
 python3 -c "from config import DB_CONFIG; print('Config loaded')"
 
@@ -81,6 +88,9 @@ ps aux | grep python
 
 # View recent cron jobs
 grep CRON /var/log/syslog | tail -10
+
+# If headless browser fails, check system dependencies
+sudo apt update && sudo apt install -y libnss3 libnspr4 libdbus-1-3 libatk1.0-0 libdrm2 libxkbcommon0 libatspi2.0-0
 ```
 
 ## Expected Results
