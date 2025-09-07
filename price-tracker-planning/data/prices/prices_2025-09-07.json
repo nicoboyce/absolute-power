@@ -111,11 +111,7 @@
       "retailer": "amazon_uk",
       "price": 76.0,
       "in_stock": false,
-<<<<<<< Updated upstream
       "scraped_at": "2025-09-07T09:07:59.841346",
-=======
-      "scraped_at": "2025-09-07T03:35:38.942660",
->>>>>>> Stashed changes
       "url": "https://www.amazon.co.uk/dp/B0CJMC4Y4J"
     }
   ],
@@ -289,11 +285,7 @@
       "retailer": "jackery_uk",
       "price": 1399.0,
       "in_stock": true,
-<<<<<<< Updated upstream
       "scraped_at": "2025-09-07T09:07:45.390690",
-=======
-      "scraped_at": "2025-09-07T03:33:12.930701",
->>>>>>> Stashed changes
       "url": "https://uk.jackery.com/products/explorer-2000-plus-portable-power-station"
     }
   ],
@@ -351,11 +343,7 @@
       "retailer": "jackery_uk",
       "price": 99.0,
       "in_stock": true,
-<<<<<<< Updated upstream
       "scraped_at": "2025-09-07T09:07:13.289343",
-=======
-      "scraped_at": "2025-09-07T03:33:38.525274",
->>>>>>> Stashed changes
       "url": "https://uk.jackery.com/products/explorer-100-plus-portable-power-station"
     }
   ],
@@ -677,11 +665,7 @@
       "retailer": "jackery_uk",
       "price": 449.0,
       "in_stock": true,
-<<<<<<< Updated upstream
       "scraped_at": "2025-09-07T09:07:16.028059",
-=======
-      "scraped_at": "2025-09-07T03:36:59.516800",
->>>>>>> Stashed changes
       "url": "https://uk.jackery.com/products/explorer-1000-v2-portable-power-station"
     }
   ],
