@@ -102,19 +102,66 @@ fi
 # Activate virtual environment
 source "$PROJECT_DIR/venv/bin/activate" 2>/dev/null || log "Virtual environment not found, using system Python"
 
+# Clean up any existing scrape processes to prevent resource accumulation
+cleanup_existing_scrapes() {
+    local existing_pids=$(pgrep -f "python3.*scrape_all.py" 2>/dev/null || true)
+    if [ -n "$existing_pids" ]; then
+        log "Cleaning up existing scrape processes: $existing_pids"
+        pkill -f "python3.*scrape_all.py" 2>/dev/null || true
+        sleep 2
+        # Force kill if still running
+        pkill -9 -f "python3.*scrape_all.py" 2>/dev/null || true
+    fi
+}
+
+# Wait for background process with timeout
+wait_with_timeout() {
+    local pid=$1
+    local timeout=${2:-300}  # Default 5 minutes
+    local count=0
+    
+    while [ $count -lt $timeout ]; do
+        if ! kill -0 $pid 2>/dev/null; then
+            # Process finished
+            wait $pid 2>/dev/null
+            return $?
+        fi
+        sleep 1
+        count=$((count + 1))
+    done
+    
+    # Timeout reached - kill the process
+    log "WARNING: Process $pid timed out after ${timeout}s, terminating"
+    kill -TERM $pid 2>/dev/null || true
+    sleep 5
+    kill -KILL $pid 2>/dev/null || true
+    return 124  # Timeout exit code
+}
+
 # Run scraping (if scrape_all.py exists)
 if [ -f "scrape_all.py" ]; then
-    log "Running scraping process in background..."
-    # Run in background to prevent timeout, log output
-    nohup python3 scrape_all.py > "$PROJECT_DIR/logs/scrape.log" 2>&1 &
-    SCRAPE_PID=$!
-    log "Scraping started in background (PID: $SCRAPE_PID)"
-    log "Check logs/scrape.log for output"
+    log "Cleaning up any existing scrape processes..."
+    cleanup_existing_scrapes
     
-    # Wait briefly to check if process started successfully
-    sleep 2
-    if ! kill -0 $SCRAPE_PID 2>/dev/null; then
-        log "WARNING: Scraping process may have failed to start"
+    log "Running scraping process..."
+    # Run with timeout to prevent hanging
+    python3 scrape_all.py > "$PROJECT_DIR/logs/scrape.log" 2>&1 &
+    SCRAPE_PID=$!
+    log "Scraping started (PID: $SCRAPE_PID)"
+    
+    # Wait for completion with timeout (10 minutes max)
+    if wait_with_timeout $SCRAPE_PID 600; then
+        log "Scraping completed successfully"
+    else
+        case $? in
+            124)
+                log "ERROR: Scraping timed out after 10 minutes"
+                ;;
+            *)
+                log "WARNING: Scraping failed with exit code $?"
+                ;;
+        esac
+        log "Check logs/scrape.log for details"
     fi
 fi
 

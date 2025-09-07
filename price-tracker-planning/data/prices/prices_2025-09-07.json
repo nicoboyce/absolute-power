@@ -577,5 +577,32 @@
       "scraped_at": "2025-09-07T02:56:46.377981",
       "url": "https://uk.jackery.com/products/explorer-1000-v2-portable-power-station"
     }
+  ],
+  "ecoflow-river-3": [
+    {
+      "retailer": "ecoflow_uk",
+      "price": 3000.0,
+      "in_stock": true,
+      "scraped_at": "2025-09-07T08:37:53.846873",
+      "url": "https://uk.ecoflow.com/products/river-3-portable-power-station"
+    }
+  ],
+  "bluetti-eb3a": [
+    {
+      "retailer": "bluetti_uk",
+      "price": 209.0,
+      "in_stock": true,
+      "scraped_at": "2025-09-07T08:38:04.457342",
+      "url": "https://bluettipower.co.uk/products/bluetti-eb3a-portable-power-station"
+    }
+  ],
+  "anker-c1000-test": [
+    {
+      "retailer": "amazon_uk",
+      "price": 76.0,
+      "in_stock": false,
+      "scraped_at": "2025-09-07T08:38:25.037829",
+      "url": "https://www.amazon.co.uk/dp/B0CJMC4Y4J"
+    }
   ]
 }
