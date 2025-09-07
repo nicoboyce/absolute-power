@@ -36,12 +36,65 @@ if git remote get-url origin >/dev/null 2>&1; then
         exit 1
     fi
     
-    # Pull latest changes with proper error handling
+    # Pull latest changes with conflict resolution
     log "Pulling latest changes from git..."
-    if ! git pull origin main --rebase --autostash; then
-        log "WARNING: Git pull failed, attempting to continue with local changes"
-        log "This may cause push conflicts later"
+    
+    # Store current pricing data if it exists
+    PRICES_FILE="data/prices/prices_$(date +%Y-%m-%d).json"
+    TEMP_PRICES="/tmp/pi_prices_backup.json"
+    
+    if [ -f "$PRICES_FILE" ]; then
+        log "Backing up current pricing data..."
+        cp "$PRICES_FILE" "$TEMP_PRICES"
     fi
+    
+    # Attempt pull with rebase
+    if ! git pull origin main --rebase --autostash; then
+        log "Git pull with rebase failed, checking for conflicts..."
+        
+        # Check if we have merge conflicts in pricing files
+        if git status --porcelain | grep -q "^UU.*prices.*\.json"; then
+            log "Detected pricing file conflicts, resolving automatically..."
+            
+            # For pricing files, prefer our local data (more recent scraping)
+            for conflict_file in $(git status --porcelain | grep "^UU.*prices.*\.json" | awk '{print $2}'); do
+                log "Resolving conflict in $conflict_file"
+                
+                # Remove conflict markers, keeping our version (the one after =======)
+                if [ -f "$TEMP_PRICES" ]; then
+                    cp "$TEMP_PRICES" "$conflict_file"
+                    git add "$conflict_file"
+                    log "Restored local pricing data for $conflict_file"
+                else
+                    # If no backup, just remove conflict markers and keep both versions' data
+                    sed -i '/^<<<<<<< /d; /^=======/d; /^>>>>>>> /d' "$conflict_file"
+                    git add "$conflict_file"
+                    log "Cleaned conflict markers from $conflict_file"
+                fi
+            done
+            
+            # Continue rebase after resolving conflicts
+            if ! git rebase --continue; then
+                log "ERROR: Could not complete rebase after conflict resolution"
+                git rebase --abort
+                log "Aborted rebase, continuing with local changes"
+            else
+                log "Successfully resolved conflicts and completed rebase"
+            fi
+        else
+            log "Pull failed but no pricing conflicts detected, attempting to continue"
+            # Try to abort rebase if it's in progress
+            if git status | grep -q "rebase in progress"; then
+                git rebase --abort
+                log "Aborted incomplete rebase"
+            fi
+        fi
+    else
+        log "Git pull successful"
+    fi
+    
+    # Clean up temporary files
+    [ -f "$TEMP_PRICES" ] && rm -f "$TEMP_PRICES"
 else
     log "No git remote configured, skipping pull"
 fi
