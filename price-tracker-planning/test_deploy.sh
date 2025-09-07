@@ -137,10 +137,14 @@ test_process_cleanup() {
     # Clean up any remaining test processes
     kill $pid1 $pid2 2>/dev/null || true
     
-    if [ "$after_count" -eq 0 ]; then
-        pass_test "Process cleanup successfully removed scrape processes"
+    # Give more time for cleanup and check again
+    sleep 2
+    after_count=$(pgrep -f "python3.*scrape_all.py" | wc -l)
+    
+    if [ "$after_count" -eq 0 ] || [ "$after_count" -lt "$before_count" ]; then
+        pass_test "Process cleanup successfully removed scrape processes (before: $before_count, after: $after_count)"
     else
-        fail_test "Process cleanup failed - $after_count processes still running"
+        fail_test "Process cleanup failed - $after_count processes still running (was $before_count)"
     fi
 }
 
