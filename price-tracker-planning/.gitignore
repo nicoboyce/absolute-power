@@ -36,4 +36,5 @@ Thumbs.db
 
 # Temporary files
 tmp/
-temp/trigger_pi_deploy.sh
+temp/
+trigger_pi_deploy.sh
