@@ -1,5 +1,38 @@
 """
-Base scraper class and utilities
+Base scraper class for all retailer scrapers
+
+This module provides the foundation for all price scraping operations.
+Any developer maintaining or extending scrapers should read this carefully.
+
+ARCHITECTURE OVERVIEW:
+- All scrapers inherit from BaseScraper
+- Each scraper implements extract_price() and extract_availability()  
+- Results are standardised through create_result()
+- Price data is saved to JSON files (date-based)
+- Comprehensive logging for debugging and monitoring
+
+MAINTENANCE GUIDELINES:
+- Always test scrapers on multiple products before deployment
+- Be aware of anti-scraping measures (rate limiting, bot detection)
+- Use respectful delays between requests (1-2 seconds minimum)
+- Handle errors gracefully and log detailed information
+- Validate price ranges to avoid false positives from promotional content
+
+ADDING NEW SCRAPERS:
+1. Inherit from BaseScraper
+2. Implement extract_price(soup) method
+3. Implement extract_availability(soup) method
+4. Add appropriate headers for the target site
+5. Test thoroughly with representative products
+6. Add to scrape_all.py
+
+COMMON ISSUES:
+- Promotional banners can contain misleading prices
+- Out-of-stock text may appear for product bundles, not base products
+- Dynamic pricing may require JavaScript rendering
+- Rate limiting can cause 403/429 errors
+
+LAST UPDATED: 2025-09-07
 """
 
 import requests
@@ -17,7 +50,30 @@ except ImportError:
 from config import USER_AGENTS, REQUEST_DELAY, TIMEOUT, DB_CONFIG
 
 class BaseScraper:
+    """
+    Base class for all retailer scrapers
+    
+    Provides common functionality for:
+    - HTTP session management with appropriate headers
+    - Rate limiting and respectful crawling
+    - Standardised result formatting
+    - JSON and database persistence
+    - Comprehensive error handling and logging
+    
+    SUBCLASS REQUIREMENTS:
+    - Must implement extract_price(soup) -> float|None
+    - Must implement extract_availability(soup) -> bool
+    - Should set appropriate headers for target site
+    """
+    
     def __init__(self, retailer_name, base_url):
+        """
+        Initialize scraper with retailer-specific settings
+        
+        Args:
+            retailer_name (str): Unique identifier for this retailer (e.g. 'jackery_uk')
+            base_url (str): Base URL for the retailer's website
+        """
         self.retailer_name = retailer_name
         self.base_url = base_url
         self.session = requests.Session()
@@ -33,7 +89,21 @@ class BaseScraper:
         })
     
     def get_page(self, url):
-        """Fetch a web page with error handling and rate limiting"""
+        """
+        Fetch a web page with comprehensive error handling and rate limiting
+        
+        Features:
+        - Automatic rate limiting (REQUEST_DELAY + random jitter)
+        - Proper timeout handling
+        - HTTP status code validation
+        - BeautifulSoup parsing with HTML5 parser
+        
+        Args:
+            url (str): Full URL to fetch
+            
+        Returns:
+            BeautifulSoup|None: Parsed HTML soup or None if failed
+        """
         try:
             # Rate limiting
             time.sleep(REQUEST_DELAY + random.uniform(0, 1))
@@ -49,15 +119,95 @@ class BaseScraper:
             return None
     
     def extract_price(self, soup):
-        """Extract price from page - override in subclasses"""
+        """
+        Extract product price from parsed HTML
+        
+        CRITICAL IMPLEMENTATION NOTES:
+        - Must handle promotional prices and banners (common source of false positives)
+        - Should validate price ranges appropriate for power stations (£100-£5000)
+        - Must return None if no valid price found (do not guess or return 0)
+        - Should prioritise product-specific selectors over generic ones
+        - Must handle comma separators in prices (e.g. "1,299.00")
+        
+        Args:
+            soup (BeautifulSoup): Parsed HTML of product page
+            
+        Returns:
+            float|None: Price in GBP or None if not found
+            
+        Example Implementation:
+        ```python
+        def extract_price(self, soup):
+            price_elem = soup.select_one('.product-price')
+            if price_elem:
+                price_text = price_elem.get_text()
+                return clean_price_string(price_text)
+            return None
+        ```
+        """
         raise NotImplementedError("Subclasses must implement extract_price")
     
     def extract_availability(self, soup):
-        """Extract availability from page - override in subclasses"""
+        """
+        Extract product availability from parsed HTML
+        
+        CRITICAL IMPLEMENTATION NOTES:
+        - Prioritise "Add to cart" buttons as strongest in-stock signal
+        - Be wary of out-of-stock text in product bundles or promotions
+        - Check for disabled buttons or form elements
+        - Default to True (in stock) when unclear - most sites show prices only for available items
+        - Watch for variant-specific availability (like Bluetti's panel combinations)
+        
+        Args:
+            soup (BeautifulSoup): Parsed HTML of product page
+            
+        Returns:
+            bool: True if in stock, False if out of stock
+            
+        Example Implementation:
+        ```python
+        def extract_availability(self, soup):
+            # Check for add to cart button
+            if soup.select_one('button[name="add"]'):
+                return True
+            # Check for out of stock text
+            if 'out of stock' in soup.get_text().lower():
+                return False
+            return True  # Default to available
+        ```
+        """
         raise NotImplementedError("Subclasses must implement extract_availability")
     
     def scrape_product(self, product_id, url):
-        """Scrape a single product"""
+        """
+        Scrape a single product's price and availability
+        
+        This is the main entry point for scraping operations. It handles:
+        - Page fetching with error handling
+        - Price and availability extraction
+        - Result validation and formatting
+        - Data persistence (JSON + optional database)
+        - Comprehensive logging
+        
+        Args:
+            product_id (str): Unique product identifier from JSON files
+            url (str): Full URL to the product page
+            
+        Returns:
+            dict|None: Scraping result with price, availability, and metadata
+                      Returns None if scraping failed
+                      
+        Result Format:
+        ```python
+        {
+            'product_id': 'jackery-explorer-1000',
+            'retailer': 'jackery_uk',
+            'price': 799.0,
+            'in_stock': True,
+            'url': 'https://uk.jackery.com/products/...'
+        }
+        ```
+        """
         soup = self.get_page(url)
         if not soup:
             self.log_scrape_result(product_id, 'error', 'Failed to fetch page')
@@ -215,7 +365,37 @@ class BaseScraper:
             self.logger.error(f"Failed to log scrape result: {e}")
 
 def clean_price_string(price_str):
-    """Clean price string and convert to float"""
+    """
+    Clean and parse price string to float
+    
+    Handles common price formatting:
+    - Currency symbols (£, $, etc.)
+    - Thousands separators (commas)
+    - Whitespace and other formatting
+    - Invalid/empty strings
+    
+    Args:
+        price_str (str): Raw price string (e.g. "£1,299.00", "999.99")
+        
+    Returns:
+        float|None: Numeric price or None if invalid
+        
+    Examples:
+        >>> clean_price_string("£1,299.00")
+        1299.0
+        >>> clean_price_string("invalid")
+        None
+    """
+    if not price_str:
+        return None
+    
+    # Remove currency symbols, commas, spaces
+    cleaned = price_str.replace('£', '').replace(',', '').replace(' ', '')
+    
+    try:
+        return float(cleaned)
+    except ValueError:
+        return None
     if not price_str:
         return None
     

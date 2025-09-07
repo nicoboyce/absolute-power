@@ -1,7 +1,43 @@
 #!/usr/bin/env python3
 """
-Main scraping script - runs hourly via cron
-Scrapes all active products from all enabled retailers
+Main scraping orchestrator - runs hourly via cron on Raspberry Pi
+
+This script coordinates all retailer scrapers to gather pricing data across
+the entire product catalogue. It's the heart of the price tracking system.
+
+DEPLOYMENT NOTES:
+- Runs every hour via cron job on Raspberry Pi
+- Results are saved to JSON files in data/prices/
+- After scraping, generate.py rebuilds the static site
+- Logs are written to logs/ directory for monitoring
+
+ARCHITECTURE:
+1. Load all product JSON files from data/products/power-stations/
+2. Initialize all available scrapers (5 active retailers)
+3. For each product, scrape all configured retailers
+4. Save results to daily JSON files
+5. Log comprehensive statistics for monitoring
+
+ACTIVE SCRAPERS (as of 2025-09-07):
+- Jackery UK: Direct manufacturer scraping
+- Anker UK: Direct manufacturer scraping  
+- Currys: UK electronics retailer
+- Amazon UK: Major e-commerce platform
+- Bluetti UK: Direct manufacturer scraping
+- EcoFlow UK: Direct manufacturer scraping (with promotional price filtering)
+
+MAINTENANCE:
+- Check scrape success rates regularly (should be >80%)
+- Monitor for new anti-scraping measures
+- Add new retailers by creating scraper classes and adding here
+- Update product JSON files to add new retailer URLs
+
+TROUBLESHOOTING:
+- Low success rates: Check if sites changed HTML structure
+- 403/429 errors: Sites may have blocked our IP - adjust headers/delays
+- No prices found: Sites may have implemented JavaScript-only pricing
+
+LAST UPDATED: 2025-09-07
 """
 
 import sys
