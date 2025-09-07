@@ -295,6 +295,235 @@ def process_products_with_prices(products, prices):
     
     return processed_products
 
+def generate_flow_page(products, prices):
+    """Generate the new user flow page with dynamic recommendations"""
+    
+    # Create recommendation data structure for each use case
+    recommendations = {
+        'medical': [],
+        'emergency': [],
+        'professional': [],
+        'adventure': []
+    }
+    
+    # Medical use case - prioritise quieter, reliable power stations
+    medical_products = []
+    for product in products:
+        capacity = product.get('capacity_wh', 0)
+        battery_type = product.get('battery_type', '').lower()
+        
+        # Good for medical: LiFePO4, 500-2000Wh range
+        if 'lifepo4' in battery_type and 500 <= capacity <= 2000:
+            medical_products.append(product)
+    
+    # Sort by capacity and price balance, take top 3
+    medical_products.sort(key=lambda x: x.get('value_per_wh', 0), reverse=True)
+    recommendations['medical'] = medical_products[:3]
+    
+    # Emergency use case - larger capacity stations
+    emergency_products = []
+    for product in products:
+        capacity = product.get('capacity_wh', 0)
+        ac_output = product.get('ac_output_watts', 0)
+        
+        # Good for emergency: 1000Wh+, high AC output
+        if capacity >= 1000 and ac_output >= 1500:
+            emergency_products.append(product)
+    
+    emergency_products.sort(key=lambda x: x.get('capacity_wh', 0), reverse=True)
+    recommendations['emergency'] = emergency_products[:3]
+    
+    # Professional use case - UPS functionality, reliable power
+    professional_products = []
+    for product in products:
+        capacity = product.get('capacity_wh', 0)
+        ac_output = product.get('ac_output_watts', 0)
+        
+        # Good for professional: 800-2000Wh range, decent AC output
+        if 800 <= capacity <= 2000 and ac_output >= 1000:
+            professional_products.append(product)
+    
+    professional_products.sort(key=lambda x: x.get('value_per_wh', 0), reverse=True)
+    recommendations['professional'] = professional_products[:3]
+    
+    # Adventure use case - portable, solar-capable
+    adventure_products = []
+    for product in products:
+        capacity = product.get('capacity_wh', 0)
+        weight = product.get('weight', 100)  # kg
+        solar_capable = product.get('solar_input_watts') is not None
+        
+        # Good for adventure: under 800Wh, lightweight, solar capable
+        if capacity <= 800 and weight <= 15 and solar_capable:
+            adventure_products.append(product)
+    
+    adventure_products.sort(key=lambda x: x.get('weight', 100))  # Sort by weight (lighter first)
+    recommendations['adventure'] = adventure_products[:3]
+    
+    return recommendations
+
+def generate_flow_html(recommendations, products, prices):
+    """Generate the complete flow HTML with dynamic data"""
+    
+    # Get formatted retailer names
+    def format_retailer_name(retailer_id):
+        """Format retailer ID to display name"""
+        retailer_names = {
+            'jackery_uk': 'Jackery UK',
+            'bluetti_uk': 'Bluetti UK',
+            'anker_uk': 'Anker UK',
+            'ecoflow_uk': 'EcoFlow UK',
+            'amazon_uk': 'Amazon UK'
+        }
+        return retailer_names.get(retailer_id, retailer_id.replace('_', ' ').title())
+    
+    def get_product_recommendation_html(product, use_case, badge_type="BEST MATCH"):
+        """Generate HTML for a single product recommendation"""
+        product_id = product.get('id', '')
+        name = product.get('name', 'Unknown Product')
+        capacity = product.get('specs', {}).get('capacity', 'Unknown')
+        battery_type = product.get('battery_type', 'Li-ion')
+        weight = product.get('weight', 0)
+        
+        # Get pricing data
+        product_prices = prices.get(product_id, [])
+        best_price = None
+        if product_prices:
+            in_stock_prices = [p for p in product_prices if p.get('in_stock', True) and p.get('price')]
+            if in_stock_prices:
+                best_price = min(in_stock_prices, key=lambda x: x['price'])
+        
+        price_display = f"£{best_price['price']}" if best_price else "Price updating..."
+        
+        # Generate benefit-focused descriptions based on use case
+        benefits = []
+        why_perfect = ""
+        
+        if use_case == 'medical':
+            if 'lifepo4' in battery_type.lower():
+                benefits.append("Medical Grade Safety")
+            if product.get('capacity_wh', 0) >= 1000:
+                benefits.extend(["3+ Night Runtime", "Silent Operation"])
+            else:
+                benefits.extend(["1-2 Night Runtime", "Ultra Portable"])
+            benefits.append("Fast Recharge")
+            why_perfect = f"Perfect for medical use with {capacity} capacity. Reliable LiFePO4 battery chemistry ensures your essential medical equipment stays powered."
+            
+        elif use_case == 'emergency':
+            if product.get('ac_output_watts', 0) >= 1500:
+                benefits.append("High Power Output")
+            if product.get('capacity_wh', 0) >= 1500:
+                benefits.append("Extended Runtime")
+            benefits.extend(["Multiple Outlets", "Home Backup Ready"])
+            why_perfect = f"Ideal for home emergencies with {capacity} capacity and high AC output. Powers essential appliances during outages."
+            
+        elif use_case == 'professional':
+            benefits.extend(["Reliable Power", "Multiple Device Support", "Fast Charging", "Portable Design"])
+            why_perfect = f"Professional-grade power with {capacity} capacity. Perfect for work equipment, tools, and mobile offices."
+            
+        elif use_case == 'adventure':
+            if product.get('solar_input_watts'):
+                benefits.append("Solar Charging")
+            if weight <= 10:
+                benefits.append("Lightweight")
+            benefits.extend(["Outdoor Ready", "Long Runtime"])
+            why_perfect = f"Adventure-ready with {capacity} capacity and only {weight}kg weight. Perfect for camping and off-grid adventures."
+        
+        # Limit to 4 benefits
+        benefits = benefits[:4]
+        
+        return f"""
+                <div class="recommendation-card">
+                    <div class="recommendation-badge">{badge_type}</div>
+                    <div class="product-header">
+                        <div class="product-info">
+                            <h3>{name}</h3>
+                            <p style="color: #7f8c8d; margin-bottom: 1rem;">{capacity} • {battery_type}</p>
+                            <div class="why-perfect">
+                                <h4>Why this is perfect for you:</h4>
+                                <p>{why_perfect}</p>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div class="best-price">{price_display}</div>
+                            <div style="color: #7f8c8d; font-size: 0.9rem;">Best price found</div>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 2rem;">
+                        {''.join([f'<div style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: #27ae60;">✓</span><span style="font-size: 0.9rem;">{benefit}</span></div>' for benefit in benefits])}
+                    </div>
+                    <button class="track-button" onclick="trackProduct('{name}')">
+                        Track This Price
+                    </button>
+                </div>
+        """
+    
+    # Generate recommendations for each use case
+    medical_recs = ""
+    for i, product in enumerate(recommendations['medical']):
+        badge = "BEST MATCH" if i == 0 else "BEST VALUE" if i == 1 else "PREMIUM CHOICE"
+        medical_recs += get_product_recommendation_html(product, 'medical', badge)
+    
+    emergency_recs = ""
+    for i, product in enumerate(recommendations['emergency']):
+        badge = "BEST MATCH" if i == 0 else "BEST VALUE" if i == 1 else "PREMIUM CHOICE"
+        emergency_recs += get_product_recommendation_html(product, 'emergency', badge)
+    
+    professional_recs = ""
+    for i, product in enumerate(recommendations['professional']):
+        badge = "BEST MATCH" if i == 0 else "BEST VALUE" if i == 1 else "PREMIUM CHOICE"
+        professional_recs += get_product_recommendation_html(product, 'professional', badge)
+    
+    adventure_recs = ""
+    for i, product in enumerate(recommendations['adventure']):
+        badge = "BEST MATCH" if i == 0 else "BEST VALUE" if i == 1 else "PREMIUM CHOICE"
+        adventure_recs += get_product_recommendation_html(product, 'adventure', badge)
+    
+    # Read the complete flow template and inject the recommendations
+    flow_template_path = Path(__file__).parent / "mockups" / "complete-flow.html"
+    
+    try:
+        with open(flow_template_path, 'r') as f:
+            flow_html = f.read()
+        
+        # Replace placeholders with actual data
+        flow_html = flow_html.replace('<!-- Recommendations will be populated by JavaScript -->', 
+                                     medical_recs)  # Default to medical for now
+        
+        # Add JavaScript data injection
+        recommendations_js = f"""
+        const recommendations = {json.dumps({
+            'medical': medical_recs,
+            'emergency': emergency_recs, 
+            'professional': professional_recs,
+            'adventure': adventure_recs
+        })};
+        """
+        
+        # Inject the recommendations data into JavaScript
+        flow_html = flow_html.replace('let selectedUseCase = null;', 
+                                     f'{recommendations_js}\n        let selectedUseCase = null;')
+        
+        # Update the showRecommendations function to use real data
+        flow_html = flow_html.replace(
+            '// Generate recommendation cards',
+            '''// Generate recommendation cards
+            const grid = document.getElementById('recommendationsGrid');
+            grid.innerHTML = recommendations[selectedUseCase] || '';'''
+        )
+        
+        return flow_html
+        
+    except Exception as e:
+        # Fallback to basic HTML structure if template not found
+        return f"""<!DOCTYPE html>
+<html><head><title>Power Station Flow</title></head>
+<body><h1>Power Station User Flow</h1>
+<p>Generated at: {datetime.now()}</p>
+<p>Products loaded: {len(products)}</p>
+<p>Error loading template: {e}</p>
+</body></html>"""
+
 def generate_site():
     """Main site generation function"""
     logger = logging.getLogger(__name__)
@@ -336,7 +565,17 @@ def generate_site():
     
     logger.info("Generated homepage")
     
-    pages_generated = 1  # Homepage
+    # Generate new user flow page
+    flow_recommendations = generate_flow_page(processed_products, prices)
+    
+    flow_html = generate_flow_html(flow_recommendations, processed_products, prices)
+    
+    with open(STATIC_DIR / "flow.html", 'w') as f:
+        f.write(flow_html)
+    
+    logger.info("Generated flow.html")
+    
+    pages_generated = 2  # Homepage + Flow
     
     # Generate test page with modern design
     try:

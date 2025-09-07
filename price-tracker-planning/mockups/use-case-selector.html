@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Your Power Needs - Power Station Advisor</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .use-case-section {
+            padding: 4rem 0;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .use-case-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            position: relative;
+        }
+        
+        .use-case-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        
+        .use-case-card.selected {
+            border-color: #3498db;
+            background: #f8fbff;
+        }
+        
+        .use-case-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+        
+        .use-case-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        
+        .use-case-description {
+            color: #7f8c8d;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+        
+        .use-case-examples {
+            font-size: 0.9rem;
+            color: #95a5a6;
+            font-style: italic;
+        }
+        
+        .progress-section {
+            text-align: center;
+            margin: 3rem 0;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            max-width: 400px;
+            height: 8px;
+            background: #ecf0f1;
+            border-radius: 4px;
+            margin: 0 auto 2rem;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #3498db;
+            width: 25%;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .qualification-panel {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-top: 2rem;
+            display: none;
+        }
+        
+        .qualification-panel.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .qualification-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+        }
+        
+        .question-group {
+            margin-bottom: 2rem;
+        }
+        
+        .question-label {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .option-card {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        
+        .option-card:hover {
+            border-color: #3498db;
+            background: #f8fbff;
+        }
+        
+        .option-card.selected {
+            border-color: #3498db;
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .next-button {
+            background: #3498db;
+            color: white;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+        }
+        
+        .next-button:hover {
+            background: #2980b9;
+        }
+        
+        .next-button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .use-cases-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .use-case-card {
+                padding: 2rem;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="use-case-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">What's your primary power need?</h2>
+                <p class="section-subtitle">
+                    Choose the situation that best describes your power requirements. We'll personalise your recommendations accordingly.
+                </p>
+            </div>
+            
+            <div class="progress-section">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p class="progress-text">Step 1 of 4 - Choose your use case</p>
+            </div>
+            
+            <div class="use-cases-grid">
+                <div class="use-case-card" data-usecase="medical">
+                    <span class="use-case-icon">🏥</span>
+                    <h3 class="use-case-title">Medical & Health</h3>
+                    <p class="use-case-description">
+                        Essential medical equipment that cannot lose power
+                    </p>
+                    <p class="use-case-examples">
+                        CPAP machines, oxygen concentrators, medication fridges, mobility aids
+                    </p>
+                </div>
+                
+                <div class="use-case-card" data-usecase="emergency">
+                    <span class="use-case-icon">🏠</span>
+                    <h3 class="use-case-title">Home & Emergency</h3>
+                    <p class="use-case-description">
+                        Family backup power for outages and emergencies
+                    </p>
+                    <p class="use-case-examples">
+                        Lights, phones, security systems, fridges, heating/cooling
+                    </p>
+                </div>
+                
+                <div class="use-case-card" data-usecase="professional">
+                    <span class="use-case-icon">💼</span>
+                    <h3 class="use-case-title">Work & Professional</h3>
+                    <p class="use-case-description">
+                        Reliable power for work equipment and deadlines
+                    </p>
+                    <p class="use-case-examples">
+                        Laptops, monitors, internet equipment, tools, lighting
+                    </p>
+                </div>
+                
+                <div class="use-case-card" data-usecase="adventure">
+                    <span class="use-case-icon">⛺</span>
+                    <h3 class="use-case-title">Adventure & Off-Grid</h3>
+                    <p class="use-case-description">
+                        Portable power for camping and remote adventures
+                    </p>
+                    <p class="use-case-examples">
+                        Camping gear, photography, van life, remote cabins
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Qualification panels for each use case -->
+            <div id="qualification-medical" class="qualification-panel">
+                <h3 class="qualification-title">Tell us about your medical power needs</h3>
+                
+                <div class="question-group">
+                    <label class="question-label">What medical equipment do you need to power?</label>
+                    <div class="options-grid">
+                        <div class="option-card" data-option="cpap">
+                            <strong>CPAP Machine</strong><br>
+                            <small>8-10 hours nightly</small>
+                        </div>
+                        <div class="option-card" data-option="oxygen">
+                            <strong>Oxygen Concentrator</strong><br>
+                            <small>24/7 operation</small>
+                        </div>
+                        <div class="option-card" data-option="fridge">
+                            <strong>Medical Fridge</strong><br>
+                            <small>Medication storage</small>
+                        </div>
+                        <div class="option-card" data-option="multiple">
+                            <strong>Multiple Devices</strong><br>
+                            <small>Various equipment</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question-group">
+                    <label class="question-label">How long do you need backup power?</label>
+                    <div class="options-grid">
+                        <div class="option-card" data-option="8hours">
+                            <strong>One night</strong><br>
+                            <small>8-12 hours</small>
+                        </div>
+                        <div class="option-card" data-option="2days">
+                            <strong>Long weekend</strong><br>
+                            <small>2-3 days</small>
+                        </div>
+                        <div class="option-card" data-option="week">
+                            <strong>Extended outage</strong><br>
+                            <small>1+ weeks</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="next-button" id="nextMedical" disabled>Get My Medical Power Recommendations</button>
+            </div>
+            
+            <div id="qualification-emergency" class="qualification-panel">
+                <h3 class="qualification-title">Tell us about your emergency power needs</h3>
+                
+                <div class="question-group">
+                    <label class="question-label">What's your priority during an outage?</label>
+                    <div class="options-grid">
+                        <div class="option-card" data-option="communication">
+                            <strong>Communication</strong><br>
+                            <small>Phones, internet, radio</small>
+                        </div>
+                        <div class="option-card" data-option="lighting">
+                            <strong>Lighting & Safety</strong><br>
+                            <small>Lights, security systems</small>
+                        </div>
+                        <div class="option-card" data-option="appliances">
+                            <strong>Essential Appliances</strong><br>
+                            <small>Fridge, heating, fans</small>
+                        </div>
+                        <div class="option-card" data-option="everything">
+                            <strong>Whole House Backup</strong><br>
+                            <small>All essential systems</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question-group">
+                    <label class="question-label">How often do you experience power outages?</label>
+                    <div class="options-grid">
+                        <div class="option-card" data-option="rare">
+                            <strong>Rarely</strong><br>
+                            <small>Once a year or less</small>
+                        </div>
+                        <div class="option-card" data-option="occasional">
+                            <strong>Occasionally</strong><br>
+                            <small>Few times a year</small>
+                        </div>
+                        <div class="option-card" data-option="frequent">
+                            <strong>Frequently</strong><br>
+                            <small>Monthly or more</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="next-button" id="nextEmergency" disabled>Get My Home Backup Recommendations</button>
+            </div>
+            
+            <!-- Similar panels for professional and adventure use cases -->
+            <div id="qualification-professional" class="qualification-panel">
+                <h3 class="qualification-title">Tell us about your work power needs</h3>
+                
+                <div class="question-group">
+                    <label class="question-label">What work equipment needs power?</label>
+                    <div class="options-grid">
+                        <div class="option-card" data-option="laptop">
+                            <strong>Laptop Setup</strong><br>
+                            <small>Computer, monitor, router</small>
+                        </div>
+                        <div class="option-card" data-option="tools">
+                            <strong>Power Tools</strong><br>
+                            <small>Drills, saws, equipment</small>
+                        </div>
+                        <div class="option-card" data-option="mobile-office">
+                            <strong>Mobile Office</strong><br>
+                            <small>Complete workstation</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="next-button" id="nextProfessional" disabled>Get My Work Power Recommendations</button>
+            </div>
+            
+            <div id="qualification-adventure" class="qualification-panel">
+                <h3 class="qualification-title">Tell us about your adventure power needs</h3>
+                
+                <div class="question-group">
+                    <label class="question-label">What's your adventure style?</label>
+                    <div class="options-grid">
+                        <div class="option-card" data-option="camping">
+                            <strong>Weekend Camping</strong><br>
+                            <small>Lights, phones, small devices</small>
+                        </div>
+                        <div class="option-card" data-option="vanlife">
+                            <strong>Van Life</strong><br>
+                            <small>Mobile living setup</small>
+                        </div>
+                        <div class="option-card" data-option="photography">
+                            <strong>Photography</strong><br>
+                            <small>Cameras, lighting, laptops</small>
+                        </div>
+                        <div class="option-card" data-option="cabin">
+                            <strong>Remote Cabin</strong><br>
+                            <small>Off-grid living</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="next-button" id="nextAdventure" disabled>Get My Adventure Power Recommendations</button>
+            </div>
+        </div>
+    </section>
+    
+    <script>
+        let selectedUseCase = null;
+        let qualificationData = {};
+        
+        // Use case selection
+        document.querySelectorAll('.use-case-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Clear previous selections
+                document.querySelectorAll('.use-case-card').forEach(c => c.classList.remove('selected'));
+                document.querySelectorAll('.qualification-panel').forEach(p => p.classList.remove('active'));
+                
+                // Select current card
+                this.classList.add('selected');
+                selectedUseCase = this.dataset.usecase;
+                
+                // Show qualification panel
+                const panel = document.getElementById(`qualification-${selectedUseCase}`);
+                if (panel) {
+                    panel.classList.add('active');
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                
+                // Update progress
+                document.getElementById('progressFill').style.width = '50%';
+                document.querySelector('.progress-text').textContent = 'Step 2 of 4 - Answer a few questions';
+            });
+        });
+        
+        // Option selection within qualification panels
+        document.querySelectorAll('.option-card').forEach(option => {
+            option.addEventListener('click', function() {
+                const panel = this.closest('.qualification-panel');
+                const questionGroup = this.closest('.question-group');
+                
+                // Clear selections in this question group
+                questionGroup.querySelectorAll('.option-card').forEach(o => o.classList.remove('selected'));
+                
+                // Select this option
+                this.classList.add('selected');
+                
+                // Check if all questions answered
+                const totalQuestions = panel.querySelectorAll('.question-group').length;
+                const answeredQuestions = panel.querySelectorAll('.question-group .option-card.selected').length;
+                
+                if (answeredQuestions >= totalQuestions) {
+                    panel.querySelector('.next-button').disabled = false;
+                    // Update progress
+                    document.getElementById('progressFill').style.width = '75%';
+                    document.querySelector('.progress-text').textContent = 'Step 3 of 4 - Ready for recommendations';
+                }
+            });
+        });
+        
+        // Next buttons
+        document.querySelectorAll('.next-button').forEach(button => {
+            button.addEventListener('click', function() {
+                // Collect qualification data
+                const panel = this.closest('.qualification-panel');
+                const selectedOptions = panel.querySelectorAll('.option-card.selected');
+                
+                qualificationData = {
+                    useCase: selectedUseCase,
+                    answers: Array.from(selectedOptions).map(option => ({
+                        question: option.closest('.question-group').querySelector('.question-label').textContent,
+                        answer: option.dataset.option
+                    }))
+                };
+                
+                console.log('Qualification data:', qualificationData);
+                
+                // Navigate to recommendations page
+                alert('Navigating to personalised recommendations...');
+                // In real implementation: window.location.href = '/recommendations?data=' + encodeURIComponent(JSON.stringify(qualificationData));
+            });
+        });
+    </script>
+</body>
+</html>

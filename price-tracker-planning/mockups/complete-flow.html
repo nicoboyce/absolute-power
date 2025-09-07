@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Station Advisor - Never Lose Power When It Matters Most</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            scroll-behavior: smooth;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            color: white;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+        }
+        
+        .hero-content {
+            max-width: 700px;
+            text-align: center;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .problem-hook {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            line-height: 1.1;
+        }
+        
+        .scenario-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0 3rem;
+        }
+        
+        .scenario-card {
+            background: rgba(255,255,255,0.15);
+            padding: 2rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .main-cta {
+            background: #e74c3c;
+            color: white;
+            padding: 1.2rem 3rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        /* USE CASE SECTION */
+        .use-case-section {
+            padding: 4rem 0;
+            background: #f8f9fa;
+            display: none;
+        }
+        
+        .use-case-section.active {
+            display: block;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        
+        .use-case-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+        
+        .use-case-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        
+        .use-case-card.selected {
+            border-color: #3498db;
+            background: #f8fbff;
+        }
+        
+        .use-case-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+        
+        .use-case-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        /* RECOMMENDATIONS SECTION */
+        .recommendations-section {
+            padding: 4rem 0;
+            background: white;
+            display: none;
+        }
+        
+        .recommendations-section.active {
+            display: block;
+        }
+        
+        .recommendations-header {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            border-radius: 16px;
+            margin-bottom: 3rem;
+        }
+        
+        .personal-greeting {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .recommendations-grid {
+            display: grid;
+            gap: 2.5rem;
+        }
+        
+        .recommendation-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-left: 5px solid #3498db;
+            position: relative;
+        }
+        
+        .recommendation-badge {
+            position: absolute;
+            top: -10px;
+            left: 2rem;
+            background: #27ae60;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .product-header {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .product-info h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .why-perfect {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+        }
+        
+        .best-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #27ae60;
+        }
+        
+        .track-button {
+            background: #3498db;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        /* EMAIL CAPTURE */
+        .email-capture-section {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            display: none;
+        }
+        
+        .email-capture-section.active {
+            display: block;
+        }
+        
+        .email-form {
+            display: flex;
+            max-width: 500px;
+            margin: 2rem auto 0;
+            gap: 1rem;
+        }
+        
+        .email-input {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .email-submit {
+            background: white;
+            color: #e74c3c;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        /* SUCCESS SECTION */
+        .success-section {
+            background: #2ecc71;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            display: none;
+        }
+        
+        .success-section.active {
+            display: block;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+        }
+        
+        /* PROGRESS BAR */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #ecf0f1;
+            z-index: 1000;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #3498db;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .problem-hook {
+                font-size: 2.5rem;
+            }
+            
+            .scenario-list,
+            .use-cases-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-header {
+                grid-template-columns: 1fr;
+            }
+            
+            .email-form {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressBar"></div>
+    </div>
+    
+    <!-- STAGE 1: HERO SECTION -->
+    <section class="hero" id="heroSection">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="problem-hook">Never lose power when it matters most</h1>
+                
+                <div class="scenario-list">
+                    <div class="scenario-card">
+                        <span style="font-size: 3rem; display: block; margin-bottom: 1rem;">🏥</span>
+                        <h3>Medical Equipment</h3>
+                        <p>CPAP machines, oxygen concentrators</p>
+                    </div>
+                    
+                    <div class="scenario-card">
+                        <span style="font-size: 3rem; display: block; margin-bottom: 1rem;">🏠</span>
+                        <h3>Family Safety</h3>
+                        <p>Emergency backup power</p>
+                    </div>
+                    
+                    <div class="scenario-card">
+                        <span style="font-size: 3rem; display: block; margin-bottom: 1rem;">💼</span>
+                        <h3>Work From Home</h3>
+                        <p>Uninterrupted productivity</p>
+                    </div>
+                    
+                    <div class="scenario-card">
+                        <span style="font-size: 3rem; display: block; margin-bottom: 1rem;">⛺</span>
+                        <h3>Off-Grid Adventures</h3>
+                        <p>Camping and van life</p>
+                    </div>
+                </div>
+                
+                <button class="main-cta" onclick="startFlow()">
+                    Find Your Perfect Power Solution
+                </button>
+                
+                <p style="margin-top: 1.5rem; opacity: 0.9;">
+                    ⚡ Free personalised recommendations in under 2 minutes
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- STAGE 2: USE CASE SELECTOR -->
+    <section class="use-case-section" id="useCaseSection">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">What's your primary power need?</h2>
+                <p style="font-size: 1.2rem; color: #7f8c8d;">
+                    Choose the situation that best describes your requirements
+                </p>
+            </div>
+            
+            <div class="use-cases-grid">
+                <div class="use-case-card" data-usecase="medical">
+                    <span class="use-case-icon">🏥</span>
+                    <h3 class="use-case-title">Medical & Health</h3>
+                    <p>CPAP machines, oxygen concentrators, medication fridges</p>
+                </div>
+                
+                <div class="use-case-card" data-usecase="emergency">
+                    <span class="use-case-icon">🏠</span>
+                    <h3 class="use-case-title">Home & Emergency</h3>
+                    <p>Family backup power for outages and emergencies</p>
+                </div>
+                
+                <div class="use-case-card" data-usecase="professional">
+                    <span class="use-case-icon">💼</span>
+                    <h3 class="use-case-title">Work & Professional</h3>
+                    <p>Reliable power for work equipment and deadlines</p>
+                </div>
+                
+                <div class="use-case-card" data-usecase="adventure">
+                    <span class="use-case-icon">⛺</span>
+                    <h3 class="use-case-title">Adventure & Off-Grid</h3>
+                    <p>Portable power for camping and remote adventures</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- STAGE 3: RECOMMENDATIONS -->
+    <section class="recommendations-section" id="recommendationsSection">
+        <div class="container">
+            <div class="recommendations-header">
+                <h2 class="personal-greeting" id="personalGreeting">
+                    Perfect power solutions for your needs
+                </h2>
+                <p id="matchExplanation">
+                    We've found the best power stations for your specific requirements
+                </p>
+            </div>
+            
+            <div class="recommendations-grid" id="recommendationsGrid">
+                <!-- Recommendations will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- STAGE 4: EMAIL CAPTURE -->
+    <section class="email-capture-section" id="emailCaptureSection">
+        <div class="container">
+            <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">
+                Track prices on your perfect power stations
+            </h2>
+            <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+                Get instant alerts when prices drop. We've saved customers an average of £180 on their purchases.
+            </p>
+            
+            <form class="email-form" id="emailForm">
+                <input type="email" class="email-input" placeholder="Enter your email address" required>
+                <button type="submit" class="email-submit">Get Price Alerts</button>
+            </form>
+            
+            <p style="margin-top: 1rem; opacity: 0.8; font-size: 0.9rem;">
+                📧 Trusted by 15,000+ power station buyers • Unsubscribe anytime
+            </p>
+        </div>
+    </section>
+    
+    <!-- STAGE 5: SUCCESS -->
+    <section class="success-section" id="successSection">
+        <div class="container">
+            <div class="success-icon">🎉</div>
+            <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">
+                You're all set!
+            </h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem;">
+                We'll monitor prices and send you alerts when your perfect power stations go on sale.
+            </p>
+            <p style="opacity: 0.8;">
+                Check your email for your personalised power station guide and setup tips.
+            </p>
+        </div>
+    </section>
+    
+    <script>
+        let currentStage = 1;
+        let selectedUseCase = null;
+        let userEmail = null;
+        
+        const recommendations = {
+            medical: [
+                {
+                    name: "Jackery Explorer 1000 v2",
+                    capacity: "1070Wh",
+                    price: "£449",
+                    badge: "BEST MATCH",
+                    why: "Runs a CPAP machine for 3+ nights. Silent operation won't disturb sleep.",
+                    benefits: ["Silent Operation", "3+ Night Runtime", "Medical Grade", "Fast Recharge"]
+                },
+                {
+                    name: "Bluetti EB3A",
+                    capacity: "268Wh", 
+                    price: "£209",
+                    badge: "BEST VALUE",
+                    why: "Affordable backup for single nights. Ultra-portable for travel.",
+                    benefits: ["Travel Friendly", "Best Value", "Quick Charge", "Multiple Outlets"]
+                }
+            ],
+            emergency: [
+                {
+                    name: "EcoFlow DELTA 2",
+                    capacity: "1024Wh",
+                    price: "£699",
+                    badge: "BEST MATCH",
+                    why: "Powers essential home appliances during outages. Fast recharge capability.",
+                    benefits: ["Home Backup", "Fast Charging", "Multiple AC Outlets", "Solar Ready"]
+                }
+            ],
+            professional: [
+                {
+                    name: "Anker SOLIX C1000",
+                    capacity: "1056Wh",
+                    price: "£999",
+                    badge: "BEST MATCH", 
+                    why: "Reliable power for work equipment. UPS functionality for seamless transitions.",
+                    benefits: ["UPS Function", "Laptop Charging", "Reliable Power", "Compact Design"]
+                }
+            ],
+            adventure: [
+                {
+                    name: "Jackery Explorer 300 Plus",
+                    capacity: "288Wh",
+                    price: "£229", 
+                    badge: "BEST MATCH",
+                    why: "Perfect for camping trips. Lightweight and portable design.",
+                    benefits: ["Lightweight", "Solar Charging", "Outdoor Ready", "Long Runtime"]
+                }
+            ]
+        };
+        
+        function updateProgress(percentage) {
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+        
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show target section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        function startFlow() {
+            currentStage = 2;
+            updateProgress(25);
+            showSection('useCaseSection');
+        }
+        
+        // Use case selection
+        document.querySelectorAll('.use-case-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Clear previous selections
+                document.querySelectorAll('.use-case-card').forEach(c => c.classList.remove('selected'));
+                
+                // Select current card
+                this.classList.add('selected');
+                selectedUseCase = this.dataset.usecase;
+                
+                // Brief delay then show recommendations
+                setTimeout(() => {
+                    showRecommendations();
+                }, 500);
+            });
+        });
+        
+        function showRecommendations() {
+            currentStage = 3;
+            updateProgress(50);
+            
+            // Update personal greeting based on use case
+            const greetings = {
+                medical: "Perfect power solutions for your medical needs",
+                emergency: "Reliable backup power for your home",
+                professional: "Professional power solutions for your work",
+                adventure: "Adventure-ready portable power stations"
+            };
+            
+            const explanations = {
+                medical: "Based on your medical power requirements, these stations will keep your essential equipment running reliably.",
+                emergency: "These power stations provide dependable backup power for home emergencies and outages.", 
+                professional: "Professional-grade power solutions to keep your work equipment running without interruption.",
+                adventure: "Portable power stations perfect for camping, van life, and off-grid adventures."
+            };
+            
+            document.getElementById('personalGreeting').textContent = greetings[selectedUseCase];
+            document.getElementById('matchExplanation').textContent = explanations[selectedUseCase];
+            
+            // Generate recommendation cards
+            const grid = document.getElementById('recommendationsGrid');
+            grid.innerHTML = '';
+            
+            recommendations[selectedUseCase].forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'recommendation-card';
+                card.innerHTML = `
+                    <div class="recommendation-badge">${product.badge}</div>
+                    <div class="product-header">
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p style="color: #7f8c8d; margin-bottom: 1rem;">${product.capacity} • Premium quality</p>
+                            <div class="why-perfect">
+                                <h4>Why this is perfect for you:</h4>
+                                <p>${product.why}</p>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div class="best-price">${product.price}</div>
+                            <div style="color: #7f8c8d; font-size: 0.9rem;">Best price found</div>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 2rem;">
+                        ${product.benefits.map(benefit => `
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <span style="color: #27ae60;">✓</span>
+                                <span style="font-size: 0.9rem;">${benefit}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="track-button" onclick="trackProduct('${product.name}')">
+                        Track This Price
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+            
+            showSection('recommendationsSection');
+        }
+        
+        function trackProduct(productName) {
+            currentStage = 4;
+            updateProgress(75);
+            showSection('emailCaptureSection');
+        }
+        
+        // Email form submission
+        document.getElementById('emailForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            userEmail = this.querySelector('input[type="email"]').value;
+            
+            currentStage = 5;
+            updateProgress(100);
+            showSection('successSection');
+            
+            // In real implementation: submit to backend
+            console.log('Conversion completed:', {
+                email: userEmail,
+                useCase: selectedUseCase,
+                stage: currentStage
+            });
+        });
+        
+        // Initialize progress
+        updateProgress(0);
+    </script>
+</body>
+</html>

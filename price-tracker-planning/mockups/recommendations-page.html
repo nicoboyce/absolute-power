@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Perfect Power Solutions - Personalised Recommendations</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .recommendations-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .personal-greeting {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .match-explanation {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .recommendations-section {
+            padding: 4rem 0;
+        }
+        
+        .section-intro {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .results-count {
+            background: #e8f5e8;
+            color: #2d5a2d;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            display: inline-block;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .recommendations-grid {
+            display: grid;
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .recommendation-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: relative;
+            border-left: 5px solid #3498db;
+        }
+        
+        .recommendation-badge {
+            position: absolute;
+            top: -10px;
+            left: 2rem;
+            background: #e74c3c;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .recommendation-badge.best {
+            background: #27ae60;
+        }
+        
+        .recommendation-badge.budget {
+            background: #f39c12;
+        }
+        
+        .recommendation-badge.premium {
+            background: #9b59b6;
+        }
+        
+        .product-header {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2rem;
+            align-items: start;
+            margin-bottom: 2rem;
+        }
+        
+        .product-info h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+        
+        .product-subtitle {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            margin-bottom: 1rem;
+        }
+        
+        .why-perfect {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 2rem;
+        }
+        
+        .why-perfect h4 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .why-perfect p {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+        }
+        
+        .price-section {
+            text-align: right;
+        }
+        
+        .best-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #27ae60;
+            margin-bottom: 0.5rem;
+        }
+        
+        .price-context {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-bottom: 1rem;
+        }
+        
+        .price-alert-mini {
+            background: #fff3cd;
+            color: #856404;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .benefit-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e3f2fd;
+            border-radius: 50%;
+        }
+        
+        .benefit-text {
+            flex: 1;
+        }
+        
+        .benefit-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #2c3e50;
+        }
+        
+        .benefit-desc {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+        }
+        
+        .social-proof {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .testimonial {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+        
+        .testimonial-author {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.9rem;
+        }
+        
+        .actions-row {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .track-button {
+            background: #3498db;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .track-button:hover {
+            background: #2980b9;
+        }
+        
+        .view-details {
+            background: transparent;
+            color: #3498db;
+            padding: 1rem 1.5rem;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .view-details:hover {
+            background: #3498db;
+            color: white;
+        }
+        
+        .compare-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        .email-capture-cta {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            margin-top: 3rem;
+            border-radius: 16px;
+        }
+        
+        .cta-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-description {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .email-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+            gap: 1rem;
+        }
+        
+        .email-input {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .email-submit {
+            background: #e74c3c;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .email-submit:hover {
+            background: #c0392b;
+        }
+        
+        .trust-line {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .personal-greeting {
+                font-size: 2rem;
+            }
+            
+            .product-header {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .price-section {
+                text-align: left;
+            }
+            
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .actions-row {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .email-form {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="recommendations-header">
+        <div class="container">
+            <h1 class="personal-greeting">Perfect power solutions for your medical needs</h1>
+            <p class="match-explanation">
+                Based on your CPAP requirements and need for 8-10 hours of backup power, 
+                we've found 3 power stations that will keep your essential medical equipment running reliably.
+            </p>
+        </div>
+    </header>
+    
+    <section class="recommendations-section">
+        <div class="container">
+            <div class="section-intro">
+                <div class="results-count">
+                    ✅ 3 perfect matches found from 30+ power stations
+                </div>
+                <p>Each recommendation is specifically chosen for your medical power requirements</p>
+            </div>
+            
+            <div class="recommendations-grid">
+                <!-- Best Match Recommendation -->
+                <div class="recommendation-card">
+                    <div class="recommendation-badge best">BEST MATCH</div>
+                    
+                    <div class="product-header">
+                        <div class="product-info">
+                            <h3>Jackery Explorer 1000 v2</h3>
+                            <p class="product-subtitle">1070Wh LiFePO4 • Perfect for CPAP users</p>
+                            
+                            <div class="why-perfect">
+                                <h4>Why this is perfect for you:</h4>
+                                <p>Runs a CPAP machine for 3+ nights on one charge. Silent operation won't disturb sleep. Medical-grade reliability trusted by 5,000+ CPAP users.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="price-section">
+                            <div class="best-price">£449</div>
+                            <div class="price-context">Best price across 5 retailers</div>
+                            <div class="price-alert-mini">📈 Price dropped 16% this week</div>
+                        </div>
+                    </div>
+                    
+                    <div class="benefits-grid">
+                        <div class="benefit-item">
+                            <div class="benefit-icon">😴</div>
+                            <div class="benefit-text">
+                                <div class="benefit-title">Silent Operation</div>
+                                <div class="benefit-desc">Won't disturb your sleep</div>
+                            </div>
+                        </div>
+                        
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🔋</div>
+                            <div class="benefit-text">
+                                <div class="benefit-title">3+ Night Runtime</div>
+                                <div class="benefit-desc">Full CPAP operation</div>
+                            </div>
+                        </div>
+                        
+                        <div class="benefit-item">
+                            <div class="benefit-icon">⚡</div>
+                            <div class="benefit-text">
+                                <div class="benefit-title">Fast Recharge</div>
+                                <div class="benefit-desc">2 hours to full</div>
+                            </div>
+                        </div>
+                        
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🏥</div>
+                            <div class="benefit-text">
+                                <div class="benefit-title">Medical Grade</div>
+                                <div class="benefit-desc">FDA registered</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="social-proof">
+                        <div class="testimonial">
+                            "My CPAP runs flawlessly for 3 nights. Game changer for camping trips with my sleep apnoea. The silent operation means my wife isn't disturbed either."
+                        </div>
+                        <div class="testimonial-author">— Marcus S., CPAP user since 2019</div>
+                    </div>
+                    
+                    <div class="actions-row">
+                        <button class="track-button">Track This Price</button>
+                        <a href="#" class="view-details">Full Specs</a>
+                        <label class="compare-checkbox">
+                            <input type="checkbox" name="compare" value="jackery-1000-v2">
+                            Compare
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Budget Option -->
+                <div class="recommendation-card">
+                    <div class="recommendation-badge budget">BEST VALUE</div>
+                    
+                    <div class="product-header">
+                        <div class="product-info">
+                            <h3>Bluetti EB3A</h3>
+                            <p class="product-subtitle">268Wh LiFePO4 • Compact medical backup</p>
+                            
+                            <div class="why-perfect">
+                                <h4>Why this is perfect for you:</h4>
+                                <p>Affordable backup for single nights. Ultra-portable for travel. Powers CPAP for 6-8 hours - perfect for short outages or weekend trips.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="price-section">
+                            <div class="best-price">£209</div>
+                            <div class="price-context">Exceptional value</div>
+                            <div class="price-alert-mini">💰 Save £240 vs premium options</div>
+                        </div>
+                    </div>
+                    
+                    <div class="benefits-grid">
+                        <div class="benefit-item">
+                            <div class="benefit-icon">💼</div>
+                            <div class="benefit-text">
+                                <div class="benefit-title">Travel Friendly</div>
+                                <div class="benefit-desc">Just 4.6kg portable</div>
+                            </div>
+                        </div>
+                        
+                        <div class="benefit-item">
+                            <div class="benefit-icon">💰</div>
+                            <div class="benefit-text">
+                                <div class="benefit-title">Best Value</div>
+                                <div class="benefit-desc">Under £210</div>
+                            </div>
+                        </div>
+                        
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🔌</div>
+                            <div class="benefit-text">
+                                <div class="benefit-title">Multiple Outlets</div>
+                                <div class="benefit-desc">CPAP + phone charging</div>
+                            </div>
+                        </div>
+                        
+                        <div class="benefit-item">
+                            <div class="benefit-icon">⚡</div>
+                            <div class="benefit-text">
+                                <div class="benefit-title">Quick Charge</div>
+                                <div class="benefit-desc">1.5 hours</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="social-proof">
+                        <div class="testimonial">
+                            "Perfect for my weekend camping trips. Small enough to fit in my travel bag but powers my CPAP all night. Brilliant value for money."
+                        </div>
+                        <div class="testimonial-author">— Sarah M., Travel nurse</div>
+                    </div>
+                    
+                    <div class="actions-row">
+                        <button class="track-button">Track This Price</button>
+                        <a href="#" class="view-details">Full Specs</a>
+                        <label class="compare-checkbox">
+                            <input type="checkbox" name="compare" value="bluetti-eb3a">
+                            Compare
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Premium Option -->
+                <div class="recommendation-card">
+                    <div class="recommendation-badge premium">PREMIUM CHOICE</div>
+                    
+                    <div class="product-header">
+                        <div class="product-info">
+                            <h3>Anker SOLIX C1000</h3>
+                            <p class="product-subtitle">1056Wh LiFePO4 • Premium medical backup</p>
+                            
+                            <div class="why-perfect">
+                                <h4>Why this is perfect for you:</h4>
+                                <p>Extended 4+ night runtime. Premium build quality. Multiple device support. Perfect for extended outages or running CPAP plus backup equipment.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="price-section">
+                            <div class="best-price">£999</div>
+                            <div class="price-context">Premium investment</div>
+                            <div class="price-alert-mini">🎯 16% off at Amazon UK</div>
+                        </div>
+                    </div>
+                    
+                    <div class="benefits-grid">
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🔋</div>
+                            <div class="benefit-text">
+                                <div class="benefit-title">Extended Runtime</div>
+                                <div class="benefit-desc">4+ nights CPAP</div>
+                            </div>
+                        </div>
+                        
+                        <div class="benefit-item">
+                            <div class="benefit-icon">⭐</div>
+                            <div class="benefit-text">
+                                <div class="benefit-title">Premium Build</div>
+                                <div class="benefit-desc">10-year warranty</div>
+                            </div>
+                        </div>
+                        
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🔌</div>
+                            <div class="benefit-text">
+                                <div class="benefit-title">Multiple Devices</div>
+                                <div class="benefit-desc">CPAP + humidifier</div>
+                            </div>
+                        </div>
+                        
+                        <div class="benefit-item">
+                            <div class="benefit-icon">📱</div>
+                            <div class="benefit-text">
+                                <div class="benefit-title">Smart Monitoring</div>
+                                <div class="benefit-desc">App control</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="social-proof">
+                        <div class="testimonial">
+                            "Worth every penny. Runs my CPAP with humidifier for nearly a week. The app alerts are fantastic - I know exactly how much power I have left."
+                        </div>
+                        <div class="testimonial-author">— David R., Sleep clinic patient</div>
+                    </div>
+                    
+                    <div class="actions-row">
+                        <button class="track-button">Track This Price</button>
+                        <a href="#" class="view-details">Full Specs</a>
+                        <label class="compare-checkbox">
+                            <input type="checkbox" name="compare" value="anker-solix-c1000">
+                            Compare
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="email-capture-cta">
+        <div class="container">
+            <h2 class="cta-title">Track prices on your shortlisted power stations</h2>
+            <p class="cta-description">
+                Get instant alerts when prices drop on your chosen medical power solutions. 
+                We've saved CPAP users an average of £180 on their power station purchases.
+            </p>
+            
+            <form class="email-form" id="emailForm">
+                <input type="email" class="email-input" placeholder="Enter your email address" required>
+                <button type="submit" class="email-submit">Get Price Alerts</button>
+            </form>
+            
+            <p class="trust-line">
+                📧 Trusted by 15,000+ power station buyers • Unsubscribe anytime
+            </p>
+        </div>
+    </section>
+    
+    <script>
+        // Track button functionality
+        document.querySelectorAll('.track-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.recommendation-card');
+                const productName = card.querySelector('h3').textContent;
+                
+                // Show email form or add to tracking list
+                alert(`Adding ${productName} to your price tracking list! Please enter your email below to receive alerts.`);
+                
+                // Scroll to email form
+                document.querySelector('.email-capture-cta').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+            });
+        });
+        
+        // Email form submission
+        document.getElementById('emailForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = this.querySelector('input[type="email"]').value;
+            const selectedProducts = document.querySelectorAll('input[name="compare"]:checked');
+            
+            const trackingData = {
+                email: email,
+                useCase: 'medical-cpap',
+                products: Array.from(selectedProducts).map(cb => cb.value)
+            };
+            
+            console.log('Tracking signup:', trackingData);
+            
+            // Show success message
+            alert(`Thank you! You'll receive price alerts for your selected power stations at ${email}`);
+            
+            // In real implementation: submit to backend
+        });
+    </script>
+</body>
+</html>
