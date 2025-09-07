@@ -444,7 +444,11 @@
                 <div class="product-card" data-product="{{ product.id }}" 
                      data-brand="{{ product.brand.lower() }}" 
                      data-chemistry="{{ product.specs.chemistry }}"
-                     data-capacity="{{ product.specs.capacity|replace('Wh', '')|int }}">
+                     data-capacity="{{ product.specs.capacity|replace('Wh', '')|int }}"
+                     data-power="{{ product.specs.ac_output.continuous|replace('W', '')|int if product.specs.ac_output.continuous else 0 }}"
+                     data-charging-time="{{ product.specs.performance.charging_times.ac if product.specs.performance and product.specs.performance.charging_times and product.specs.performance.charging_times.ac else '4+ hours' }}"
+                     data-solar-input="{{ product.specs.inputs.solar.max_power|replace('W', '')|int if product.specs.inputs and product.specs.inputs.solar and product.specs.inputs.solar.max_power else 0 }}"
+                     data-ups-capable="{{ 'true' if 'UPS' in (product.specs.features or []) else 'false' }}">
                     <h3 class="product-name">{{ product.name }}</h3>
                     <div class="product-specs">
                         <strong>{{ product.specs.capacity }}</strong> • 
@@ -532,18 +536,33 @@
         function applyFilters() {
             const powerFilter = document.getElementById('power-filter').value;
             const chemistryFilter = document.getElementById('chemistry-filter').value;
+            const chargingFilter = document.getElementById('charging-filter').value;
+            const solarFilter = document.getElementById('solar-filter').value;
+            const upsFilter = document.getElementById('ups-filter').value;
             const brandFilter = document.getElementById('brand-filter').value;
             
             const products = document.querySelectorAll('.product-card');
+            let visibleCount = 0;
             
             products.forEach(product => {
                 let show = true;
                 
-                // Apply brand filter
-                if (brandFilter !== 'All brands') {
-                    const productBrand = product.dataset.brand;
-                    if (!productBrand.includes(brandFilter.toLowerCase())) {
-                        show = false;
+                // Apply power output filter
+                if (powerFilter !== 'All power levels') {
+                    const power = parseInt(product.dataset.power) || 0;
+                    switch(powerFilter) {
+                        case '<500W':
+                            if (power >= 500) show = false;
+                            break;
+                        case '500-1000W':
+                            if (power < 500 || power > 1000) show = false;
+                            break;
+                        case '1000-2000W':
+                            if (power < 1000 || power > 2000) show = false;
+                            break;
+                        case '2000W+':
+                            if (power < 2000) show = false;
+                            break;
                     }
                 }
                 
@@ -555,8 +574,71 @@
                     }
                 }
                 
+                // Apply charging speed filter
+                if (chargingFilter !== 'All charging speeds') {
+                    const chargingTime = product.dataset.chargingTime;
+                    switch(chargingFilter) {
+                        case '<2 hours':
+                            if (!chargingTime || !chargingTime.match(/^[01]\.\d|\d{1}\s*min|1\s*hr/i)) show = false;
+                            break;
+                        case '2-4 hours':
+                            if (!chargingTime || !chargingTime.match(/^[2-4](\.\d)?\s*hr/i)) show = false;
+                            break;
+                        case '4+ hours':
+                            if (chargingTime && chargingTime.match(/^[0-3](\.\d)?\s*hr/i)) show = false;
+                            break;
+                    }
+                }
+                
+                // Apply solar input filter
+                if (solarFilter !== 'All solar capabilities') {
+                    const solar = parseInt(product.dataset.solarInput) || 0;
+                    switch(solarFilter) {
+                        case '<200W':
+                            if (solar >= 200) show = false;
+                            break;
+                        case '200-400W':
+                            if (solar < 200 || solar > 400) show = false;
+                            break;
+                        case '400W+':
+                            if (solar < 400) show = false;
+                            break;
+                    }
+                }
+                
+                // Apply UPS filter
+                if (upsFilter !== 'All UPS capabilities') {
+                    const hasUPS = product.dataset.upsCapable === 'true';
+                    switch(upsFilter) {
+                        case 'True UPS (<20ms)':
+                        case 'Fast switch (20-50ms)':
+                        case 'Standard (50ms+)':
+                            if (!hasUPS) show = false;
+                            break;
+                    }
+                }
+                
+                // Apply brand filter
+                if (brandFilter !== 'All brands') {
+                    const productBrand = product.dataset.brand;
+                    if (!productBrand.includes(brandFilter.toLowerCase().replace('anker solix', 'anker'))) {
+                        show = false;
+                    }
+                }
+                
                 product.style.display = show ? 'block' : 'none';
+                if (show) visibleCount++;
             });
+            
+            // Update results count
+            updateResultsCount(visibleCount);
+        }
+        
+        function updateResultsCount(count) {
+            let resultText = document.querySelector('.section-title');
+            if (resultText) {
+                resultText.textContent = `All Power Stations (${count} ${count === 1 ? 'result' : 'results'})`;
+            }
         }
         
         // Reset filters function

@@ -16,7 +16,7 @@ class BluettiUKScraper(BaseScraper):
     def __init__(self):
         super().__init__('bluetti_uk', 'https://bluettipower.co.uk')
         # Add specific headers for Bluetti
-        self.headers.update({
+        self.session.headers.update({
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
             'Accept-Language': 'en-GB,en;q=0.5',
@@ -143,7 +143,7 @@ class BluettiUKScraper(BaseScraper):
             
             self.logger.info(f"Scraping {product_id} from {url}")
             
-            response = requests.get(url, headers=self.headers, timeout=15)
+            response = requests.get(url, headers=self.session.headers, timeout=15)
             response.raise_for_status()
             
             soup = BeautifulSoup(response.content, 'html.parser')

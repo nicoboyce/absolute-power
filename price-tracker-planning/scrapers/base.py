@@ -157,6 +157,41 @@ class BaseScraper:
         except mariadb.Error as e:
             self.logger.error(f"Database error: {e}")
     
+    def create_result(self, product_id, price, in_stock, status, url=None):
+        """Create a standardized scraping result dictionary"""
+        if price is not None and in_stock is not None and status == "success":
+            # Save successful price data
+            price_data = {
+                'product_id': product_id,
+                'retailer': self.retailer_name,
+                'price': price,
+                'in_stock': in_stock,
+                'url': url
+            }
+            self.save_price(price_data)
+            self.log_scrape_result(product_id, "success")
+            
+            return {
+                'product_id': product_id,
+                'retailer': self.retailer_name,
+                'price': price,
+                'in_stock': in_stock,
+                'status': 'success',
+                'url': url
+            }
+        else:
+            # Log failed scrape
+            self.log_scrape_result(product_id, "failed", status)
+            return {
+                'product_id': product_id,
+                'retailer': self.retailer_name,
+                'price': None,
+                'in_stock': None,
+                'status': 'failed',
+                'error': status,
+                'url': url
+            }
+    
     def log_scrape_result(self, product_id, status, error_message=None):
         """Log scraping result to database or console for testing"""
         if not HAS_MARIADB:
