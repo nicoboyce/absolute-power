@@ -34,6 +34,13 @@
       "in_stock": true,
       "scraped_at": "2025-09-07T03:09:47.124430",
       "url": "https://www.anker.com/uk/products/a1753"
+    },
+    {
+      "retailer": "anker_uk",
+      "price": 599.0,
+      "in_stock": true,
+      "scraped_at": "2025-09-07T03:35:14.210162",
+      "url": "https://www.anker.com/uk/products/a1753"
     }
   ],
   "anker-solix-c1000": [
@@ -104,7 +111,11 @@
       "retailer": "amazon_uk",
       "price": 76.0,
       "in_stock": false,
+<<<<<<< Updated upstream
       "scraped_at": "2025-09-07T09:07:59.841346",
+=======
+      "scraped_at": "2025-09-07T03:35:38.942660",
+>>>>>>> Stashed changes
       "url": "https://www.amazon.co.uk/dp/B0CJMC4Y4J"
     }
   ],
@@ -157,6 +168,13 @@
       "in_stock": true,
       "scraped_at": "2025-09-07T03:02:16.759346",
       "url": "https://uk.jackery.com/products/explorer-3000-v2-portable-power-station"
+    },
+    {
+      "retailer": "jackery_uk",
+      "price": 1999.0,
+      "in_stock": true,
+      "scraped_at": "2025-09-07T03:32:43.674442",
+      "url": "https://uk.jackery.com/products/explorer-3000-v2-portable-power-station"
     }
   ],
   "jackery-explorer-300-plus": [
@@ -207,6 +225,13 @@
       "price": 229.0,
       "in_stock": true,
       "scraped_at": "2025-09-07T03:02:38.681110",
+      "url": "https://uk.jackery.com/products/explorer-300-plus-portable-power-station"
+    },
+    {
+      "retailer": "jackery_uk",
+      "price": 229.0,
+      "in_stock": true,
+      "scraped_at": "2025-09-07T03:33:03.217363",
       "url": "https://uk.jackery.com/products/explorer-300-plus-portable-power-station"
     }
   ],
@@ -264,7 +289,11 @@
       "retailer": "jackery_uk",
       "price": 1399.0,
       "in_stock": true,
+<<<<<<< Updated upstream
       "scraped_at": "2025-09-07T09:07:45.390690",
+=======
+      "scraped_at": "2025-09-07T03:33:12.930701",
+>>>>>>> Stashed changes
       "url": "https://uk.jackery.com/products/explorer-2000-plus-portable-power-station"
     }
   ],
@@ -322,7 +351,11 @@
       "retailer": "jackery_uk",
       "price": 99.0,
       "in_stock": true,
+<<<<<<< Updated upstream
       "scraped_at": "2025-09-07T09:07:13.289343",
+=======
+      "scraped_at": "2025-09-07T03:33:38.525274",
+>>>>>>> Stashed changes
       "url": "https://uk.jackery.com/products/explorer-100-plus-portable-power-station"
     }
   ],
@@ -375,6 +408,13 @@
       "in_stock": true,
       "scraped_at": "2025-09-07T03:05:38.792005",
       "url": "https://uk.jackery.com/products/explorer-1000-plus-portable-power-station"
+    },
+    {
+      "retailer": "jackery_uk",
+      "price": 799.0,
+      "in_stock": true,
+      "scraped_at": "2025-09-07T03:33:47.557353",
+      "url": "https://uk.jackery.com/products/explorer-1000-plus-portable-power-station"
     }
   ],
   "anker-solix-f3800": [
@@ -418,6 +458,13 @@
       "price": 3699.0,
       "in_stock": true,
       "scraped_at": "2025-09-07T03:05:56.273028",
+      "url": "https://www.anker.com/uk/products/a1790"
+    },
+    {
+      "retailer": "anker_uk",
+      "price": 3699.0,
+      "in_stock": true,
+      "scraped_at": "2025-09-07T03:34:21.357652",
       "url": "https://www.anker.com/uk/products/a1790"
     }
   ],
@@ -470,6 +517,13 @@
       "in_stock": true,
       "scraped_at": "2025-09-07T03:06:06.161923",
       "url": "https://www.anker.com/uk/products/a1780"
+    },
+    {
+      "retailer": "anker_uk",
+      "price": 1699.0,
+      "in_stock": true,
+      "scraped_at": "2025-09-07T03:34:31.155255",
+      "url": "https://www.anker.com/uk/products/a1780"
     }
   ],
   "jackery-explorer-500-v2": [
@@ -521,6 +575,13 @@
       "in_stock": true,
       "scraped_at": "2025-09-07T03:13:44.608843",
       "url": "https://uk.jackery.com/products/explorer-500-v2-portable-power-station"
+    },
+    {
+      "retailer": "jackery_uk",
+      "price": 449.0,
+      "in_stock": true,
+      "scraped_at": "2025-09-07T03:35:50.187233",
+      "url": "https://uk.jackery.com/products/explorer-500-v2-portable-power-station"
     }
   ],
   "jackery-explorer-2000-v2": [
@@ -565,6 +626,13 @@
       "in_stock": true,
       "scraped_at": "2025-09-07T03:14:26.157958",
       "url": "https://uk.jackery.com/products/explorer-2000-v2-portable-power-station"
+    },
+    {
+      "retailer": "jackery_uk",
+      "price": 1099.0,
+      "in_stock": true,
+      "scraped_at": "2025-09-07T03:35:59.903571",
+      "url": "https://uk.jackery.com/products/explorer-2000-v2-portable-power-station"
     }
   ],
   "jackery-explorer-240-v2": [
@@ -580,6 +648,13 @@
       "price": 199.0,
       "in_stock": true,
       "scraped_at": "2025-09-07T03:09:36.550119",
+      "url": "https://uk.jackery.com/products/explorer-240-v2-portable-power-station"
+    },
+    {
+      "retailer": "jackery_uk",
+      "price": 199.0,
+      "in_stock": true,
+      "scraped_at": "2025-09-07T03:35:06.598404",
       "url": "https://uk.jackery.com/products/explorer-240-v2-portable-power-station"
     }
   ],
@@ -602,7 +677,11 @@
       "retailer": "jackery_uk",
       "price": 449.0,
       "in_stock": true,
+<<<<<<< Updated upstream
       "scraped_at": "2025-09-07T09:07:16.028059",
+=======
+      "scraped_at": "2025-09-07T03:36:59.516800",
+>>>>>>> Stashed changes
       "url": "https://uk.jackery.com/products/explorer-1000-v2-portable-power-station"
     }
   ],
