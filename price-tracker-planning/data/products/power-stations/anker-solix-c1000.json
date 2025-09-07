@@ -52,6 +52,10 @@
     "amazon_uk": {
       "url": "https://www.amazon.co.uk/dp/B0CJMC4Y4J",
       "affiliate_url": ""
+    },
+    "currys": {
+      "url": "https://www.currys.co.uk/products/anker-solix-c1000-portable-power-station-10253876.html",
+      "affiliate_url": ""
     }
   },
   "images": {

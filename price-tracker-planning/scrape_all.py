@@ -19,6 +19,8 @@ from scrapers.ecoflow import EcoFlowScraper
 from scrapers.jackery import JackeryScraper  
 from scrapers.anker import AnkerScraper
 from scrapers.currys import CurrysScraper
+from scrapers.amazon_uk import AmazonUKScraper
+from scrapers.bluetti_uk import BluettiUKScraper
 
 # Import headless scrapers with fallback
 try:
@@ -54,7 +56,9 @@ def scrape_all_retailers():
     scrapers = {
         'jackery_uk': JackeryScraper(),
         'anker_uk': AnkerScraper(),
-        'currys': CurrysScraper()
+        'currys': CurrysScraper(),
+        'amazon_uk': AmazonUKScraper(),
+        'bluetti_uk': BluettiUKScraper()
     }
     
     # Add headless scrapers if available (for JS-heavy sites)

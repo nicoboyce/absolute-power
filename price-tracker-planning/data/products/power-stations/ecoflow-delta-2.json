@@ -53,6 +53,10 @@
     "amazon_uk": {
       "url": "https://www.amazon.co.uk/dp/B0B8Y8N5C6",
       "affiliate_url": ""
+    },
+    "currys": {
+      "url": "https://www.currys.co.uk/products/ecoflow-delta-2-portable-power-station-10235285.html",
+      "affiliate_url": ""
     }
   },
   "images": {

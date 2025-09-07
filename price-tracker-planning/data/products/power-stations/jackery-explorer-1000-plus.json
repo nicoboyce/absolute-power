@@ -24,7 +24,16 @@
   },
   "retailers": {
     "jackery_uk": {
-      "url": "https://uk.jackery.com/products/explorer-1000-plus-portable-power-station"
+      "url": "https://uk.jackery.com/products/explorer-1000-plus-portable-power-station",
+      "affiliate_url": ""
+    },
+    "amazon_uk": {
+      "url": "https://www.amazon.co.uk/dp/B0CH8SPKB3",
+      "affiliate_url": ""
+    },
+    "currys": {
+      "url": "https://www.currys.co.uk/products/jackery-explorer-1000-plus-portable-power-station-10243752.html",
+      "affiliate_url": ""
     }
   }
 }
