@@ -36,21 +36,52 @@ class HeadlessScraper(BaseScraper):
         options.add_argument('--window-size=1920,1080')
         options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
         
-        # ARM-specific options
+        # ARM-specific options for Raspberry Pi
         options.add_argument('--disable-features=VizDisplayCompositor')
+        options.add_argument('--disable-backgrounding-occluded-windows')
+        options.add_argument('--disable-renderer-backgrounding')
+        options.add_argument('--disable-background-timer-throttling')
+        options.add_argument('--disable-ipc-flooding-protection')
         
-        # Use system chromium-driver
-        service = Service('/usr/bin/chromedriver')
+        # Try multiple possible chromedriver locations
+        possible_paths = [
+            '/usr/bin/chromedriver',
+            '/usr/local/bin/chromedriver', 
+            '/opt/chrome/chromedriver',
+            'chromedriver'  # In PATH
+        ]
+        
+        chromedriver_path = None
+        for path in possible_paths:
+            if Path(path).exists() or path == 'chromedriver':
+                chromedriver_path = path
+                break
+        
+        if not chromedriver_path:
+            self.logger.error("No chromedriver found in standard locations")
+            raise FileNotFoundError("chromedriver not found")
+        
+        service = Service(chromedriver_path)
         
         try:
-            self.logger.info("Initializing Chrome driver...")
+            self.logger.info(f"Initializing Chrome driver with path: {chromedriver_path}")
             self.driver = webdriver.Chrome(service=service, options=options)
             self.driver.set_page_load_timeout(30)
             self.driver.implicitly_wait(10)
             self.logger.info("Browser initialized successfully")
         except Exception as e:
-            self.logger.error(f"Failed to initialize browser: {e}")
-            raise
+            self.logger.error(f"Failed to initialize browser with {chromedriver_path}: {e}")
+            # Try fallback approach
+            try:
+                self.logger.info("Attempting fallback browser initialization...")
+                options.add_argument('--remote-debugging-port=9222')
+                self.driver = webdriver.Chrome(options=options)  # Let Selenium find driver
+                self.driver.set_page_load_timeout(30)
+                self.driver.implicitly_wait(10)
+                self.logger.info("Fallback browser initialization successful")
+            except Exception as e2:
+                self.logger.error(f"Fallback also failed: {e2}")
+                raise
         
     def close_browser(self):
         """Clean up browser resources"""
@@ -63,42 +94,66 @@ class HeadlessScraper(BaseScraper):
             finally:
                 self.driver = None
             
-    def get_page_content(self, url, wait_for_selector=None, wait_time=3):
+    def get_page_content(self, url, wait_for_selector=None, wait_time=3, max_retries=3):
         """
-        Fetch page content with JavaScript rendering
+        Fetch page content with JavaScript rendering and retry logic
         
         Args:
             url: URL to fetch
             wait_for_selector: CSS selector to wait for (optional)
             wait_time: Time to wait for page load (seconds)
+            max_retries: Maximum retry attempts
         """
-        try:
-            # Random delay before request
-            time.sleep(random.uniform(1, 3))
-            
-            # Navigate to page
-            self.driver.get(url)
-            
-            # Wait for specific content if specified
-            if wait_for_selector:
-                try:
-                    wait = WebDriverWait(self.driver, 10)
-                    wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, wait_for_selector)))
-                except Exception as e:
-                    self.logger.warning(f"Selector {wait_for_selector} not found on {url}: {e}")
-            else:
-                # Generic wait for page stability
+        for attempt in range(max_retries):
+            try:
+                # Random delay before request
+                time.sleep(random.uniform(2, 5))
+                
+                self.logger.info(f"Navigating to {url} (attempt {attempt + 1}/{max_retries})")
+                
+                # Navigate to page with timeout handling
+                self.driver.get(url)
+                
+                # Wait for page to be ready
+                WebDriverWait(self.driver, 10).until(
+                    lambda driver: driver.execute_script("return document.readyState") == "complete"
+                )
+                
+                # Wait for specific content if specified
+                if wait_for_selector:
+                    try:
+                        wait = WebDriverWait(self.driver, 15)
+                        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, wait_for_selector)))
+                        self.logger.info(f"Found selector: {wait_for_selector}")
+                    except Exception as e:
+                        self.logger.warning(f"Selector {wait_for_selector} not found on {url}: {e}")
+                        # Continue anyway - selector might not always be present
+                
+                # Additional wait for dynamic content
                 time.sleep(wait_time)
                 
-            # Get page content
-            content = self.driver.page_source
-            self.logger.info(f"Successfully fetched: {url}")
-            
-            return BeautifulSoup(content, 'html.parser')
-            
-        except Exception as e:
-            self.logger.error(f"Failed to fetch {url}: {e}")
-            return None
+                # Scroll to trigger any lazy loading
+                self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight/2);")
+                time.sleep(1)
+                self.driver.execute_script("window.scrollTo(0, 0);")
+                time.sleep(1)
+                
+                # Get page content
+                content = self.driver.page_source
+                self.logger.info(f"Successfully fetched: {url}")
+                
+                return BeautifulSoup(content, 'html.parser')
+                
+            except Exception as e:
+                self.logger.error(f"Attempt {attempt + 1} failed for {url}: {e}")
+                if attempt < max_retries - 1:
+                    self.logger.info(f"Retrying in {5 * (attempt + 1)} seconds...")
+                    time.sleep(5 * (attempt + 1))  # Exponential backoff
+                else:
+                    self.logger.error(f"All {max_retries} attempts failed for {url}")
+                    return None
+        
+        return None
 
     def scrape_product(self, product_id, url, price_selector=None, stock_selector=None):
         """Scrape product using headless browser"""

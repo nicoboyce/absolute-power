@@ -25,7 +25,16 @@
   },
   "retailers": {
     "bluetti_uk": {
-      "url": "https://bluettipower.co.uk/products/bluetti-eb3a-portable-power-station"
+      "url": "https://bluettipower.co.uk/products/bluetti-eb3a-portable-power-station",
+      "affiliate_url": ""
+    },
+    "amazon_uk": {
+      "url": "https://www.amazon.co.uk/dp/B0B7RZQS8R",
+      "affiliate_url": ""
+    },
+    "ebay_official": {
+      "url": "https://www.ebay.co.uk/str/bluettiukofficial/bluetti-eb3a",
+      "affiliate_url": ""
     }
   }
 }

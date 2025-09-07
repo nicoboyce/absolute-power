@@ -79,6 +79,16 @@ class BaseScraper:
         self.session = requests.Session()
         self.logger = logging.getLogger(f'scraper.{retailer_name}')
         
+        # Import price validator for data quality checks
+        try:
+            from price_validator import validate_scraped_price
+            self.price_validator = validate_scraped_price
+            self.validation_enabled = True
+        except ImportError:
+            self.logger.warning("Price validation system not available")
+            self.price_validator = None
+            self.validation_enabled = False
+        
         # Set up session headers
         self.session.headers.update({
             'User-Agent': random.choice(USER_AGENTS),
@@ -220,6 +230,16 @@ class BaseScraper:
             if price is None:
                 self.log_scrape_result(product_id, 'not_found', 'Price not found')
                 return None
+            
+            # Validate price quality if validator is available
+            if self.validation_enabled and self.price_validator:
+                is_valid, reason = self.price_validator(product_id, self.retailer_name, price)
+                if not is_valid:
+                    self.logger.warning(f"Price validation failed for {product_id}: {reason}")
+                    self.log_scrape_result(product_id, 'validation_failed', reason)
+                    return None
+                else:
+                    self.logger.debug(f"Price validation passed for {product_id}: {reason}")
             
             result = {
                 'product_id': product_id,

@@ -1,0 +1,71 @@
+{
+  "id": "goalzero-yeti-500x",
+  "name": "Goal Zero Yeti 500X",
+  "brand": "Goal Zero",
+  "model": "Yeti 500X",
+  "category": "power-stations",
+  "specs": {
+    "capacity": "505Wh",
+    "chemistry": "Li-NMC",
+    "weight": "5.8kg",
+    "dimensions": "28.9 × 19.9 × 18.3cm",
+    "ac_output": {
+      "outlets": "1",
+      "continuous": "300W",
+      "surge": "1200W"
+    },
+    "dc_output": {
+      "12v_port": "1x 12V/10A (120W max)",
+      "usb_a": "2x USB-A (2.4A each)",
+      "usb_c": "1x USB-C PD (18W max)"
+    },
+    "inputs": {
+      "solar": {
+        "max_power": "120W",
+        "voltage_range": "14-22V"
+      },
+      "ac_charging": "5-6 hours",
+      "car_charging": "12 hours"
+    },
+    "performance": {
+      "cycle_life": "500+ cycles",
+      "operating_temp": {
+        "discharge": "0°C to 40°C",
+        "charge": "0°C to 40°C"
+      },
+      "charging_times": {
+        "ac": "5-6 hours",
+        "solar_100w": "6-12 hours (depending on conditions)",
+        "car": "12 hours"
+      }
+    },
+    "connectivity": ["WiFi", "Goal Zero app"],
+    "features": ["outdoor design", "rugged build", "app control", "chainable"],
+    "warranty": "2 years"
+  },
+  "retailers": {
+    "goalzero_uk": {
+      "url": "https://www.goalzero.co.uk/products/yeti-500x-portable-power-station",
+      "affiliate_url": ""
+    },
+    "amazon_uk": {
+      "url": "https://www.amazon.co.uk/dp/B083KBKJ2K",
+      "affiliate_url": ""
+    },
+    "outdoorsupply": {
+      "url": "https://www.outdoorsupply.co.uk/goal-zero-yeti-500x-portable-power-station",
+      "affiliate_url": ""
+    },
+    "alpinetrek": {
+      "url": "https://www.alpinetrek.co.uk/goal-zero-yeti-500x-power-station",
+      "affiliate_url": ""
+    }
+  },
+  "images": {
+    "main": "goalzero-yeti-500x-main.jpg",
+    "gallery": ["goalzero-yeti-500x-1.jpg", "goalzero-yeti-500x-2.jpg"]
+  },
+  "last_updated": "2025-09-07",
+  "market_segment": "outdoor-camping",
+  "target_audience": ["campers", "outdoor enthusiasts", "van lifers", "emergency prep"]
+}

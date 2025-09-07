@@ -57,6 +57,10 @@ from scrapers.anker import AnkerScraper
 from scrapers.currys import CurrysScraper
 from scrapers.amazon_uk import AmazonUKScraper
 from scrapers.bluetti_uk import BluettiUKScraper
+from scrapers.argos import ArgosScraper
+from scrapers.ebay_official import EbayOfficialScraper
+from scrapers.goalzero_uk import GoalZeroUKScraper
+from scrapers.outdoorsupply import OutdoorSupplyScraper
 
 # Import headless scrapers with fallback
 try:
@@ -94,7 +98,11 @@ def scrape_all_retailers():
         'anker_uk': AnkerScraper(),
         'currys': CurrysScraper(),
         'amazon_uk': AmazonUKScraper(),
-        'bluetti_uk': BluettiUKScraper()
+        'bluetti_uk': BluettiUKScraper(),
+        'argos': ArgosScraper(),
+        'ebay_official': EbayOfficialScraper(),
+        'goalzero_uk': GoalZeroUKScraper(),
+        'outdoorsupply': OutdoorSupplyScraper()
     }
     
     # Add headless scrapers if available (for JS-heavy sites)
