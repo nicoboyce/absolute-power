@@ -20,17 +20,27 @@ from scrapers.base import BaseScraper, clean_price_string
 class EcoFlowScraper(BaseScraper):
     def __init__(self):
         super().__init__('ecoflow_uk', 'https://uk.ecoflow.com')
+        
+    def get_price_range(self, url):
+        """Get expected price range based on EcoFlow product type"""
+        if 'river' in url.lower():
+            return (100, 500)  # RIVER models: £100-500
+        elif 'delta' in url.lower():
+            return (800, 6000)  # DELTA models: £800-6000
+        else:
+            return (100, 6000)  # Default: full range
     
-    def extract_price(self, soup):
+    def extract_price(self, soup, url=None):
         """
-        Extract price from EcoFlow UK product page
+        Extract price from EcoFlow UK product page with dynamic validation
         
         CRITICAL: EcoFlow pages often contain promotional banners with prices like £700
-        that are NOT the product price. This method must carefully select only the
-        actual product price, not promotional content.
+        that are NOT the product price. This method carefully validates prices based
+        on the specific EcoFlow product type (RIVER vs DELTA).
         
         Args:
             soup (BeautifulSoup): Parsed HTML of the product page
+            url (str): Product URL for determining price range
             
         Returns:
             float: Product price in GBP, or None if not found
@@ -39,7 +49,10 @@ class EcoFlowScraper(BaseScraper):
         - Promotional banners: "50% off RAPID 5000 mAh on orders over £700"
         - These create false £700 matches that appear on every page
         - Must prioritise product-specific price selectors over generic patterns
+        - RIVER models: £100-500 range, DELTA models: £800-6000 range
         """
+        # Get expected price range for this product
+        min_price, max_price = self.get_price_range(url or '') if url else (100, 6000)
         # PRIMARY: EcoFlow specific product price selectors
         # These are the most reliable and product-specific elements
         primary_selectors = [
@@ -71,13 +84,15 @@ class EcoFlowScraper(BaseScraper):
                 if price_match:
                     price_str = price_match.group(1).replace(',', '')
                     price = clean_price_string(price_str)
-                    if price and price != 700 and 100 <= price <= 2000:  # Reject promotional prices and enforce max
+                    if price and price != 700 and min_price <= price <= max_price:  # Dynamic range validation
                         self.logger.info(f"Extracted product price from {selector}: £{price}")
                         return price
                     elif price == 700:
                         self.logger.warning(f"Rejected £700 from {selector} - likely promotional banner")
-                    elif price and price > 2000:
-                        self.logger.error(f"Rejected suspicious high price £{price} from {selector} - likely scraping error")
+                    elif price and price > max_price:
+                        self.logger.error(f"Rejected price £{price} from {selector} - exceeds {url.split('/')[-1] if url else 'product'} range (£{min_price}-£{max_price})")
+                    elif price and price < min_price:
+                        self.logger.error(f"Rejected price £{price} from {selector} - below {url.split('/')[-1] if url else 'product'} range (£{min_price}-£{max_price})")
         
         # Try secondary selectors if primary ones fail
         for selector in secondary_selectors:
@@ -91,13 +106,15 @@ class EcoFlowScraper(BaseScraper):
                 if price_match:
                     price_str = price_match.group(1).replace(',', '')
                     price = clean_price_string(price_str)
-                    if price and price != 700 and 100 <= price <= 2000:  # EcoFlow RIVER models max £2000
+                    if price and price != 700 and min_price <= price <= max_price:  # Dynamic range validation
                         self.logger.info(f"Extracted price from secondary {selector}: £{price}")
                         return price
                     elif price == 700:
                         self.logger.warning(f"Rejected £700 from {selector} - likely promotional banner")
-                    elif price and price > 2000:
-                        self.logger.error(f"Rejected suspicious high price £{price} from secondary {selector} - likely scraping error")
+                    elif price and price > max_price:
+                        self.logger.error(f"Rejected price £{price} from secondary {selector} - exceeds range (£{min_price}-£{max_price})")
+                    elif price and price < min_price:
+                        self.logger.error(f"Rejected price £{price} from secondary {selector} - below range (£{min_price}-£{max_price})")
         
         # LAST RESORT: Pattern matching (high risk of false positives)
         # Only use if no structured price elements found
@@ -110,7 +127,7 @@ class EcoFlowScraper(BaseScraper):
         candidates = []
         for match in price_matches:
             price = clean_price_string(match.replace(',', ''))
-            if price and price != 700 and 100 <= price <= 2000:  # EcoFlow RIVER models max £2000
+            if price and price != 700 and min_price <= price <= max_price:  # Dynamic range validation
                 candidates.append(price)
         
         if candidates:
