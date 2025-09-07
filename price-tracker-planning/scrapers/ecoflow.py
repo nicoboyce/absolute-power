@@ -71,11 +71,13 @@ class EcoFlowScraper(BaseScraper):
                 if price_match:
                     price_str = price_match.group(1).replace(',', '')
                     price = clean_price_string(price_str)
-                    if price and price != 700:  # Explicitly reject £700 (promotional banner price)
+                    if price and price != 700 and 100 <= price <= 2000:  # Reject promotional prices and enforce max
                         self.logger.info(f"Extracted product price from {selector}: £{price}")
                         return price
                     elif price == 700:
                         self.logger.warning(f"Rejected £700 from {selector} - likely promotional banner")
+                    elif price and price > 2000:
+                        self.logger.error(f"Rejected suspicious high price £{price} from {selector} - likely scraping error")
         
         # Try secondary selectors if primary ones fail
         for selector in secondary_selectors:
@@ -89,11 +91,13 @@ class EcoFlowScraper(BaseScraper):
                 if price_match:
                     price_str = price_match.group(1).replace(',', '')
                     price = clean_price_string(price_str)
-                    if price and price != 700 and 100 <= price <= 5000:  # Stricter range for secondary
+                    if price and price != 700 and 100 <= price <= 2000:  # EcoFlow RIVER models max £2000
                         self.logger.info(f"Extracted price from secondary {selector}: £{price}")
                         return price
                     elif price == 700:
                         self.logger.warning(f"Rejected £700 from {selector} - likely promotional banner")
+                    elif price and price > 2000:
+                        self.logger.error(f"Rejected suspicious high price £{price} from secondary {selector} - likely scraping error")
         
         # LAST RESORT: Pattern matching (high risk of false positives)
         # Only use if no structured price elements found
@@ -106,7 +110,7 @@ class EcoFlowScraper(BaseScraper):
         candidates = []
         for match in price_matches:
             price = clean_price_string(match.replace(',', ''))
-            if price and price != 700 and 100 <= price <= 5000:  # Exclude £700 promotional price
+            if price and price != 700 and 100 <= price <= 2000:  # EcoFlow RIVER models max £2000
                 candidates.append(price)
         
         if candidates:
