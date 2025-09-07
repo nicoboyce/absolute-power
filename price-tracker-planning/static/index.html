@@ -3,537 +3,2590 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Power Station Price Tracker - Compare UK Power Station Prices</title>
-    <meta name="description" content="Compare prices for portable power stations across UK retailers. Track deals on EcoFlow, Jackery, Anker and more.">
+    <title>Power Station Price Tracker - Compare UK Portable Power Station Prices & Deals</title>
+    <meta name="description" content="Compare power station prices across UK retailers. Track deals on EcoFlow, Jackery, Anker, Bluetti & more. Get price alerts when your favourite power station drops in price.">
+    <meta name="keywords" content="power station, portable power, battery pack, UK prices, price comparison, camping power, emergency backup, solar generator">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://your-domain.com">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Power Station Price Tracker - UK Portable Power Price Comparison">
+    <meta property="og:description" content="Compare power station prices across UK retailers. Track deals and get price alerts.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-domain.com">
+    <meta property="og:image" content="https://your-domain.com/static/og-image.jpg">
+    
+    <!-- Schema.org markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Power Station Price Tracker",
+        "description": "Compare portable power station prices across UK retailers",
+        "url": "https://your-domain.com",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://your-domain.com/search?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
     
     <style>
+        :root {
+            --primary-blue: #2c3e50;
+            --secondary-blue: #3498db;
+            --success-green: #27ae60;
+            --warning-orange: #f39c12;
+            --danger-red: #e74c3c;
+            --light-grey: #ecf0f1;
+            --medium-grey: #bdc3c7;
+            --dark-grey: #7f8c8d;
+            --text-color: #2c3e50;
+            --border-color: #ddd;
+            --shadow: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-hover: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; 
+            line-height: 1.6; 
+            color: var(--text-color);
+            background: #f8f9fa;
+        }
+        
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         
-        header { background: #2c3e50; color: white; padding: 1rem 0; }
-        header h1 { margin: 0; }
-        header p { margin: 0; opacity: 0.9; }
+        /* Header */
+        header { 
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%); 
+            color: white; 
+            padding: 2rem 0; 
+            box-shadow: var(--shadow);
+        }
         
+        header h1 { 
+            font-size: 2.5rem; 
+            font-weight: 700; 
+            margin-bottom: 0.5rem; 
+        }
+        
+        header p { 
+            font-size: 1.1rem; 
+            opacity: 0.9; 
+            margin-bottom: 1.5rem; 
+        }
+        
+        /* Hero CTA */
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            align-items: center;
+        }
+        
+        .cta-button {
+            background: var(--warning-orange);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .cta-button:hover {
+            background: #e67e22;
+            transform: translateY(-1px);
+        }
+        
+        .price-alert-signup {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .price-alert-signup input {
+            padding: 0.75rem;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 4px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            placeholder-color: rgba(255,255,255,0.7);
+        }
+        
+        .price-alert-signup input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        /* Stats Bar */
+        .stats-bar {
+            background: white;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+        
+        .stat-item h3 {
+            font-size: 2rem;
+            color: var(--secondary-blue);
+            font-weight: 700;
+        }
+        
+        .stat-item p {
+            color: var(--dark-grey);
+            font-size: 0.9rem;
+        }
+        
+        /* Filter Section */
+        .filters-section {
+            background: white;
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .filters-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr auto;
+            gap: 1rem;
+            align-items: end;
+        }
+        
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        
+        .filter-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--secondary-blue);
+        }
+        
+        .filter-button {
+            padding: 0.75rem 1.5rem;
+            background: var(--secondary-blue);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-button:hover {
+            background: #2980b9;
+        }
+        
+        /* Educational Content */
+        .education-section {
+            background: var(--light-grey);
+            padding: 3rem 0;
+        }
+        
+        .education-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .education-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+        
+        .education-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .education-card h3 {
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+        
+        .education-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        /* Main Content */
         main { padding: 2rem 0; }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin-top: 2rem; }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .section-header h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-blue);
+        }
+        
+        .results-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        
+        .sort-options {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .sort-button {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--border-color);
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .sort-button.active,
+        .sort-button:hover {
+            background: var(--secondary-blue);
+            color: white;
+            border-color: var(--secondary-blue);
+        }
+        
+        /* Product Grid */
+        .products-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+            gap: 2rem; 
+        }
         
         .product-card { 
-            border: 1px solid #ddd; 
-            border-radius: 8px; 
-            padding: 1.5rem; 
             background: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
+            border: 1px solid var(--border-color); 
+            border-radius: 12px; 
+            padding: 2rem; 
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
         }
-        .product-card:hover { transform: translateY(-2px); }
         
-        .product-name { font-size: 1.4rem; font-weight: 600; margin-bottom: 0.5rem; color: #2c3e50; }
-        .product-specs { color: #666; margin-bottom: 1rem; font-size: 0.9rem; }
+        .product-card:hover { 
+            transform: translateY(-4px); 
+            box-shadow: var(--shadow-hover);
+        }
         
-        .price-comparison { margin-top: 1rem; }
+        .product-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--warning-orange);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .product-badge.sale {
+            background: var(--danger-red);
+        }
+        
+        .product-badge.new {
+            background: var(--success-green);
+        }
+        
+        .product-name { 
+            font-size: 1.4rem; 
+            font-weight: 700; 
+            margin-bottom: 0.5rem; 
+            color: var(--primary-blue);
+        }
+        
+        .product-specs { 
+            color: var(--dark-grey); 
+            margin-bottom: 1.5rem; 
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        
+        .spec-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        
+        /* Price Comparison */
+        .price-comparison { 
+            margin-top: 1.5rem; 
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+        }
+        
+        .price-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .best-price-badge {
+            background: var(--success-green);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
         .price-row { 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            padding: 0.75rem; 
-            border: 1px solid #eee; 
+            padding: 1rem; 
+            border: 1px solid var(--border-color); 
             margin-bottom: 0.5rem; 
-            border-radius: 4px;
+            border-radius: 6px;
             background: #fafafa;
+            transition: all 0.3s ease;
         }
         
-        .retailer { font-weight: 500; }
-        .price { font-size: 1.1rem; font-weight: 600; color: #27ae60; }
-        .out-of-stock { color: #e74c3c; }
+        .price-row:hover {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .retailer { 
+            font-weight: 600; 
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .retailer-logo {
+            width: 24px;
+            height: 24px;
+            background: var(--medium-grey);
+            border-radius: 2px;
+        }
+        
+        .price { 
+            font-size: 1.2rem; 
+            font-weight: 700; 
+            color: var(--success-green); 
+        }
+        
+        .price-change {
+            font-size: 0.85rem;
+            margin-left: 0.5rem;
+        }
+        
+        .price-down {
+            color: var(--success-green);
+        }
+        
+        .price-up {
+            color: var(--danger-red);
+        }
+        
+        .out-of-stock { 
+            color: var(--danger-red); 
+            font-weight: 600;
+        }
+        
+        .price-history {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+        
+        .chart-placeholder {
+            height: 120px;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-grey);
+            font-size: 0.9rem;
+        }
         
         .view-details { 
             display: inline-block; 
-            margin-top: 1rem; 
-            padding: 0.75rem 1.5rem; 
-            background: #3498db; 
+            margin-top: 1.5rem; 
+            padding: 1rem 2rem; 
+            background: var(--secondary-blue); 
             color: white; 
             text-decoration: none; 
-            border-radius: 4px; 
-            font-weight: 500;
-            transition: background 0.2s;
+            border-radius: 6px; 
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
         }
-        .view-details:hover { background: #2980b9; }
         
-        .no-prices { color: #999; font-style: italic; }
+        .view-details:hover { 
+            background: #2980b9; 
+            transform: translateY(-1px);
+        }
         
+        /* Footer */
         footer { 
-            background: #ecf0f1; 
-            padding: 2rem 0; 
-            margin-top: 3rem; 
-            text-align: center; 
-            color: #666; 
-            font-size: 0.9rem; 
+            background: var(--primary-blue); 
+            color: white;
+            padding: 3rem 0 2rem; 
+            margin-top: 4rem; 
         }
         
-        .last-updated { color: #999; font-size: 0.8rem; margin-top: 1rem; }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            line-height: 1.8;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+        
+        .last-updated { 
+            color: var(--dark-grey); 
+            font-size: 0.85rem; 
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .filters-container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .hero-cta {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .price-alert-signup {
+                width: 100%;
+            }
+        }
         
         @media (max-width: 768px) {
-            .products-grid { grid-template-columns: 1fr; }
-            .price-row { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            .container { padding: 0 15px; }
+            
+            header h1 { font-size: 2rem; }
+            
+            .products-grid { 
+                grid-template-columns: 1fr; 
+                gap: 1.5rem;
+            }
+            
+            .price-row { 
+                flex-direction: column; 
+                align-items: flex-start; 
+                gap: 0.5rem; 
+            }
+            
+            .results-summary {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+            
+            .sort-options {
+                flex-wrap: wrap;
+            }
+            
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .product-card { padding: 1.5rem; }
+            .spec-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>Power Station Price Tracker</h1>
-            <p>Compare UK power station prices and get the best deals</p>
+            <h1>⚡ Power Station Price Tracker</h1>
+            <p>Compare UK portable power station prices • Track deals • Get price alerts</p>
+            
+            <div class="hero-cta">
+                <a href="#products" class="cta-button">Compare Prices Now</a>
+                
+                <div class="price-alert-signup">
+                    <input type="email" placeholder="Enter email for price alerts" id="emailAlert">
+                    <button class="cta-button" onclick="signupForAlerts()">Get Alerts</button>
+                </div>
+            </div>
         </div>
     </header>
 
-    <main>
+    <div class="stats-bar">
         <div class="container">
-            <h2>Power Station Price Comparison</h2>
-            <p>Track prices across UK retailers for portable power stations. Get alerts when prices drop.</p>
+            <div class="stats-container">
+                <div class="stat-item">
+                    <h3>30</h3>
+                    <p>Power stations tracked</p>
+                </div>
+                <div class="stat-item">
+                    <h3>5</h3>
+                    <p>UK retailers monitored</p>
+                </div>
+                <div class="stat-item">
+                    <h3>24/7</h3>
+                    <p>Price monitoring</p>
+                </div>
+                <div class="stat-item">
+                    <h3>Free</h3>
+                    <p>Price alerts</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            <div class="products-grid">
-                
-                
-                
-                <div class="product-card">
-                    <h3 class="product-name">Jackery Explorer 3000 v2</h3>
-                    <div class="product-specs">
-                        <strong>3072Wh</strong> • 
-                        LiFePO4 • 
-                        29kg
-                    </div>
-                    
-                    <div class="price-comparison">
-                        
-                        <div class="price-row">
-                            <span class="retailer">Jackery_uk</span>
-                            
-                                <span class="price">£1999.00</span>
-                            
-                        </div>
-                        
-                    </div>
-                    
-                    <a href="products/jackery-explorer-3000-v2.html" class="view-details">View Details & Specs</a>
+    <div class="filters-section">
+        <div class="container">
+            <div class="filters-container">
+                <div class="filter-group">
+                    <label for="search">Search Power Stations</label>
+                    <input type="text" id="search" class="filter-input" placeholder="Search by brand, model, or capacity...">
                 </div>
                 
-                
-                
-                
-                
-                
-                
-                <div class="product-card">
-                    <h3 class="product-name">Jackery Explorer 300 Plus</h3>
-                    <div class="product-specs">
-                        <strong>288Wh</strong> • 
-                        LiFePO4 • 
-                        3.75kg
-                    </div>
-                    
-                    <div class="price-comparison">
-                        
-                        <div class="price-row">
-                            <span class="retailer">Jackery_uk</span>
-                            
-                                <span class="price">£229.00</span>
-                            
-                        </div>
-                        
-                    </div>
-                    
-                    <a href="products/jackery-explorer-300-plus.html" class="view-details">View Details & Specs</a>
+                <div class="filter-group">
+                    <label for="brandFilter">Brand</label>
+                    <select id="brandFilter" class="filter-input">
+                        <option value="">All Brands</option>
+                        <option value="jackery">Jackery</option>
+                        <option value="anker">Anker</option>
+                        <option value="bluetti">Bluetti</option>
+                        <option value="ecoflow">EcoFlow</option>
+                    </select>
                 </div>
                 
-                
-                
-                
-                <div class="product-card">
-                    <h3 class="product-name">Jackery Explorer 2000 Plus</h3>
-                    <div class="product-specs">
-                        <strong>2042Wh</strong> • 
-                        LiFePO4 • 
-                        27.9kg
-                    </div>
-                    
-                    <div class="price-comparison">
-                        
-                        <div class="price-row">
-                            <span class="retailer">Jackery_uk</span>
-                            
-                                <span class="price">£1399.00</span>
-                            
-                        </div>
-                        
-                    </div>
-                    
-                    <a href="products/jackery-explorer-2000-plus.html" class="view-details">View Details & Specs</a>
+                <div class="filter-group">
+                    <label for="capacityFilter">Capacity</label>
+                    <select id="capacityFilter" class="filter-input">
+                        <option value="">All Capacities</option>
+                        <option value="0-500">Under 500Wh</option>
+                        <option value="500-1000">500-1000Wh</option>
+                        <option value="1000-2000">1000-2000Wh</option>
+                        <option value="2000+">Over 2000Wh</option>
+                    </select>
                 </div>
                 
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                <div class="product-card">
-                    <h3 class="product-name">Jackery Explorer 100 Plus</h3>
-                    <div class="product-specs">
-                        <strong>99Wh</strong> • 
-                        LiFePO4 • 
-                        0.96kg
-                    </div>
-                    
-                    <div class="price-comparison">
-                        
-                        <div class="price-row">
-                            <span class="retailer">Jackery_uk</span>
-                            
-                                <span class="price">£99.00</span>
-                            
-                        </div>
-                        
-                    </div>
-                    
-                    <a href="products/jackery-explorer-100-plus.html" class="view-details">View Details & Specs</a>
+                <div class="filter-group">
+                    <label for="priceFilter">Max Price</label>
+                    <select id="priceFilter" class="filter-input">
+                        <option value="">Any Price</option>
+                        <option value="0-300">Under £300</option>
+                        <option value="300-600">£300-£600</option>
+                        <option value="600-1200">£600-£1200</option>
+                        <option value="1200+">Over £1200</option>
+                    </select>
                 </div>
                 
-                
-                
-                
-                <div class="product-card">
-                    <h3 class="product-name">Jackery Explorer 1000 Plus</h3>
-                    <div class="product-specs">
-                        <strong>1264Wh</strong> • 
-                        LiFePO4 • 
-                        14.5kg
-                    </div>
-                    
-                    <div class="price-comparison">
-                        
-                        <div class="price-row">
-                            <span class="retailer">Jackery_uk</span>
-                            
-                                <span class="price">£799.00</span>
-                            
-                        </div>
-                        
-                    </div>
-                    
-                    <a href="products/jackery-explorer-1000-plus.html" class="view-details">View Details & Specs</a>
+                <button class="filter-button" onclick="applyFilters()">Apply Filters</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="education-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Power Station Buying Guide</h2>
+                <p>Everything you need to know about choosing the right portable power station</p>
+            </div>
+            
+            <div class="education-grid">
+                <div class="education-card">
+                    <span class="icon">🔋</span>
+                    <h3>Battery Chemistry Explained</h3>
+                    <p><strong>LiFePO4 (Lithium Iron Phosphate)</strong> - Safer, longer-lasting, better temperature tolerance. Ideal for regular use and long-term storage.</p>
+                    <p><strong>Li-ion (Lithium-ion)</strong> - Higher energy density, lighter weight. Good for occasional use and portability.</p>
                 </div>
                 
-                
-                
-                
-                <div class="product-card">
-                    <h3 class="product-name">Anker SOLIX F3800</h3>
-                    <div class="product-specs">
-                        <strong>3840Wh</strong> • 
-                        LiFePO4 • 
-                        60kg
-                    </div>
-                    
-                    <div class="price-comparison">
-                        
-                        <div class="price-row">
-                            <span class="retailer">Anker_uk</span>
-                            
-                                <span class="price">£3699.00</span>
-                            
-                        </div>
-                        
-                    </div>
-                    
-                    <a href="products/anker-solix-f3800.html" class="view-details">View Details & Specs</a>
+                <div class="education-card">
+                    <span class="icon">⚡</span>
+                    <h3>Capacity Sizing Guide</h3>
+                    <p><strong>Under 500Wh:</strong> Phones, tablets, small devices (1-3 days)</p>
+                    <p><strong>500-1000Wh:</strong> Laptops, small appliances, CPAP machines</p>
+                    <p><strong>1000-2000Wh:</strong> Fridges, power tools, home backup (1-2 days)</p>
+                    <p><strong>Over 2000Wh:</strong> Whole home backup, off-grid living, workshops</p>
                 </div>
                 
-                
-                
-                
-                <div class="product-card">
-                    <h3 class="product-name">Anker SOLIX F2000</h3>
-                    <div class="product-specs">
-                        <strong>2048Wh</strong> • 
-                        LiFePO4 • 
-                        22.8kg
-                    </div>
-                    
-                    <div class="price-comparison">
-                        
-                        <div class="price-row">
-                            <span class="retailer">Anker_uk</span>
-                            
-                                <span class="price">£1699.00</span>
-                            
-                        </div>
-                        
-                    </div>
-                    
-                    <a href="products/anker-solix-f2000.html" class="view-details">View Details & Specs</a>
+                <div class="education-card">
+                    <span class="icon">🏠</span>
+                    <h3>UPS vs Power Station</h3>
+                    <p><strong>UPS (Uninterruptible Power Supply):</strong> Instant switchover, computer protection, typically smaller capacity.</p>
+                    <p><strong>Power Station:</strong> Portable, higher capacity, multiple outlet types, solar charging capability.</p>
                 </div>
                 
-                
-                
-                
-                <div class="product-card">
-                    <h3 class="product-name">Bluetti EB3A</h3>
-                    <div class="product-specs">
-                        <strong>268Wh</strong> • 
-                        LiFePO4 • 
-                        4.6kg
-                    </div>
-                    
-                    <div class="price-comparison">
-                        
-                        <div class="price-row">
-                            <span class="retailer">Bluetti_uk</span>
-                            
-                                <span class="price">£209.00</span>
-                            
-                        </div>
-                        
-                    </div>
-                    
-                    <a href="products/bluetti-eb3a.html" class="view-details">View Details & Specs</a>
+                <div class="education-card">
+                    <span class="icon">☀️</span>
+                    <h3>Solar Charging</h3>
+                    <p>Most modern power stations support solar input. Look for MPPT controllers and compatible wattage. Popular solar panel sizes: 100W, 200W, 400W.</p>
+                    <p><strong>Charging time = Capacity ÷ Solar input watts</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main id="products">
+        <div class="container">
+            <div class="results-summary">
+                <div>
+                    <h3 id="resultsCount">30 power stations found</h3>
+                    <p>Updated every hour • Best prices guaranteed</p>
                 </div>
                 
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                <div class="product-card">
-                    <h3 class="product-name">Jackery Explorer 240 v2</h3>
-                    <div class="product-specs">
-                        <strong>256Wh</strong> • 
-                        LiFePO4 • 
-                        3.1kg
-                    </div>
-                    
-                    <div class="price-comparison">
-                        
-                        <div class="price-row">
-                            <span class="retailer">Jackery_uk</span>
-                            
-                                <span class="price">£199.00</span>
-                            
-                        </div>
-                        
-                    </div>
-                    
-                    <a href="products/jackery-explorer-240-v2.html" class="view-details">View Details & Specs</a>
+                <div class="sort-options">
+                    <button class="sort-button active" onclick="sortProducts('price')">Best Price</button>
+                    <button class="sort-button" onclick="sortProducts('capacity')">Capacity</button>
+                    <button class="sort-button" onclick="sortProducts('value')">Best Value</button>
+                    <button class="sort-button" onclick="sortProducts('brand')">Brand</button>
                 </div>
+            </div>
+
+            <div class="products-grid" id="productsGrid">
                 
-                
-                
-                
-                <div class="product-card">
-                    <h3 class="product-name">Anker SOLIX C800</h3>
-                    <div class="product-specs">
-                        <strong>768Wh</strong> • 
-                        LiFePO4 • 
-                        10.5kg
-                    </div>
+                <div class="product-card" data-brand="bluetti" data-capacity="20736" data-price="969.0">
                     
-                    <div class="price-comparison">
-                        
-                        <div class="price-row">
-                            <span class="retailer">Anker_uk</span>
-                            
-                                <span class="price">£599.00</span>
-                            
-                        </div>
-                        
-                    </div>
+                    <div class="product-badge sale">16% OFF</div>
                     
-                    <a href="products/anker-solix-c800.html" class="view-details">View Details & Specs</a>
-                </div>
-                
-                
-                
-                
-                
-                
-                
-                <div class="product-card">
-                    <h3 class="product-name">Anker SOLIX C1000</h3>
-                    <div class="product-specs">
-                        <strong>1056Wh</strong> • 
-                        LiFePO4 • 
-                        12.9kg
-                    </div>
                     
-                    <div class="price-comparison">
-                        
-                        <div class="price-row">
-                            <span class="retailer">Amazon_uk</span>
-                            
-                                <span class="out-of-stock">Out of Stock</span>
-                            
-                        </div>
-                        
-                        <div class="price-row">
-                            <span class="retailer">Anker_uk</span>
-                            
-                                <span class="price">£999.00</span>
-                            
-                        </div>
-                        
-                    </div>
-                    
-                    <a href="products/anker-solix-c1000.html" class="view-details">View Details & Specs</a>
-                </div>
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                <div class="product-card">
-                    <h3 class="product-name">Jackery Explorer 500 v2</h3>
-                    <div class="product-specs">
-                        <strong>512Wh</strong> • 
-                        LiFePO4 • 
-                        6.2kg
-                    </div>
-                    
-                    <div class="price-comparison">
-                        
-                        <div class="price-row">
-                            <span class="retailer">Jackery_uk</span>
-                            
-                                <span class="price">£449.00</span>
-                            
-                        </div>
-                        
-                    </div>
-                    
-                    <a href="products/jackery-explorer-500-v2.html" class="view-details">View Details & Specs</a>
-                </div>
-                
-                
-                
-                
-                <div class="product-card">
-                    <h3 class="product-name">Jackery Explorer 2000 v2</h3>
-                    <div class="product-specs">
-                        <strong>2042Wh</strong> • 
-                        LiFePO4 • 
-                        19.5kg
-                    </div>
-                    
-                    <div class="price-comparison">
-                        
-                        <div class="price-row">
-                            <span class="retailer">Jackery_uk</span>
-                            
-                                <span class="price">£1099.00</span>
-                            
-                        </div>
-                        
-                    </div>
-                    
-                    <a href="products/jackery-explorer-2000-v2.html" class="view-details">View Details & Specs</a>
-                </div>
-                
-                
-                
-                
-                <div class="product-card">
                     <h3 class="product-name">Bluetti Elite 200 V2</h3>
+                    
                     <div class="product-specs">
-                        <strong>2073.6Wh</strong> • 
+                        <strong>20736Wh</strong> • 
                         LiFePO4 • 
-                        30kg
+                        30.0kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>2600W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>1200W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>300080</strong>
+                        </div>
                     </div>
                     
                     <div class="price-comparison">
-                        
-                        <div class="price-row">
-                            <span class="retailer">Bluetti_uk</span>
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
                             
-                                <span class="price">£969.00</span>
+                            <div class="best-price-badge">Best: £969.0</div>
                             
                         </div>
                         
+                        
+                            
+                            <div class="price-row">
+                                <span class="retailer">
+                                    <div class="retailer-logo"></div>
+                                    Bluetti Uk
+                                </span>
+                                
+                                
+                                    <span class="price">
+                                        £969.0
+                                        
+                                    </span>
+                                
+                            </div>
+                            
+                            
+                            <div class="price-history">
+                                <div class="chart-placeholder">
+                                    📈 7-day price history chart
+                                </div>
+                            </div>
+                        
                     </div>
                     
-                    <a href="products/bluetti-elite-200-v2.html" class="view-details">View Details & Specs</a>
+                    <a href="products/bluetti-elite-200-v2.html" class="view-details">View Full Details & Specs</a>
                 </div>
                 
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                <div class="product-card">
+                <div class="product-card" data-brand="jackery" data-capacity="1070" data-price="449.0">
+                    
+                    <div class="product-badge sale">16% OFF</div>
+                    
+                    
                     <h3 class="product-name">Jackery Explorer 1000 v2</h3>
+                    
                     <div class="product-specs">
                         <strong>1070Wh</strong> • 
                         LiFePO4 • 
                         10.8kg
                     </div>
                     
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>1500W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>NoneW</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>400070</strong>
+                        </div>
+                    </div>
+                    
                     <div class="price-comparison">
-                        
-                        <div class="price-row">
-                            <span class="retailer">Jackery_uk</span>
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
                             
-                                <span class="price">£449.00</span>
+                            <div class="best-price-badge">Best: £449.0</div>
                             
                         </div>
                         
+                        
+                            
+                            <div class="price-row">
+                                <span class="retailer">
+                                    <div class="retailer-logo"></div>
+                                    Jackery Uk
+                                </span>
+                                
+                                
+                                    <span class="price">
+                                        £449.0
+                                        
+                                    </span>
+                                
+                            </div>
+                            
+                            
+                            <div class="price-history">
+                                <div class="chart-placeholder">
+                                    📈 7-day price history chart
+                                </div>
+                            </div>
+                        
                     </div>
                     
-                    <a href="products/jackery-explorer-1000-v2.html" class="view-details">View Details & Specs</a>
+                    <a href="products/jackery-explorer-1000-v2.html" class="view-details">View Full Details & Specs</a>
                 </div>
                 
+                <div class="product-card" data-brand="jackery" data-capacity="2042" data-price="1099.0">
+                    
+                    
+                    <h3 class="product-name">Jackery Explorer 2000 v2</h3>
+                    
+                    <div class="product-specs">
+                        <strong>2042Wh</strong> • 
+                        LiFePO4 • 
+                        19.5kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>3000W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>NoneW</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>400070</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                            <div class="best-price-badge">Best: £1099.0</div>
+                            
+                        </div>
+                        
+                        
+                            
+                            <div class="price-row">
+                                <span class="retailer">
+                                    <div class="retailer-logo"></div>
+                                    Jackery Uk
+                                </span>
+                                
+                                
+                                    <span class="price">
+                                        £1099.0
+                                        
+                                    </span>
+                                
+                            </div>
+                            
+                            
+                            <div class="price-history">
+                                <div class="chart-placeholder">
+                                    📈 7-day price history chart
+                                </div>
+                            </div>
+                        
+                    </div>
+                    
+                    <a href="products/jackery-explorer-2000-v2.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="jackery" data-capacity="1264" data-price="799.0">
+                    
+                    <div class="product-badge sale">16% OFF</div>
+                    
+                    
+                    <h3 class="product-name">Jackery Explorer 1000 Plus</h3>
+                    
+                    <div class="product-specs">
+                        <strong>1264Wh</strong> • 
+                        LiFePO4 • 
+                        14.5kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>2000W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>NoneW</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>400070</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                            <div class="best-price-badge">Best: £799.0</div>
+                            
+                        </div>
+                        
+                        
+                            
+                            <div class="price-row">
+                                <span class="retailer">
+                                    <div class="retailer-logo"></div>
+                                    Jackery Uk
+                                </span>
+                                
+                                
+                                    <span class="price">
+                                        £799.0
+                                        
+                                    </span>
+                                
+                            </div>
+                            
+                            
+                            <div class="price-history">
+                                <div class="chart-placeholder">
+                                    📈 7-day price history chart
+                                </div>
+                            </div>
+                        
+                    </div>
+                    
+                    <a href="products/jackery-explorer-1000-plus.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="jackery" data-capacity="3072" data-price="1999.0">
+                    
+                    
+                    <h3 class="product-name">Jackery Explorer 3000 v2</h3>
+                    
+                    <div class="product-specs">
+                        <strong>3072Wh</strong> • 
+                        LiFePO4 • 
+                        29.0kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>3000W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>NoneW</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>400070</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                            <div class="best-price-badge">Best: £1999.0</div>
+                            
+                        </div>
+                        
+                        
+                            
+                            <div class="price-row">
+                                <span class="retailer">
+                                    <div class="retailer-logo"></div>
+                                    Jackery Uk
+                                </span>
+                                
+                                
+                                    <span class="price">
+                                        £1999.0
+                                        
+                                    </span>
+                                
+                            </div>
+                            
+                            
+                            <div class="price-history">
+                                <div class="chart-placeholder">
+                                    📈 7-day price history chart
+                                </div>
+                            </div>
+                        
+                    </div>
+                    
+                    <a href="products/jackery-explorer-3000-v2.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="jackery" data-capacity="2042" data-price="1399.0">
+                    
+                    
+                    <h3 class="product-name">Jackery Explorer 2000 Plus</h3>
+                    
+                    <div class="product-specs">
+                        <strong>2042Wh</strong> • 
+                        LiFePO4 • 
+                        27.9kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>3000W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>NoneW</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>400070</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                            <div class="best-price-badge">Best: £1399.0</div>
+                            
+                        </div>
+                        
+                        
+                            
+                            <div class="price-row">
+                                <span class="retailer">
+                                    <div class="retailer-logo"></div>
+                                    Jackery Uk
+                                </span>
+                                
+                                
+                                    <span class="price">
+                                        £1399.0
+                                        
+                                    </span>
+                                
+                            </div>
+                            
+                            
+                            <div class="price-history">
+                                <div class="chart-placeholder">
+                                    📈 7-day price history chart
+                                </div>
+                            </div>
+                        
+                    </div>
+                    
+                    <a href="products/jackery-explorer-2000-plus.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="jackery" data-capacity="256" data-price="199.0">
+                    
+                    <div class="product-badge sale">16% OFF</div>
+                    
+                    
+                    <h3 class="product-name">Jackery Explorer 240 v2</h3>
+                    
+                    <div class="product-specs">
+                        <strong>256Wh</strong> • 
+                        LiFePO4 • 
+                        3.1kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>300W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>NoneW</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>400070</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                            <div class="best-price-badge">Best: £199.0</div>
+                            
+                        </div>
+                        
+                        
+                            
+                            <div class="price-row">
+                                <span class="retailer">
+                                    <div class="retailer-logo"></div>
+                                    Jackery Uk
+                                </span>
+                                
+                                
+                                    <span class="price">
+                                        £199.0
+                                        
+                                    </span>
+                                
+                            </div>
+                            
+                            
+                            <div class="price-history">
+                                <div class="chart-placeholder">
+                                    📈 7-day price history chart
+                                </div>
+                            </div>
+                        
+                    </div>
+                    
+                    <a href="products/jackery-explorer-240-v2.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="bluetti" data-capacity="268" data-price="209.0">
+                    
+                    <div class="product-badge sale">16% OFF</div>
+                    
+                    
+                    <h3 class="product-name">Bluetti EB3A</h3>
+                    
+                    <div class="product-specs">
+                        <strong>268Wh</strong> • 
+                        LiFePO4 • 
+                        4.6kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>600W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>200W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>250080</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                            <div class="best-price-badge">Best: £209.0</div>
+                            
+                        </div>
+                        
+                        
+                            
+                            <div class="price-row">
+                                <span class="retailer">
+                                    <div class="retailer-logo"></div>
+                                    Bluetti Uk
+                                </span>
+                                
+                                
+                                    <span class="price">
+                                        £209.0
+                                        
+                                    </span>
+                                
+                            </div>
+                            
+                            
+                            <div class="price-history">
+                                <div class="chart-placeholder">
+                                    📈 7-day price history chart
+                                </div>
+                            </div>
+                        
+                    </div>
+                    
+                    <a href="products/bluetti-eb3a.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="anker" data-capacity="768" data-price="599.0">
+                    
+                    <div class="product-badge sale">16% OFF</div>
+                    
+                    
+                    <h3 class="product-name">Anker SOLIX C800</h3>
+                    
+                    <div class="product-specs">
+                        <strong>768Wh</strong> • 
+                        LiFePO4 • 
+                        10.5kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>1200W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>200W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>300080</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                            <div class="best-price-badge">Best: £599.0</div>
+                            
+                        </div>
+                        
+                        
+                            
+                            <div class="price-row">
+                                <span class="retailer">
+                                    <div class="retailer-logo"></div>
+                                    Anker Uk
+                                </span>
+                                
+                                
+                                    <span class="price">
+                                        £599.0
+                                        
+                                    </span>
+                                
+                            </div>
+                            
+                            
+                            <div class="price-history">
+                                <div class="chart-placeholder">
+                                    📈 7-day price history chart
+                                </div>
+                            </div>
+                        
+                    </div>
+                    
+                    <a href="products/anker-solix-c800.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="jackery" data-capacity="288" data-price="229.0">
+                    
+                    <div class="product-badge sale">16% OFF</div>
+                    
+                    
+                    <h3 class="product-name">Jackery Explorer 300 Plus</h3>
+                    
+                    <div class="product-specs">
+                        <strong>288Wh</strong> • 
+                        LiFePO4 • 
+                        3.75kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>300W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>NoneW</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>400070</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                            <div class="best-price-badge">Best: £229.0</div>
+                            
+                        </div>
+                        
+                        
+                            
+                            <div class="price-row">
+                                <span class="retailer">
+                                    <div class="retailer-logo"></div>
+                                    Jackery Uk
+                                </span>
+                                
+                                
+                                    <span class="price">
+                                        £229.0
+                                        
+                                    </span>
+                                
+                            </div>
+                            
+                            
+                            <div class="price-history">
+                                <div class="chart-placeholder">
+                                    📈 7-day price history chart
+                                </div>
+                            </div>
+                        
+                    </div>
+                    
+                    <a href="products/jackery-explorer-300-plus.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="anker" data-capacity="2048" data-price="1699.0">
+                    
+                    
+                    <h3 class="product-name">Anker SOLIX F2000</h3>
+                    
+                    <div class="product-specs">
+                        <strong>2048Wh</strong> • 
+                        LiFePO4 • 
+                        22.8kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>2300W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>1000W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>300080</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                            <div class="best-price-badge">Best: £1699.0</div>
+                            
+                        </div>
+                        
+                        
+                            
+                            <div class="price-row">
+                                <span class="retailer">
+                                    <div class="retailer-logo"></div>
+                                    Anker Uk
+                                </span>
+                                
+                                
+                                    <span class="price">
+                                        £1699.0
+                                        
+                                    </span>
+                                
+                            </div>
+                            
+                            
+                            <div class="price-history">
+                                <div class="chart-placeholder">
+                                    📈 7-day price history chart
+                                </div>
+                            </div>
+                        
+                    </div>
+                    
+                    <a href="products/anker-solix-f2000.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="jackery" data-capacity="512" data-price="449.0">
+                    
+                    <div class="product-badge sale">16% OFF</div>
+                    
+                    
+                    <h3 class="product-name">Jackery Explorer 500 v2</h3>
+                    
+                    <div class="product-specs">
+                        <strong>512Wh</strong> • 
+                        LiFePO4 • 
+                        6.2kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>800W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>NoneW</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>400070</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                            <div class="best-price-badge">Best: £449.0</div>
+                            
+                        </div>
+                        
+                        
+                            
+                            <div class="price-row">
+                                <span class="retailer">
+                                    <div class="retailer-logo"></div>
+                                    Jackery Uk
+                                </span>
+                                
+                                
+                                    <span class="price">
+                                        £449.0
+                                        
+                                    </span>
+                                
+                            </div>
+                            
+                            
+                            <div class="price-history">
+                                <div class="chart-placeholder">
+                                    📈 7-day price history chart
+                                </div>
+                            </div>
+                        
+                    </div>
+                    
+                    <a href="products/jackery-explorer-500-v2.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="anker" data-capacity="1056" data-price="999.0">
+                    
+                    <div class="product-badge sale">16% OFF</div>
+                    
+                    
+                    <h3 class="product-name">Anker SOLIX C1000</h3>
+                    
+                    <div class="product-specs">
+                        <strong>1056Wh</strong> • 
+                        LiFePO4 • 
+                        12.9kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>1800W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>36W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>300080</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                            <div class="best-price-badge">Best: £999.0</div>
+                            
+                        </div>
+                        
+                        
+                            
+                            <div class="price-row">
+                                <span class="retailer">
+                                    <div class="retailer-logo"></div>
+                                    Amazon Uk
+                                </span>
+                                
+                                
+                                    <span class="price">
+                                        £76.0
+                                        
+                                    </span>
+                                
+                            </div>
+                            
+                            <div class="price-row">
+                                <span class="retailer">
+                                    <div class="retailer-logo"></div>
+                                    Anker Uk
+                                </span>
+                                
+                                
+                                    <span class="price">
+                                        £999.0
+                                        
+                                    </span>
+                                
+                            </div>
+                            
+                            
+                            <div class="price-history">
+                                <div class="chart-placeholder">
+                                    📈 7-day price history chart
+                                </div>
+                            </div>
+                        
+                    </div>
+                    
+                    <a href="products/anker-solix-c1000.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="anker" data-capacity="3840" data-price="3699.0">
+                    
+                    
+                    <h3 class="product-name">Anker SOLIX F3800</h3>
+                    
+                    <div class="product-specs">
+                        <strong>3840Wh</strong> • 
+                        LiFePO4 • 
+                        60.0kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>6000W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>2400W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>300080</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                            <div class="best-price-badge">Best: £3699.0</div>
+                            
+                        </div>
+                        
+                        
+                            
+                            <div class="price-row">
+                                <span class="retailer">
+                                    <div class="retailer-logo"></div>
+                                    Anker Uk
+                                </span>
+                                
+                                
+                                    <span class="price">
+                                        £3699.0
+                                        
+                                    </span>
+                                
+                            </div>
+                            
+                            
+                            <div class="price-history">
+                                <div class="chart-placeholder">
+                                    📈 7-day price history chart
+                                </div>
+                            </div>
+                        
+                    </div>
+                    
+                    <a href="products/anker-solix-f3800.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="jackery" data-capacity="99" data-price="99.0">
+                    
+                    <div class="product-badge sale">16% OFF</div>
+                    
+                    
+                    <h3 class="product-name">Jackery Explorer 100 Plus</h3>
+                    
+                    <div class="product-specs">
+                        <strong>99Wh</strong> • 
+                        LiFePO4 • 
+                        0.96kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>128W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>NoneW</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>400070</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                            <div class="best-price-badge">Best: £99.0</div>
+                            
+                        </div>
+                        
+                        
+                            
+                            <div class="price-row">
+                                <span class="retailer">
+                                    <div class="retailer-logo"></div>
+                                    Jackery Uk
+                                </span>
+                                
+                                
+                                    <span class="price">
+                                        £99.0
+                                        
+                                    </span>
+                                
+                            </div>
+                            
+                            
+                            <div class="price-history">
+                                <div class="chart-placeholder">
+                                    📈 7-day price history chart
+                                </div>
+                            </div>
+                        
+                    </div>
+                    
+                    <a href="products/jackery-explorer-100-plus.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="ecoflow" data-capacity="286" data-price="9999">
+                    
+                    
+                    <h3 class="product-name">EcoFlow RIVER 3 Plus</h3>
+                    
+                    <div class="product-specs">
+                        <strong>286Wh</strong> • 
+                        LiFePO4 • 
+                        3.5kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>600W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>110W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>400080</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                        </div>
+                        
+                        
+                            <div class="no-prices">Price data updating...</div>
+                        
+                    </div>
+                    
+                    <a href="products/ecoflow-river-3-plus.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="bluetti" data-capacity="768" data-price="9999">
+                    
+                    
+                    <h3 class="product-name">Bluetti AC70</h3>
+                    
+                    <div class="product-specs">
+                        <strong>768Wh</strong> • 
+                        LiFePO4 • 
+                        10.2kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>1000W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>500W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>300080</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                        </div>
+                        
+                        
+                            <div class="no-prices">Price data updating...</div>
+                        
+                    </div>
+                    
+                    <a href="products/bluetti-ac70.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="anker" data-capacity="192" data-price="9999">
+                    
+                    
+                    <h3 class="product-name">Anker SOLIX C200 DC</h3>
+                    
+                    <div class="product-specs">
+                        <strong>192Wh</strong> • 
+                        LiFePO4 • 
+                        2.9kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>0W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>100W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>300080</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                        </div>
+                        
+                        
+                            <div class="no-prices">Price data updating...</div>
+                        
+                    </div>
+                    
+                    <a href="products/anker-solix-c200-dc.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="ecoflow" data-capacity="1024" data-price="9999">
+                    
+                    
+                    <h3 class="product-name">EcoFlow DELTA 3</h3>
+                    
+                    <div class="product-specs">
+                        <strong>1024Wh</strong> • 
+                        LiFePO4 • 
+                        12.2kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>1800W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>500W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>400080</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                        </div>
+                        
+                        
+                            <div class="no-prices">Price data updating...</div>
+                        
+                    </div>
+                    
+                    <a href="products/ecoflow-delta-3.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="anker" data-capacity="288" data-price="9999">
+                    
+                    
+                    <h3 class="product-name">Anker SOLIX C300</h3>
+                    
+                    <div class="product-specs">
+                        <strong>288Wh</strong> • 
+                        LiFePO4 • 
+                        3.6kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>300W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>100W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>300080</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                        </div>
+                        
+                        
+                            <div class="no-prices">Price data updating...</div>
+                        
+                    </div>
+                    
+                    <a href="products/anker-solix-c300.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="ecoflow" data-capacity="1024" data-price="9999">
+                    
+                    
+                    <h3 class="product-name">EcoFlow DELTA 2</h3>
+                    
+                    <div class="product-specs">
+                        <strong>1024Wh</strong> • 
+                        LiFePO4 • 
+                        12.0kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>1800W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>36W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>300080</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                        </div>
+                        
+                        
+                            <div class="no-prices">Price data updating...</div>
+                        
+                    </div>
+                    
+                    <a href="products/ecoflow-delta-2.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="bluetti" data-capacity="2048" data-price="9999">
+                    
+                    
+                    <h3 class="product-name">Bluetti AC200L</h3>
+                    
+                    <div class="product-specs">
+                        <strong>2048Wh</strong> • 
+                        LiFePO4 • 
+                        28.1kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>2400W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>1200W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>300080</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                        </div>
+                        
+                        
+                            <div class="no-prices">Price data updating...</div>
+                        
+                    </div>
+                    
+                    <a href="products/bluetti-ac200l.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="jackery" data-capacity="518" data-price="9999">
+                    
+                    
+                    <h3 class="product-name">Jackery Explorer 500</h3>
+                    
+                    <div class="product-specs">
+                        <strong>518Wh</strong> • 
+                        Lithium-ion • 
+                        6.4kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>500W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>NoneW</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>50080</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                        </div>
+                        
+                        
+                            <div class="no-prices">Price data updating...</div>
+                        
+                    </div>
+                    
+                    <a href="products/jackery-explorer-500.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="bluetti" data-capacity="2048" data-price="9999">
+                    
+                    
+                    <h3 class="product-name">Bluetti AC200MAX</h3>
+                    
+                    <div class="product-specs">
+                        <strong>2048Wh</strong> • 
+                        LiFePO4 • 
+                        28.1kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>2200W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>900W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>350080</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                        </div>
+                        
+                        
+                            <div class="no-prices">Price data updating...</div>
+                        
+                    </div>
+                    
+                    <a href="products/bluetti-ac200max.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="ecoflow" data-capacity="4096" data-price="9999">
+                    
+                    
+                    <h3 class="product-name">EcoFlow DELTA Pro 3</h3>
+                    
+                    <div class="product-specs">
+                        <strong>4096Wh</strong> • 
+                        LiFePO4 • 
+                        51.5kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>4000W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>1600W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>400080</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                        </div>
+                        
+                        
+                            <div class="no-prices">Price data updating...</div>
+                        
+                    </div>
+                    
+                    <a href="products/ecoflow-delta-pro-3.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="ecoflow" data-capacity="2048" data-price="9999">
+                    
+                    
+                    <h3 class="product-name">EcoFlow DELTA 2 Max</h3>
+                    
+                    <div class="product-specs">
+                        <strong>2048Wh</strong> • 
+                        LiFePO4 • 
+                        23.0kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>2400W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>1000W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>400080</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                        </div>
+                        
+                        
+                            <div class="no-prices">Price data updating...</div>
+                        
+                    </div>
+                    
+                    <a href="products/ecoflow-delta-2-max.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="bluetti" data-capacity="288" data-price="9999">
+                    
+                    
+                    <h3 class="product-name">Bluetti Elite 30 V2</h3>
+                    
+                    <div class="product-specs">
+                        <strong>288Wh</strong> • 
+                        LiFePO4 • 
+                        3.8kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>600W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>200W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>300080</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                        </div>
+                        
+                        
+                            <div class="no-prices">Price data updating...</div>
+                        
+                    </div>
+                    
+                    <a href="products/bluetti-elite-30-v2.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="ecoflow" data-capacity="245" data-price="9999">
+                    
+                    
+                    <h3 class="product-name">EcoFlow RIVER 3</h3>
+                    
+                    <div class="product-specs">
+                        <strong>245Wh</strong> • 
+                        LiFePO4 • 
+                        3.5kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>300W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>110W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>400080</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                        </div>
+                        
+                        
+                            <div class="no-prices">Price data updating...</div>
+                        
+                    </div>
+                    
+                    <a href="products/ecoflow-river-3.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="bluetti" data-capacity="27648" data-price="9999">
+                    
+                    
+                    <h3 class="product-name">Bluetti AC300 System</h3>
+                    
+                    <div class="product-specs">
+                        <strong>27648Wh</strong> • 
+                        LiFePO4 • 
+                        45.0kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>3000W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>2400W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>300080</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                        </div>
+                        
+                        
+                            <div class="no-prices">Price data updating...</div>
+                        
+                    </div>
+                    
+                    <a href="products/bluetti-ac300-system.html" class="view-details">View Full Details & Specs</a>
+                </div>
+                
+                <div class="product-card" data-brand="ecoflow" data-capacity="1024" data-price="9999">
+                    
+                    
+                    <h3 class="product-name">EcoFlow DELTA 3 Plus</h3>
+                    
+                    <div class="product-specs">
+                        <strong>1024Wh</strong> • 
+                        LiFePO4 • 
+                        12.2kg
+                    </div>
+                    
+                    <div class="spec-grid">
+                        <div class="spec-item">
+                            <span>AC Output</span>
+                            <strong>1800W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>USB Ports</span>
+                            <strong>0</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Solar Input</span>
+                            <strong>500W</strong>
+                        </div>
+                        <div class="spec-item">
+                            <span>Cycle Life</span>
+                            <strong>400080</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="price-comparison">
+                        <div class="price-header">
+                            <h4>Price Comparison</h4>
+                            
+                        </div>
+                        
+                        
+                            <div class="no-prices">Price data updating...</div>
+                        
+                    </div>
+                    
+                    <a href="products/ecoflow-delta-3-plus.html" class="view-details">View Full Details & Specs</a>
+                </div>
                 
             </div>
             
             <div class="last-updated">
-                Last updated: 2025-09-07 04:20 UTC
+                <strong>Last updated:</strong> 2025-09-07 09:59 UTC
+                <br>
+                <small>Prices update every hour. We monitor stock levels and price changes across all major UK retailers.</small>
             </div>
         </div>
     </main>
 
     <footer>
         <div class="container">
-            <p>Power Station Price Tracker - Compare power station prices across UK retailers</p>
-            <p><small>This site contains affiliate links. We may earn a commission when you make a purchase through these links at no additional cost to you.</small></p>
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>Power Station Guide</h4>
+                    <p><a href="/guide/capacity-calculator">Capacity Calculator</a></p>
+                    <p><a href="/guide/battery-chemistry">Battery Chemistry Guide</a></p>
+                    <p><a href="/guide/solar-charging">Solar Charging Setup</a></p>
+                    <p><a href="/guide/ups-vs-power-station">UPS vs Power Station</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Popular Brands</h4>
+                    <p><a href="/brands/jackery">Jackery Power Stations</a></p>
+                    <p><a href="/brands/anker">Anker SOLIX Series</a></p>
+                    <p><a href="/brands/bluetti">Bluetti Power Stations</a></p>
+                    <p><a href="/brands/ecoflow">EcoFlow DELTA Series</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Price Tracking</h4>
+                    <p><a href="/alerts">Set Price Alerts</a></p>
+                    <p><a href="/deals">Current Deals</a></p>
+                    <p><a href="/price-history">Price History</a></p>
+                    <p><a href="/api">Price API</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>About</h4>
+                    <p><a href="/about">About Us</a></p>
+                    <p><a href="/contact">Contact</a></p>
+                    <p><a href="/privacy">Privacy Policy</a></p>
+                    <p><a href="/terms">Terms of Service</a></p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2025 Power Station Price Tracker. We track prices across UK retailers to help you find the best deals.</p>
+                <p><small>This site contains affiliate links. We may earn a commission when you make a purchase through these links at no additional cost to you.</small></p>
+            </div>
         </div>
     </footer>
+
+    <script>
+        // Product filtering and sorting functionality
+        let allProducts = [];
+        let currentProducts = [];
+
+        // Initialize products data from DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            const productCards = document.querySelectorAll('.product-card');
+            allProducts = Array.from(productCards).map(card => ({
+                element: card,
+                brand: card.dataset.brand,
+                capacity: parseInt(card.dataset.capacity),
+                price: parseFloat(card.dataset.price),
+                name: card.querySelector('.product-name').textContent.toLowerCase()
+            }));
+            currentProducts = [...allProducts];
+        });
+
+        // Search functionality
+        document.getElementById('search').addEventListener('input', function(e) {
+            applyFilters();
+        });
+
+        // Apply filters
+        function applyFilters() {
+            const search = document.getElementById('search').value.toLowerCase();
+            const brand = document.getElementById('brandFilter').value;
+            const capacity = document.getElementById('capacityFilter').value;
+            const price = document.getElementById('priceFilter').value;
+
+            currentProducts = allProducts.filter(product => {
+                // Search filter
+                if (search && !product.name.includes(search) && !product.brand.includes(search)) {
+                    return false;
+                }
+
+                // Brand filter
+                if (brand && product.brand !== brand) {
+                    return false;
+                }
+
+                // Capacity filter
+                if (capacity) {
+                    const [min, max] = capacity.split('-').map(v => v === '+' ? Infinity : parseInt(v));
+                    if (capacity.includes('+')) {
+                        if (product.capacity < min) return false;
+                    } else {
+                        if (product.capacity < min || product.capacity > max) return false;
+                    }
+                }
+
+                // Price filter
+                if (price) {
+                    const [minPrice, maxPrice] = price.split('-').map(v => v === '+' ? Infinity : parseInt(v));
+                    if (price.includes('+')) {
+                        if (product.price < minPrice) return false;
+                    } else {
+                        if (product.price < minPrice || product.price > maxPrice) return false;
+                    }
+                }
+
+                return true;
+            });
+
+            updateProductDisplay();
+        }
+
+        // Sort products
+        function sortProducts(sortBy) {
+            // Update active sort button
+            document.querySelectorAll('.sort-button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            switch(sortBy) {
+                case 'price':
+                    currentProducts.sort((a, b) => a.price - b.price);
+                    break;
+                case 'capacity':
+                    currentProducts.sort((a, b) => b.capacity - a.capacity);
+                    break;
+                case 'value':
+                    currentProducts.sort((a, b) => (a.price / a.capacity) - (b.price / b.capacity));
+                    break;
+                case 'brand':
+                    currentProducts.sort((a, b) => a.brand.localeCompare(b.brand));
+                    break;
+            }
+
+            updateProductDisplay();
+        }
+
+        // Update product display
+        function updateProductDisplay() {
+            const grid = document.getElementById('productsGrid');
+            const resultsCount = document.getElementById('resultsCount');
+
+            // Clear grid
+            grid.innerHTML = '';
+
+            // Add filtered products
+            currentProducts.forEach(product => {
+                grid.appendChild(product.element);
+            });
+
+            // Update results count
+            resultsCount.textContent = `${currentProducts.length} power stations found`;
+        }
+
+        // Price alert signup
+        function signupForAlerts() {
+            const email = document.getElementById('emailAlert').value;
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address');
+                return;
+            }
+
+            // Here you would normally send to your backend
+            alert('Thank you! You\'ll receive price alerts at ' + email);
+            document.getElementById('emailAlert').value = '';
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>

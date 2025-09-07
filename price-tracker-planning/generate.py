@@ -36,7 +36,7 @@ def get_db_connection():
         return None
 
 def load_products():
-    """Load all product JSON files"""
+    """Load all product JSON files with enhanced data processing"""
     products = []
     products_dir = Path(__file__).parent / "data" / "products" / "power-stations"
     
@@ -44,11 +44,119 @@ def load_products():
         try:
             with open(json_file, 'r') as f:
                 product = json.load(f)
+                
+                # Enhance product data for template
+                product = enhance_product_data(product)
                 products.append(product)
         except Exception as e:
             logging.error(f"Failed to load {json_file}: {e}")
     
     return products
+
+def enhance_product_data(product):
+    """Enhance product data with calculated fields"""
+    try:
+        # Extract capacity as number for sorting/filtering
+        capacity_str = product.get('specs', {}).get('capacity', '0Wh')
+        capacity_digits = ''.join(filter(str.isdigit, str(capacity_str)))
+        capacity_wh = int(capacity_digits) if capacity_digits else 0
+        product['capacity_wh'] = capacity_wh
+        
+        # Extract weight as number
+        weight_str = product.get('specs', {}).get('weight', '0kg')
+        weight_digits = ''.join(filter(lambda x: x.isdigit() or x == '.', str(weight_str)))
+        weight_kg = float(weight_digits) if weight_digits else 0
+        product['weight'] = weight_kg
+        
+        # Extract AC output watts - handle nested structure
+        ac_output = product.get('specs', {}).get('ac_output', {})
+        if isinstance(ac_output, dict):
+            continuous_power = ac_output.get('continuous', '0W')
+            ac_digits = ''.join(filter(str.isdigit, str(continuous_power)))
+            ac_output_watts = int(ac_digits) if ac_digits else 0
+        else:
+            ac_digits = ''.join(filter(str.isdigit, str(ac_output)))
+            ac_output_watts = int(ac_digits) if ac_digits else 0
+        product['ac_output_watts'] = ac_output_watts
+        
+        # Extract solar input watts - check multiple possible locations
+        solar_input_watts = None
+        
+        # Check direct solar_input field
+        solar_input = product.get('specs', {}).get('solar_input')
+        if solar_input and str(solar_input).strip():
+            solar_digits = ''.join(filter(str.isdigit, str(solar_input)))
+            solar_input_watts = int(solar_digits) if solar_digits else None
+        
+        # Check in performance/charging_times
+        if not solar_input_watts:
+            performance = product.get('specs', {}).get('performance', {})
+            charging_times = performance.get('charging_times', {})
+            solar_info = charging_times.get('solar', '')
+            if solar_info and str(solar_info).strip():
+                solar_digits = ''.join(filter(str.isdigit, str(solar_info)))
+                solar_input_watts = int(solar_digits) if solar_digits else None
+        
+        product['solar_input_watts'] = solar_input_watts
+        
+        # Extract battery type - check multiple possible field names
+        battery_type = (product.get('specs', {}).get('battery_type') or 
+                       product.get('specs', {}).get('chemistry') or 
+                       'Li-ion')
+        product['battery_type'] = battery_type
+        
+        # Extract cycle life
+        cycle_life = None
+        
+        # Check direct cycle_life field
+        cycle_life_direct = product.get('specs', {}).get('cycle_life')
+        if cycle_life_direct and str(cycle_life_direct).strip():
+            cycle_digits = ''.join(filter(str.isdigit, str(cycle_life_direct)))
+            cycle_life = int(cycle_digits) if cycle_digits else None
+        
+        # Check in performance section
+        if not cycle_life:
+            performance = product.get('specs', {}).get('performance', {})
+            cycle_life_perf = performance.get('cycle_life', '')
+            if cycle_life_perf and str(cycle_life_perf).strip():
+                cycle_digits = ''.join(filter(str.isdigit, str(cycle_life_perf)))
+                cycle_life = int(cycle_digits) if cycle_digits else None
+        
+        product['cycle_life'] = cycle_life
+        
+        # Extract USB ports (simplified for now)
+        usb_ports = product.get('specs', {}).get('usb_ports', [])
+        if isinstance(usb_ports, str):
+            usb_digits = ''.join(filter(str.isdigit, usb_ports))
+            usb_count = int(usb_digits) if usb_digits else 2  # Default to 2
+            usb_ports = [{'type': 'USB-A', 'count': usb_count}]
+        elif not isinstance(usb_ports, list):
+            # Default to 2 USB ports for most power stations
+            usb_ports = [{'type': 'USB-A', 'count': 2}]
+        product['usb_ports'] = usb_ports
+        
+        # Add brand extraction
+        brand_name = product.get('brand', '').lower() or product.get('name', '').split()[0].lower()
+        product['brand'] = brand_name or 'unknown'
+        
+        # Create slug for URLs
+        product['slug'] = product.get('id', '').replace('_', '-')
+        
+        return product
+        
+    except Exception as e:
+        # If any processing fails, return the original product with safe defaults
+        logging.warning(f"Failed to enhance product data for {product.get('name', 'unknown')}: {e}")
+        product['capacity_wh'] = 0
+        product['weight'] = 0
+        product['ac_output_watts'] = 0
+        product['solar_input_watts'] = None
+        product['battery_type'] = 'Li-ion'
+        product['cycle_life'] = None
+        product['usb_ports'] = [{'type': 'USB-A', 'count': 2}]
+        product['brand'] = product.get('brand', '').lower() or 'unknown'
+        product['slug'] = product.get('id', '').replace('_', '-')
+        return product
 
 def get_latest_prices():
     """Get latest prices from JSON files"""
@@ -150,6 +258,43 @@ def get_latest_prices():
     
     return {}
 
+def process_products_with_prices(products, prices):
+    """Process products with pricing data"""
+    processed_products = []
+    
+    for product in products:
+        product_id = product.get('id')
+        product_prices = prices.get(product_id, [])
+        
+        # Add price information to product
+        product['prices'] = product_prices
+        
+        # Calculate min price and best deal info
+        if product_prices:
+            in_stock_prices = [p for p in product_prices if p.get('in_stock', True) and p.get('price')]
+            if in_stock_prices:
+                min_price = min(in_stock_prices, key=lambda x: x['price'])['price']
+                product['min_price'] = min_price
+                
+                # Calculate value per Wh
+                if product['capacity_wh'] > 0:
+                    product['value_per_wh'] = product['capacity_wh'] / min_price
+                
+                # Mock discount calculation for demo
+                product['discount_percentage'] = None
+                if min_price < 1000:  # Mock condition
+                    original_price = min_price * 1.2
+                    discount = ((original_price - min_price) / original_price) * 100
+                    if discount > 5:
+                        product['discount_percentage'] = int(discount)
+        
+        processed_products.append(product)
+    
+    # Sort by best value (capacity per pound)
+    processed_products.sort(key=lambda x: x.get('value_per_wh', 0), reverse=True)
+    
+    return processed_products
+
 def generate_site():
     """Main site generation function"""
     logger = logging.getLogger(__name__)
@@ -162,17 +307,27 @@ def generate_site():
     products = load_products()
     prices = get_latest_prices()
     
+    # Process products with pricing data
+    processed_products = process_products_with_prices(products, prices)
+    
     # Ensure static directory exists
     STATIC_DIR.mkdir(exist_ok=True)
     (STATIC_DIR / "products").mkdir(exist_ok=True)
     
+    # Try enhanced template first, fallback to original
+    try:
+        homepage_template = env.get_template('enhanced_homepage.html')
+        logger.info("Using enhanced homepage template")
+    except:
+        homepage_template = env.get_template('homepage.html')
+        logger.info("Using original homepage template")
+    
     # Generate homepage
-    homepage_template = env.get_template('homepage.html')
     homepage_html = homepage_template.render(
-        products=products,
-        prices=prices,
+        products=processed_products,
         site_name=SITE_NAME,
         site_url=SITE_URL,
+        last_updated=datetime.now().strftime('%Y-%m-%d %H:%M UTC'),
         generated_at=datetime.now()
     )
     
