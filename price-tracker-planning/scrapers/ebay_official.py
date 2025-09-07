@@ -33,7 +33,7 @@ import time
 import random
 import logging
 from bs4 import BeautifulSoup
-from base import BaseScraper, clean_price_string
+from scrapers.base import BaseScraper, clean_price_string
 from urllib.parse import parse_qs, urlparse
 
 class EbayOfficialScraper(BaseScraper):

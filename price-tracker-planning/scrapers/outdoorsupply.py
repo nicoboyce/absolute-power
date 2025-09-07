@@ -25,7 +25,7 @@ LAST UPDATED: 2025-09-07
 
 import logging
 from bs4 import BeautifulSoup
-from base import BaseScraper, clean_price_string
+from scrapers.base import BaseScraper, clean_price_string
 
 class OutdoorSupplyScraper(BaseScraper):
     """
